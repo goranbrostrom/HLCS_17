@@ -1,8 +1,8 @@
 ---
 output: html_document
 ---
-# Clustering and intergenerational transfers of infant mortality in 19th
-century northern Sweden
+# Intergenerational transfers of infant mortality
+in 19th century northern Sweden
 
 
 ## The report on infant mortality for the HLCS journal.
