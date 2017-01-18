@@ -4,7 +4,7 @@ author: "Elisabeth Engberg, Sören Edvinsson, and Göran Broström"
 date: "January 16, 2017"
 documentclass: article
 bibliography: ["cluster.bib", "surv.bib"]
-output: bookdown::html_document2
+output: bookdown::word_document2
 ---
 # Abstract
 
@@ -601,17 +601,19 @@ The effect of *gmIMR* is even stronger for firstborn than generally (estimated t
 The Weibull model usually fits infant mortality data well. 
 <!--Let us check this (Table \@ref(tab:weibsurv)). -->
 
-```{r weibsurv,results='asis'}
+```{r weibsurv}
 ##ef$G0.IMR <- ef$G0_InfD / ef$G0_Births
 ##ef$childBirthdate <- ef$mBirthdate + ef$enter
 fit.w <- phreg(Surv(exit - enter, event) ~ gmIMR + childBirthdate + parity + sex, data = ef)
+fit.c <- coxreg(Surv(exit - enter, event) ~ gmIMR + childBirthdate + parity + sex, data = ef)
 dr.w <- drop1(fit.w, test = "Chisq")
-ltx(fit.w, dr = dr.w, caption = "Weibull regression, extended model.", digits = 4, label = "tab:weibsurv")
+##ltx(fit.w, dr = dr.w, caption = "Weibull regression, extended model.", digits = 4, label = "tab:weibsurv")
+fit.w
 ```
 
 
 ```{r weibfit, fig.cap = "Weibull cumulative hazard vs. Nelson-Aalen estimate.", fig.height = 3.8}
-check.dist(fit.w, fit.c2, main = "", col = c("blue", "red"))
+check.dist(fit.w, fit.c, main = "", col = c("blue", "red"))
 abline(h = 0)
 ```
 A graphical comparison of the Weibull and nonparametric baseline cumulative hazards (Figure \@ref(fig:weibfit))
