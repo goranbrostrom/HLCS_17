@@ -531,6 +531,8 @@ The estimated cumulative hazards functions for the strata of
 ```{r relcumhaz, fig.cap = "Cumulative hazards by the number of grandmother's infant deaths.", fig.height = 3.2}
 fit.str <- coxreg(Surv(exit - enter, event) ~ strata(gmDeaths) + gmBirths + mAge, data = ef)
 plot(fit.str, col = 1:3, xlab = "Age", ylab = "Cumulative hazards")
+ef_fix <- ef
+save(ef_fix, file = "ef_fix.rda")
 ```
 
 There is an evident deviation from the assumption of *proportional
