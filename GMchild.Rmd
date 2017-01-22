@@ -1,0 +1,81 @@
+---
+title: "Grandmother's children"
+author: "Göran Broström"
+date: "January 21, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+library(haven)
+library(dplyr)
+library(knitr)
+mdy <- function(Month, Day, Year) as.Date(paste(Year, Month, Day, sep = "-"), 
+                                          format = "%Y-%m-%d")
+```
+
+## Introduction
+
+We want to find grandmother's all children, not only those that appear as 
+mothers in Luciana's output. 
+
+I will doing it by "reverse engineering", that is, I start by finding all 
+grandmothers in *ef.rda* (Luciana's output converted to R format), then I look for all their kids via *INDIV_INDIV* and *INDIVIDUAL* (IDS files).
+
+## Find the grandmothers (GM)
+
+```{r loaddata}
+load("ef.rda")
+GMid <- unique(ef$GrandmotherID)
+Mid <- unique(ef$MotherID)
+Chid <- unique(ef$Id_I) 
+load("../IDS/IDS_ddb/INDIVIDUAL.rda") 
+INDIVIDUAL <- INDIVIDUAL %>%
+   select(Id_I, Type, Value, Day, Month, Year, Start_day, Start_month, 
+           Start_year, End_day, End_month, End_year,
+           Date_type, Missing)
+load("../IDS/IDS_ddb/INDIV_INDIV.rda") 
+INDIV_INDIV <- INDIV_INDIV %>%
+    select(Id_I_1, Id_I_2, Relation) %>%
+    filter(Relation == "Mother") %>% 
+    select(Mother = Id_I_1, Child = Id_I_2) %>%
+    filter(!duplicated(Child))
+```
+
+Now, from *INDIV_INDIV* we select all rows ('filter') with *Mother* 
+corresponding to *GMid* (from *ef*).
+
+```{r Gmchild}
+GMchild <- INDIV_INDIV %>%
+    filter(Mother %in% GMid)
+```
+
+These grandmothers had a lot of children:
+
+```{r tapply}
+x <- with(GMchild, tapply(Mother, Mother, length))
+barplot(table(x), xlab = "No. of children", ylab = "Frequency")
+```
+
+## Find the kids of the grandmothers
+
+That is, the *mothers* and their siblings. From *INDIVIDUAL*, after some 
+massage:
+
+```{r get_kids_to_GM}
+kidsGM <- INDIVIDUAL %>%
+    filter(Id_I %in% GMchild$Child) %>% 
+    filter(Type %in% c("BIRTH_DATE", "DEATH_DATE", "START_OBSERVATION", 
+           "END_OBSERVATION"))
+kidsGM$date <- with(kidsGM, mdy(Month, Day, Year))
+kidsGM <- select(kidsGM, Id_I, Type, Value, date) %>%
+    filter(!is.na(date))
+
+far <- with(kidsGM, paste(Id_I, Type, Value, date, sep = ""))
+kidsGM <- kidsGM[!duplicated(far), ]
+summary(kidsGM)                
+```
+
+
+
+
