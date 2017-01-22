@@ -7,6 +7,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+library(tidyr)
 library(haven)
 library(dplyr)
 library(knitr)
@@ -25,7 +26,9 @@ grandmothers in *ef.rda* (Luciana's output converted to R format), then I look f
 ## Find the grandmothers (GM)
 
 ```{r loaddata}
-load("ef.rda")
+load("ef_fix.rda")
+ef <- ef_fix
+rm(ef_fix)
 GMid <- unique(ef$GrandmotherID)
 Mid <- unique(ef$MotherID)
 Chid <- unique(ef$Id_I) 
@@ -54,7 +57,7 @@ These grandmothers had a lot of children:
 
 ```{r tapply}
 x <- with(GMchild, tapply(Mother, Mother, length))
-barplot(table(x), xlab = "No. of children", ylab = "Frequency")
+barplot(table(x), xlab = "No. of children to grandmother", ylab = "Frequency")
 ```
 
 ## Find the kids of the grandmothers
@@ -73,9 +76,41 @@ kidsGM <- select(kidsGM, Id_I, Type, Value, date) %>%
 
 far <- with(kidsGM, paste(Id_I, Type, Value, date, sep = ""))
 kidsGM <- kidsGM[!duplicated(far), ]
-summary(kidsGM)                
+                
+indx <- match(kidsGM$Id_I, INDIV_INDIV$Child)
+kidsGM$GMid <- INDIV_INDIV$Mother[indx]
+summary(kidsGM)
 ```
 
+We see that grandmother has a birth as early as 1804-01-13 and her longest 
+living kid dies 1902-01-026.
+
+We will now check the birthdate , deathdate and 'last seen' for all GMkids.
+We start by sorting data by Id_I and date and then add *lopnr* and *antrec*: 
+
+```{r rc}
+source("rc.R")
+kidsGM$id <- kidsGM$Id_I
+kidsGM <- rc(kidsGM)
+kidsGM$id <- NULL
+head(kidsGM, 15)
+```
+
+Individuals with missing birthdate are removed:
+
+```{r withbdate}
+id <- kidsGM$Id_I[kidsGM$Type == "BIRTH_DATE"]
+kids <- kidsGM %>% 
+    filter(Id_I %in% id)
+kids$id <- kids$Id_I
+kids <- rc(kids)
+kids$id <- NULL
+noval <- kids$Value == ""
+kids$Value[noval] <- as.character(kids$date[noval])
+kk <- spread(kids, Type, Value)
+kk$
+head(kk)
+```
 
 
 
