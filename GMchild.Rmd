@@ -67,9 +67,9 @@ massage:
 
 ```{r get_kids_to_GM}
 kidsGM <- INDIVIDUAL %>%
-    filter(Id_I %in% GMchild$Child) %>% 
-    filter(Type %in% c("BIRTH_DATE", "DEATH_DATE", "START_OBSERVATION", 
-           "END_OBSERVATION"))
+    filter(Id_I %in% GMchild$Child) ##%>% 
+##    filter(Type %in% c("BIRTH_DATE", "DEATH_DATE", "START_OBSERVATION", 
+  ##         "END_OBSERVATION"))
 kidsGM$date <- with(kidsGM, mdy(Month, Day, Year))
 kidsGM <- select(kidsGM, Id_I, Type, Value, date) %>%
     filter(!is.na(date))
@@ -99,18 +99,76 @@ head(kidsGM, 15)
 Individuals with missing birthdate are removed:
 
 ```{r withbdate}
-id <- kidsGM$Id_I[kidsGM$Type == "BIRTH_DATE"]
-kids <- kidsGM %>% 
-    filter(Id_I %in% id)
-kids$id <- kids$Id_I
-kids <- rc(kids)
-kids$id <- NULL
-noval <- kids$Value == ""
-kids$Value[noval] <- as.character(kids$date[noval])
-kk <- spread(kids, Type, Value)
-kk$
-head(kk)
+kids <- kidsGM %>%
+    filter(Type == "BIRTH_DATE")
+nk <- data.frame(id = kids$Id_I, GMid = kids$GMid, birthdate = kids$date)
+deaths <- kidsGM %>%
+    filter(Type == "DEATH_DATE")
+indx <- match(nk$id, deaths$Id_I)
+nk$deathdate <- deaths$date[indx]
+last <- kidsGM %>%
+    filter(antrec == lopnr)
+indx <- match(nk$id, last$Id_I)
+nk$last <- last$date[indx]
+head(nk)
+```
+
+We calculate the number of days from birth to "last seen":
+
+```{r lifetime}
+td <- function(date1, date2){
+    ## vectorizing...
+    diff <- as.numeric(date2) - as.numeric(date1)
+    diff
+}
+
+nk$exit <- with(nk, td(birthdate, last))
+nk$event <- (!is.na(nk$deathdate)) & nk$exit < 366
+nk$exit <- pmin(nk$exit, 365)
+nk <- nk[nk$exit >=0, ] 
+```
+
+Then we introduce *period* as covariate, categorizing *birthdate* into three categories,
+
+*birthdate < 1822-01-01*, *1822-01-01 <= birthdate < 1831-01-01*, and *1822-01-01 <= birthdate*:
+
+```{r period}
+cut1 <- as.Date("1822-01-01")
+cut2 <- as.Date("1831-01-01")
+nk$period <- cut(nk$birthdate, c(as.Date("1804-01-01"), cut1, cut2, as.Date("1872-12-31")))
 ```
 
 
+## Survival analysis
 
+We compare survival in the three time periods by plotting the cumulative hazards, 
+with and without "correction".
+
+```{r theplots, fig.height = 8}
+library(eha)
+nk$exit <- nk$exit + 1
+fit <- coxreg(Surv(exit, event) ~ strata(period), data = nk)
+par(mfrow = c(2, 1))
+plot(fit, col = c("black", "red", "blue"), main = "Uncorrected", lty = 1:3, ylim = c(0, 0.3), xlab = "Days")
+nk$event1 <- nk$event | nk$exit == 1
+fit2 <- coxreg(Surv(exit, event1) ~ strata(period), data = nk)
+plot(fit2, col = c("black", "red", "blue"), main = "Corrected", lty = 1:3, ylim = c(0, 0.3), xlab = "Days")
+```
+
+
+"1" is 1804-1821, "2" is 1822-1831, and "3" is 1832-1872. "Corrected" means that those with only a birthdate are regared as dead on the first day of life.
+
+It is obvously not only a problem with under-registration very early, but up to three months of age: Mortality after that age looks "reasonable":
+
+```{r theplots2, fig.height = 5}
+##library(eha)
+##nk$exit <- nk$exit + 1
+nk$enter <- 0
+nk2 <- age.window(nk, c(90, 366))
+fit <- coxreg(Surv(enter, exit, event) ~ strata(period), data = nk2)
+
+plot(fit, col = c("black", "red", "blue"), main = "3-12 months", lty = 1:3, ylim = c(0, 0.06), xlab = "Days")
+
+```
+
+A quite reasonable picture.
