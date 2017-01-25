@@ -172,3 +172,56 @@ plot(fit, col = c("black", "red", "blue"), main = "3-12 months", lty = 1:3, ylim
 ```
 
 A quite reasonable picture.
+
+## Compare with 'skum'
+
+I look at births the year 1830
+(random choice):
+
+```{r skumkomp}
+library(skum)
+b30 <- obs %>% 
+    filter(starttyp == 2 &
+               substr(as.character(startdat), 1, 4) == "1830") %>%
+    select(id, startdat, slutdat, sluttyp)
+indx <- match(b30$id, per$id)
+b30$utdatmin <- per$utdatmin[indx]
+b30$deathdate <- per$doddat[indx]
+b30 <- b30 %>%
+    filter((is.na(deathdate) & utdatmin - startdat < 366) | 
+               (!is.na(deathdate) & deathdate - startdat < 366)) %>%
+    mutate(obs_days = as.numeric(utdatmin - startdat)) %>%
+    mutate(event = !is.na(deathdate)) %>%
+    arrange(startdat)
+```
+
+The same selection on *nk*:
+
+```{r onnk}
+nk30 <- nk %>%
+    filter(substr(as.character(birthdate), 1, 4) == "1830") %>%
+    filter((is.na(deathdate) & last - birthdate < 366) |
+                (!is.na(deathdate) & deathdate - birthdate < 366)) %>%
+    mutate(obs_days = as.numeric(last - birthdate)) %>% 
+    arrange(birthdate)
+```
+
+Compare birthdates (there are 37 rows in *nk30* and 38 in *b30*) in the two data sets:
+
+```{r compbirths}
+matr <- cbind(as.character(b30$startdat), c(as.character(nk30$birthdate), NA))
+colnames(matr) <- c("skum", "IDS")
+matr
+sum(matr[, 2] %in% matr[, 1])
+```
+
+Not a full equivalence. And furthermore, all individuals in *skum* are reported as infant deaths (with a death date), while 16 of the IDS cases are reported as survivors.
+
+Conclusion: one of the two sources, IDS or skum, is suspect. Or something is fishy in Luciana's extraction program. Do we have time to sort this out?
+
+```{r summaries}
+summary(b30[, c("startdat", "deathdate", "obs_days")])
+summary(nk30[, c("birthdate", "deathdate", "obs_days")])
+```
+
+
