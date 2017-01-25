@@ -1,10 +1,10 @@
 ---
-title: "Clustering and intergenerational transfers of infant mortality in 19th century northern Sweden"
-author: "Elisabeth Engberg, Sören Edvinsson, and Göran Broström"
+title: "Intergenerational transfers of infant mortality in 19th century northern Sweden"
+author: "Göran Broström, Sören Edvinsson, and Elisabeth Engberg"
 date: "January 16, 2017"
 documentclass: article
 bibliography: ["cluster.bib", "surv.bib"]
-output: bookdown::word_document2
+output: bookdown::pdf_document2
 ---
 # Abstract
 
@@ -24,12 +24,12 @@ library(xtable)
 
 This article has a threefold aim, including two methodological objectives
 and one demographic query. The first methodological aim is to assess the
-power of the IDS data format for demographic analysis. An evaluation of the
+power of the IDS (Intermediate Data Structure) database on data from DDB (Demographic Data Base, Umeå University) for demographic analysis. An evaluation of the
 data in applied research will be useful for further development of the IDS
 structure and for its future use in comparative research. The second
 methodological objective is to evaluate and compare different models for
 statistical analysis, in this case of inter-generational transfers. The
-third purpose is to apply the IDS structure and the statistical modelling
+third and main purpose is to apply the IDS structure and the statistical modelling
 in a demographic study of a possible inter-generational transmission of
 mortality in infancy.  
 
@@ -44,15 +44,15 @@ mortality rates shifted over time, from about 200 per thousand in the
 beginning of the 
 nineteenth century to approximately 100 per thousand in the 1890s, most
 families never 
-experienced an infant death.  Today there seems to be
+experienced an infant death. Today there seems to be
 consensus that the non-uniform distribution of infant deaths among families is a
 complex interplay of different factors, difficult to identify
-and separate.  The observed family dependency has led to an increased
+and separate. One should however be aware of the fact that clustering emerges
+naturally from pure randomness, often very counter-intuitive. This is
+discussed by @hb12. The observed family dependency has led to an increased
 attention to a possible inter-generational transmission of demographic
 patterns [@edja12], sometimes even considering epigenetic effects
-[@pem14]. One should however be aware of the fact that clustering emerges
-naturally from pure randomness, often very counter-intuitive. This is
-discussed by @hb12.
+[@pem14]. Studies of intergenerational effects require individual data covering long periods, extending several generations, data that have not been available until the recent development of historical population databases.
 
 
 Although the clustering of infant mortality appears to be a salient
@@ -106,14 +106,14 @@ landless households increased. The socio-economic development was also
 influenced by two devastating subsistence crises in the region, in the
 1830s and in the 1860s [@eng05].  
 
-Infant mortality was comparatively low. Fertility was high, not only by Swedish
+Infant mortality was comparatively low during the 19th century [@ebrb05; @edv04]. Fertility was high, not only by Swedish
 standards, but also in European comparison and there are no
 indications of family planning. Total fertility fluctuated around five
 children per woman and, although fertility did decline during the
 nineteenth century, the actual fertility transition occurred late in the
 district [@as94; @coa86]. The rate of illegitimacy was low in comparison
 with many other parts of Northern Sweden, where frequent pre-nuptial
-conceptions and illegitimate births were common. The illegitimacy rate
+conceptions and illegitimate births were common [@bredro02]. The illegitimacy rate
 fluctuated between three and six per cent during the nineteenth century
 [@as94]. 
 
@@ -128,33 +128,27 @@ a parish. These detailed records make it possible to follow individuals over tim
 identify their relatives and kin over time and throughout the life course. Furthermore, a rich variety of additional
 information, for example on occupation, was recorded.  From the 1970s, these records have been digitized by the Demographic Data Base at Umeå University, and individual level data from more than one hundred parishes are at present available for research in the databases [POPUM and POPLINK](http://www.cedar.umu.se/). 
 
-In the databases, all entries in the  catechetical registers and
-in the birth, death, marriage and migration registers have been linked, enabling life course analyses of the population as long as individuals are present in the
-digitized regions. During recent years, the database has been extended
-with parish registers until the 1950s for the Skellefteå and Umeå
-regions. Data until 1950 are available in the anonymized data base POPLINK with a generational depth of up to 12 [@wee16]. The registration in POPLINK of the Skellefteå data starts in 1699 with birth records. The catechetical registers are available from 1720. Unfortunately there are flaws in the 18th century data about infant deaths.  Children that died young are under-reported in the 18th century catechetical registers, and the death registers are missing before 1815. Hence the analysis in this paper is restricted to the 19th century. It includes the reproductive history of women born 1826--50 and the association with the reproductive history of the previous generation. The public IDS database is extracted from the POPLINK database, but only until 1900 due to legal requirements of protection of privacy.
+The databases differ in two respects: The time dimension and restrictions of data access. The registration in POPUM as well as POPLINKk of the Skellefteå data starts in 1699 with birth records. Catechetical registers are available from 1720. The end year of the Popum database is 1900. During recent years, the POPLINK database has been created with an extension of the time span to the 1950s for the Skellefteå and Umeå regions and a generational depth of up to 12 generations [@wee16]. The information in POPLINK is however anonymized due to legal requirements, while this is not the case for POPUM. The version of the IDS utilized in this study is based on the Popum database, thus ending at 1900.
+
+Unfortunately there are flaws in the 18th and early 19th century data about infant deaths. All death registers are missing before 1815, thus researchers have to rely on death information in the catechetical registers for the earlier time. Children that died young are however under-reported in the 18th century catechetical registers. Hence the analysis in this paper is restricted to the 19th century. It includes the reproductive history of women born 1826-1854 and the association with the reproductive history of the previous generation. There is a possible under-estimation of infant deaths in the grand-mother generation, something we comment on and analyse in the result section. The rather short time window used here have restricted the number of births, but still enough for proper statistical analysis, and we are not able to investigate possible changes in the intergenerational transfers. There are however also some methodological advantages with a shorter time window. We analyse women living in comparatively similar contexts, and we minimize the risk of some women appearing as grand-mothers, mothers as well as children.  
 
 
-# Implementation of IDS
+# Implementation of IDS on POPUM
+
+The implementation of the IDS format is based on the relational database POPUM. POPUM consists of a large amount of variables, whereof some represent the literal information from the sources, while others present updated information. The structure of POPUM differs from the one of IDS, so implementing IDS consists basically of restructuring the data. DDB was one of the pioneers in the work of testing and implementing IDS, the first version was created in 2009. Thereafter, new and improved versions have been developed. In this study we have used version 3 of IDS, which is based on only a sub-section of available parishes in POPUM - Skellefteå parish from the early 18th century until 1900. Quite a lot of variables have already been constructed in POPUM and much of the problems with inconsistent and fuzzy data, as well as duplicate information, have been taken care of. These variables are constructed from a set of well-defined and documented rules. Furthermore, record linkage as well as relational linkages have already been performed, and tests have proven the linkage process to be of high quality [@webl14]. The transformation of the data from POPUM to IDS has been quite straight-forward. This does not mean that the available information is without problems, something that will be illustrated below, but it has simplified much of the transfer of data into IDS format. The sources sometimes contain missing data, which can be a problem when it comes to analysis.
+In accordance with the SEDD (Scanian Economic Demographic Database) presented by Quaranta in this volume (Quaranta 2017?), the context information on linking individuals to their households causes some problems. Families and households are presented together in the catechetical registers. We find the family on the same page in the registers and an empty line separating them from the next family. Households are however difficult to identify. Servants and others are usually presented at the bottom of the page, and if there are several families/households on the same page it is not always obvious to which family they belong. Furthermore, the separation of families/households can also be difficult, particularly in urban environments where migrations were frequent making the registers more difficult to interpret. Making rules for defining households turned out to be very complicated. The information therefore primarily represent the nuclear families as households. The approach towards how household information is entered differs in some respects between SEDD and DDB.
 
 
-It was easy to utilize the IDS data base with the aid of Quaranta's (2016)
-Stata script. The only drawback was that the script required \emph{Stata}, which is a quite expensive piece of software. Luckily, Stata
-provides the possibility to 
-try the software for free during one month, and that was more than enough time to get
-the script running. However, this is of course not a sustainable state of
-the matter: Efforts should be made to utilize less costly approaches. 
+# Data
+
+We use the data set that is created from the IDS database with a standard extraction script [@lq16].
+In the analyses presented here we are using **R**, a free software environment for statistical computing and graphics [@R]. The study is limited to
+mothers born between Sunday, January 1, 1826 and Tuesday, December 31,  1850.
 
 Once we had the data, the analyses and report (this one) writing was
 performed in *RStudio* [@rstudio] with the aid of the **R**
 package *knitr* [@knitr; @xie15]. An environment that supports truly
 reproducible statistical research and is free in all aspects of the word.
-
-# Data
-
-We use the data set that is created from the IDS data base with a standard extraction script [@lq16].
-In the analyses presented here we are using **R**, a free software environment for statistical computing and graphics [@R]. The study is limited to
-mothers born between Sunday, January 1, 1826 and Tuesday, December 31,  1850.
 
 ```{r loaddata}
 if (!file.exists("ef.rda")){
@@ -291,7 +285,7 @@ ef1 <- ef[!duplicated(ef$MotherID), ]
 ```
 
 The average number of births to a mother in the data set is 
-\Sexpr{round(NROW(ef) / length(unique(ef$MotherID)), 2)}. The corresponding number for a grandmother is \Sexpr{round(mean(ef1$G0_Births), 2)}, but keep in mind that grandmothers are restricted to have at least two births, while mothers are restricted to have at least one birth. 
+`r round(NROW(ef) / length(unique(ef$MotherID)), 2)`. The corresponding number for a grandmother is `round(mean(ef1$G0_Births), 2)`, but keep in mind that grandmothers are restricted to have at least two births, while mothers are restricted to have at least one birth. 
 
 ## The covered time period
 
@@ -321,7 +315,7 @@ n.gm <- length(unique(ef1$GrandmotherID)) # No. of grandmothers
 x <- table(table(ef1$GrandmotherID)) # 'Mother siblings'
 ```
 
-There are \Sexpr{n.m} mothers and \Sexpr{n.gm} grandmothers in the data, so
+There are `r n.m` mothers and `n.gm` grandmothers in the data, so
 obviously there are many sister groups among mothers in the data. This fact
 induces dependencies in the data set, which may either be a problem (using
 methods assuming independence), but it may also be possible to turn this
@@ -340,8 +334,8 @@ barplot(x, xlab = "Size", ylab = "Frequency")
 m.gm <- with(ef1, sum(unique(GrandmotherID) %in% MotherID)) 
 ```
 
-How many grandmothers are also mothers (and vice versa)? The answer is \Sexpr{m.gm}, or 
-\Sexpr{round(m.gm / n.gm * 100, 2)} per cent of the grandmothers. This
+How many grandmothers are also mothers (and vice versa)? The answer is `r m.gm`, or 
+` round(m.gm / n.gm * 100, 2)` per cent of the grandmothers. This
 small amount is of no practical importance for the results.
 
 # Results
@@ -651,8 +645,8 @@ par(mfrow = c(1, 1))
 A formal test rejects the hypothesis of proportional hazards (no surprise), and a further test of equality of the curves also rejects (ditto). This is in exact agreement with our conclusion regarding the Cox regression model (Figure @\ref(fig:relcumhaz)). For the stratified Weibull model, the shape and scale parameters both vary freely over the strata, while in the non-stratified model (but with *gmDeaths* as a covariate instead of defining strata), the shape parameter is the same in all strata. So the stratified model requires six baseline parameters to estimate, while the non-stratified only requires four.
 
 The LR test now takes two times the difference of the two maximized log likelihoods, which under the null hypothesis (no stratification necessary) is $\chi^2$-distributed with $6 - 4 = 2$ degrees of freedom. 
-The maximized log-likelihood values are \Sexpr{round(ts, 1)} and \Sexpr{round(t1, 1)}, so the test statistic is observed to be
-`r round(teststat, 2)`, which with two degrees of freedom gives a $p$-value of `r round(pval, 4)`. So the null hypothesis is rejected.
+The maximized log-likelihood values are `r round(ts, 1)` and `r round(t1, 1)`, so the test statistic is observed to be
+`r round(teststat, 2)`, which with two degrees of freedom gives a $p$-value of `r format(round(pval, 4), scientific = FALSE)`. So the null hypothesis is rejected.
 
 ### A 2-by-2 table
 
