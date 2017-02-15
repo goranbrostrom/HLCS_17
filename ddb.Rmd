@@ -321,7 +321,7 @@ induces dependencies in the data set, which may either be a problem (using
 methods assuming independence), but it may also be possible to turn this
 fact into an advantage (using mixed effects models and think of
 inter-generational transfer as similarity between siblings). In the latter
-case the explanatory variable {\tt gmIMR} is replaced by
+case the explanatory variable *gmIMR* is replaced by
 clustering on grandmother.
 
 The distribution of the sizes of sibling groups is shown in Figure \@ref(fig:sibmoth).
@@ -524,7 +524,7 @@ The estimated cumulative hazards functions for the strata of
 
 ```{r relcumhaz, fig.cap = "Cumulative hazards by the number of grandmother's infant deaths.", fig.height = 3.2}
 fit.str <- coxreg(Surv(exit - enter, event) ~ strata(gmDeaths) + gmBirths + mAge, data = ef)
-plot(fit.str, col = 1:3, xlab = "Age", ylab = "Cumulative hazards")
+plot(fit.str, col = c("black", "blue", "red"), xlab = "Age", ylab = "Cumulative hazards", lty = c(1, 2, 4))
 ef_fix <- ef
 save(ef_fix, file = "ef_fix.rda")
 ```
@@ -547,7 +547,7 @@ It turns out that the model fit to data is somewhat better with *number of birth
 
 fit.p2 <- glm(mDeaths ~ offset(log(Mexpon)) + gmIMR + mBirthdate + parity, data = ef1, family = poisson)
 dr <- drop1(fit.p2, test = "Chisq")
-kable(dr, caption = "Poisson regression, grandmother's IMR. Analysis of deviance.", digits = 5, booktabs = TRUE)
+kable(dr, caption = "Poisson regression, grandmother's IMR. Analysis of deviance.", digits = 3, booktabs = TRUE)
 ```
 
 The general conclusion is not changed: Grandmother's IMR has a strong
@@ -571,7 +571,7 @@ ef$childBirthdate <- ef$mBirthdate + ef$enter
 fit.c2 <- coxph(Surv(exit - enter, event) ~ gmIMR + childBirthdate + parity + sex, data = ef)
 dr.c2 <- drop1(fit.c2, test = "Chisq")
 ##ltx(fit.c2, dr = dr.c2, caption = "Cox regression, extended model.", digits = 4, label = "tab:extsurv")
-kable(dr.c2, caption = "Cox regression, extended model.", booktabs = TRUE)
+kable(dr.c2, caption = "Cox regression, extended model.", booktabs = TRUE, digits = 3)
 ```
 
 The regression coefficient for *gmIMR* is `r round(fit.c2$coef[1], 3)`, highly statistically significant, as seen in Table \@ref(tab:extsurv). The other covariates are of less importance.
@@ -587,7 +587,7 @@ ef3 <- ef[ef$parity == 1, ]
 fit.c3 <- coxph(Surv(exit - enter, event) ~ gmIMR + childBirthdate + sex, data = ef3)
 dr.c3 <- drop1(fit.c3, test = "Chisq")
 #ltx(fit.c3, dr = dr.c3, caption = "Cox regression, extended model with only one birth per mother.", digits = 4, label = #"tab:extsurv1")
-kable(summary(fit.c3)$coef[, 1:3], caption = "Cox regression, extended model with only one birth per mother.", booktabs = TRUE)
+kable(summary(fit.c3)$coef[, 1:3], caption = "Cox regression, extended model with only one birth per mother.", booktabs = TRUE, digits = 3)
 ```
 
 The effect of *gmIMR* is even stronger for firstborn than generally (estimated to `r round(fit.c3$coef[1], 3)`), however, the statistical significance is weak, a logical consequence of the much lower number of infant deaths (compare Tables \@ref(tab:extsurv) and \@ref(tab:extsurv1)).
@@ -652,12 +652,13 @@ The maximized log-likelihood values are `r round(ts, 1)` and `r round(t1, 1)`, s
 
 In order to make it really simple, let us just record whether a mother and a grandmother experienced an infant death or not. The result is, in tabular form,
 
-```{r twotwo, results = 'asis'}
+```{r twotwo}
 gmD <- ef1$gmDeaths != 0
 mD <- ef1$mDeaths > 0 
 y <- table(mD, gmD)
 zz <- fisher.test(y)
-kable(y)
+##kable(y)
+y
 ```
 
 <!-- $$ -->
@@ -677,12 +678,13 @@ The *odds ratio* in this table is `r round(zz$estimate, 2)`, and *Fisher's exact
 
 An even simpler table is obtained if we do not allow siblings among mothers, that is, to each grandmother only one mother (her first-born daughter) is connected:
 
-```{r twotwo2, results = 'asis'}
+```{r twotwo2}
 gmD <- ef1$gmDeaths[!duplicated(ef1$GrandmotherID)] != 0
 mD <- ef1$mDeaths[!duplicated(ef1$GrandmotherID)] > 0 
 y <- table(mD, gmD)
 zz <- fisher.test(y)
-kable(y)
+#kable(y)
+y
 ```
 
 
