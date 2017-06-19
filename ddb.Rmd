@@ -1,7 +1,7 @@
 ---
 title: "Intergenerational transfers of infant mortality in 19th century northern Sweden"
 author: "Göran Broström, Sören Edvinsson, and Elisabeth Engberg"
-date: "January 16, 2017"
+date: "June 19, 2017"
 documentclass: article
 bibliography: ["cluster.bib", "surv.bib"]
 output: bookdown::pdf_document2
@@ -568,7 +568,7 @@ The same modification as in the Poisson case is introduced here.
 
 ```{r extsurv,results='asis'}
 ef$childBirthdate <- ef$mBirthdate + ef$enter
-fit.c2 <- coxph(Surv(exit - enter, event) ~ gmIMR + childBirthdate + parity + sex, data = ef)
+fit.c2 <- coxph(Surv(exit - enter, event) ~ gmIMR + Child_birthyear + parity + sex, data = ef)
 dr.c2 <- drop1(fit.c2, test = "Chisq")
 ##ltx(fit.c2, dr = dr.c2, caption = "Cox regression, extended model.", digits = 4, label = "tab:extsurv")
 kable(dr.c2, caption = "Cox regression, extended model.", booktabs = TRUE, digits = 3)
@@ -579,6 +579,27 @@ The regression coefficient for *gmIMR* is `r round(fit.c2$coef[1], 3)`, highly s
 ### Dependency structures
 
 There are a couple circumstances that introduce dependence structures in the data: Infants being siblings share genetic and environmental unmeasurable properties, some mothers have sisters that themselves are present as mothers, thus sharing grandmother. Possible ways of handling the situation are *shared frailty models* [@aalen08} and the implementation of *robust variances* [@extcox00]. We have tried both, but neither do change the results in any noticeable way.
+
+#### A shared frailty model
+
+```{r shared}
+library(coxme)
+fit.c3 <- coxme(Surv(exit - enter, event) ~ gmIMR + Child_birthyear + parity + sex + (1 | MotherID), data = ef)
+```
+
+```{r sharedpres}
+anova(fit.c2, fit.c3)
+```
+
+The estimated fixed effects coefficients are found in
+
+```{r foundcoxef}
+print(fit.c3, digits = 2)
+```
+
+Our main hypothesis, there is no transfer, is still rejected.
+
+#### Other ways of eliminating sibling effects
 
 A radical way to eliminate the sibling effect among infants is to include the firstborn for each mother. We get the results shown in Table \@ref(tab:extsurv1).
 
