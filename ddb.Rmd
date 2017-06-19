@@ -618,25 +618,40 @@ The effect of *gmIMR* is even stronger for firstborn than generally (estimated t
 The Weibull model usually fits infant mortality data well. 
 <!--Let us check this (Table \@ref(tab:weibsurv)). -->
 
-```{r weibsurv}
+```{r weibsurv,results='asis'}
 ##ef$G0.IMR <- ef$G0_InfD / ef$G0_Births
 ##ef$childBirthdate <- ef$mBirthdate + ef$enter
 fit.w <- phreg(Surv(exit - enter, event) ~ gmIMR + childBirthdate + parity + sex, data = ef)
 fit.c <- coxreg(Surv(exit - enter, event) ~ gmIMR + childBirthdate + parity + sex, data = ef)
 dr.w <- drop1(fit.w, test = "Chisq")
-##ltx(fit.w, dr = dr.w, caption = "Weibull regression, extended model.", digits = 4, label = "tab:weibsurv")
-fit.w
+ltx(fit.w, dr = dr.w, caption = "Weibull regression, extended model.", digits = 4, label = "tab:weibsurv")
+##fit.w
 ```
 
+Compare this to the result of a Cox regression, Table \ref{tab:coxregout}.
+
+```{r coxregout, results = 'asis'}
+dr.c <- drop1(fit.c, test = "Chisq")
+ltx(fit.c, dr = dr.c, caption = "Cox regression, extended model.", digits = 4, label = "tab:coxregout")
+```
+
+The graph.
 
 ```{r weibfit, fig.cap = "Weibull cumulative hazard vs. Nelson-Aalen estimate.", fig.height = 3.8}
 check.dist(fit.w, fit.c, main = "", col = c("blue", "red"))
 abline(h = 0)
 ```
+
 A graphical comparison of the Weibull and nonparametric baseline cumulative hazards (Figure \@ref(fig:weibfit))
 shows an exceptionally good fit. 
 
-The advantage of the parametric (Weibull) model vs. the Cox regression model is that we can effortlessly estimate the baseline hazard function (no kernel estimation with ad hoc bandwidth selection). It is further possible to *formally test* the hypothesis of proportional hazards for a categorical covariate through stratification and the LRT test. If proportionality is rejected it is still possible to test for non-proportional effects. (Logically, if proportionality is rejected, then there cannot be equality, but statistical hypothesis testing is not always logical in a common sense: Best to make sure.)
+The advantage of the parametric (Weibull) model vs. the Cox regression model is that we can effortlessly estimate the baseline hazard function (no kernel estimation with ad hoc bandwidth selection). See Figure \@ref(fig:weibs).
+
+```{r weibs, fig.height = 5}
+plot(fit.w, xlab = "Age")
+```
+
+It is further possible to *formally test* the hypothesis of proportional hazards for a categorical covariate through stratification and the LRT test. If proportionality is rejected it is still possible to test for non-proportional effects. (Logically, if proportionality is rejected, then there cannot be equality, but statistical hypothesis testing is not always logical in a common sense: Best to make sure.)
 
 
 ### Test of proportionality
