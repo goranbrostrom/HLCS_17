@@ -1,10 +1,24 @@
 ---
 title: "Intergenerational transfers of infant mortality in 19th century northern Sweden"
 author: "Göran Broström, Sören Edvinsson, and Elisabeth Engberg"
-date: "`r Sys.Date()`"
+date: '`r Sys.Date()`'
+output:
+  bookdown::html_document2:
+    number_sections: yes
+    toc: yes
+    toc_depth: 2
+  bookdown::pdf_document2:
+    number_sections: yes
+    toc: yes
+    toc_depth: 2
+  bookdown::word_document2:
+    toc: yes
+    toc_depth: 2
 documentclass: article
-bibliography: ["cluster.bib", "surv.bib"]
-output: bookdown::pdf_document2
+bibliography:
+- cluster.bib
+- surv.bib
+biblio-style: apalike
 ---
 # Abstract
 
@@ -107,13 +121,15 @@ In accordance with the SEDD (Scanian Economic Demographic Database) presented by
 
 The first mission of ours is to “operationalize” and interpret the concept of "intergenerational transfer". There are essentially two ways to think about it.
 
-1.    There is a causal link from the IMR of a woman to her daughter’s. That is, if a woman experience a fatality, the the probabilty that her daughter(s) will experience one increases (or decreases). For such a relation to be reasonable, the woman’s fatality must come before (in calendar time) her daughter experience one.
+1.    There is a causal link from the IMR of a woman to her daughter. That is, if a woman experience a fatality, the the probabilty that her daughter will experience one increases (or decreases). For such a relation to be reasonable, the woman’s fatality must come before (in calendar time) her daughter experience one.
 
-2.    There is no direct causal link as described above, but mother’s and daughters share some common properities, they are more or less prone to have fatalities or not: Either noone or both.
+2.    There is no direct causal link as described above, but a mother and her daughter share some common properities, they are more or less prone to have fatalities or not: Either noone or both.
 
-In statistical terms, 1. implies a regression model, while 2. would best be described by a correlation structure. We think that 2. is the most approprate way to think about it.
+In statistical terms, 1. implies a regression model, while 2. would best be described by a correlation structure. We think that 2. is the most approprate way to think about it, but for the sake of testing the extraction of data via the IDS format, both implied models will be considered.
 
-When we compare a woman's experience of infant death to her daughter's we must take into consideration the fact that by design we *know* that the woman has at least one surviving child, the daughter we are comparing her to. This induces an asymmetry that must be resolved. 
+When we compare a woman's experience of infant death to her daughter's we must take into consideration the fact that by design we *know* that the woman has at least one surviving child, the daughter we are comparing her to. This induces an asymmetry that must be resolved. We do it by considering only male infant deaths. 
+
+A second issue is to avoid dependencies in the data. Each woman, whether mother or daughter, must be present in the data set at most once. And since data are inherently paired, siblings among daughters are not allowed.  
 
 # Data
 
@@ -247,8 +263,9 @@ ef <- ef[ef$mBirthdate + 1840 > 1826 & ef$mBirthdate + 1840 < 1851, ]
 ##kable(summary(ef[, c("Child_sex", "Mother_birthdate", "mBirthdate", "enter", "exit", "event")]), type = "pandoc")
 ```
 
-%The data frame is then aggregated to one record per mother for the Poisson regression approach, where  the influence of grandmother's %infant deaths on the number of her daughter's' infant deaths is studied.
-
+<!---
+The data frame is then aggregated to one record per mother for the Poisson regression approach, where  the influence of grandmother's infant deaths on the number of her daughter's' infant deaths is studied.
+--->
 
 
 ```{r aggrfile}
@@ -261,7 +278,7 @@ ef1 <- ef[!duplicated(ef$MotherID), ]
 ```
 
 The average number of births to a mother in the data set is 
-`r round(NROW(ef) / length(unique(ef$MotherID)), 2)`. The corresponding number for a grandmother is `round(mean(ef1$G0_Births), 2)`, but keep in mind that grandmothers are restricted to have at least two births, while mothers are restricted to have at least one birth. 
+`r round(NROW(ef) / length(unique(ef$MotherID)), 2)`. The corresponding number for a grandmother is `r round(mean(ef1$G0_Births), 2)`, but keep in mind that grandmothers are restricted to have at least two births, while mothers are restricted to have at least one birth. 
 
 ## The covered time period
 
