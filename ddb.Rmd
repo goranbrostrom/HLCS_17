@@ -1,7 +1,7 @@
 ---
 title: "Intergenerational transfers of infant mortality in 19th century northern Sweden"
 author: "Göran Broström, Sören Edvinsson, and Elisabeth Engberg"
-date: "June 19, 2017"
+date: "`r Sys.Date()`"
 documentclass: article
 bibliography: ["cluster.bib", "surv.bib"]
 output: bookdown::pdf_document2
@@ -33,42 +33,6 @@ third and main purpose is to apply the IDS structure and the statistical modelli
 in a demographic study of a possible inter-generational transmission of
 mortality in infancy.  
 
-For more than 25 years it has been observed in numerous studies of
-historical and contemporary populations that infant deaths seem to be
-clustered into high-risk families. In a study of infant mortality in two
-regions in 19th century Sweden, Skellefteå and Sundsvall, @ebrb05
-found that infant deaths were not uniformly distributed; more families than
-expected had no infant death or two or more infant deaths.  Despite the
-fact that infant 
-mortality rates shifted over time, from about 200 per thousand in the
-beginning of the 
-nineteenth century to approximately 100 per thousand in the 1890s, most
-families never 
-experienced an infant death. Today there seems to be
-consensus that the non-uniform distribution of infant deaths among families is a
-complex interplay of different factors, difficult to identify
-and separate. One should however be aware of the fact that clustering emerges
-naturally from pure randomness, often very counter-intuitive. This is
-discussed by @hb12. The observed family dependency has led to an increased
-attention to a possible inter-generational transmission of demographic
-patterns [@edja12], sometimes even considering epigenetic effects
-[@pem14]. Studies of intergenerational effects require individual data covering long periods, extending several generations, data that have not been available until the recent development of historical population databases.
-
-
-Although the clustering of infant mortality appears to be a salient
-phenomenon throughout history, there are also major regional differences in
-the strength of the inter-generational transmission of infant
-mortality. While in certain regions the mortality history of infants is
-strongly correlated with the survival of infants in the previous
-generation, in other regions this effect is weak or completely absent
-[@belr08]. @vande12 suggests that this can be
-attributed to differences in local culture and family systems, but also
-proposes the hypothesis that the variations also might be related to strong
-local variants in gene defects. In practice, regional differences could
-also be related to the fact that most studies focus on a limited number of
-rather small regions, and that different studies thus are hard to compare
-due to differences in methodology, both in terms of database management and
-in terms of statistical analysis. 
 
 
 # Area
@@ -106,7 +70,8 @@ landless households increased. The socio-economic development was also
 influenced by two devastating subsistence crises in the region, in the
 1830s and in the 1860s [@eng05].  
 
-Infant mortality was comparatively low during the 19th century [@ebrb05; @edv04]. Fertility was high, not only by Swedish
+Infant mortality was comparatively low during the 19th century [@ebrb05; @edv04]. 
+Fertility was high, not only by Swedish
 standards, but also in European comparison and there are no
 indications of family planning. Total fertility fluctuated around five
 children per woman and, although fertility did decline during the
@@ -128,7 +93,7 @@ a parish. These detailed records make it possible to follow individuals over tim
 identify their relatives and kin over time and throughout the life course. Furthermore, a rich variety of additional
 information, for example on occupation, was recorded.  From the 1970s, these records have been digitized by the Demographic Data Base at Umeå University, and individual level data from more than one hundred parishes are at present available for research in the databases [POPUM and POPLINK](http://www.cedar.umu.se/). 
 
-The databases differ in two respects: The time dimension and restrictions of data access. The registration in POPUM as well as POPLINKk of the Skellefteå data starts in 1699 with birth records. Catechetical registers are available from 1720. The end year of the Popum database is 1900. During recent years, the POPLINK database has been created with an extension of the time span to the 1950s for the Skellefteå and Umeå regions and a generational depth of up to 12 generations [@wee16]. The information in POPLINK is however anonymized due to legal requirements, while this is not the case for POPUM. The version of the IDS utilized in this study is based on the Popum database, thus ending at 1900.
+The databases differ in two respects: The time dimension and restrictions of data access. The registration in POPUM as well as POPLINK of the Skellefteå data starts in 1699 with birth records. Catechetical registers are available from 1720. The end year of the Popum database is 1900. During recent years, the POPLINK database has been created with an extension of the time span to the 1950s for the Skellefteå and Umeå regions and a generational depth of up to 12 generations [@wee16]. The information in POPLINK is however anonymized due to legal requirements, while this is not the case for POPUM. The version of the IDS utilized in this study is based on the Popum database, thus ending at 1900.
 
 Unfortunately there are flaws in the 18th and early 19th century data about infant deaths. All death registers are missing before 1815, thus researchers have to rely on death information in the catechetical registers for the earlier time. Children that died young are however under-reported in the 18th century catechetical registers. Hence the analysis in this paper is restricted to the 19th century. It includes the reproductive history of women born 1826-1854 and the association with the reproductive history of the previous generation. There is a possible under-estimation of infant deaths in the grand-mother generation, something we comment on and analyse in the result section. The rather short time window used here have restricted the number of births, but still enough for proper statistical analysis, and we are not able to investigate possible changes in the intergenerational transfers. There are however also some methodological advantages with a shorter time window. We analyse women living in comparatively similar contexts, and we minimize the risk of some women appearing as grand-mothers, mothers as well as children.  
 
@@ -138,6 +103,17 @@ Unfortunately there are flaws in the 18th and early 19th century data about infa
 The implementation of the IDS format is based on the relational database POPUM. POPUM consists of a large amount of variables, whereof some represent the literal information from the sources, while others present updated information. The structure of POPUM differs from the one of IDS, so implementing IDS consists basically of restructuring the data. DDB was one of the pioneers in the work of testing and implementing IDS, the first version was created in 2009. Thereafter, new and improved versions have been developed. In this study we have used version 3 of IDS, which is based on only a sub-section of available parishes in POPUM - Skellefteå parish from the early 18th century until 1900. Quite a lot of variables have already been constructed in POPUM and much of the problems with inconsistent and fuzzy data, as well as duplicate information, have been taken care of. These variables are constructed from a set of well-defined and documented rules. Furthermore, record linkage as well as relational linkages have already been performed, and tests have proven the linkage process to be of high quality [@webl14]. The transformation of the data from POPUM to IDS has been quite straight-forward. This does not mean that the available information is without problems, something that will be illustrated below, but it has simplified much of the transfer of data into IDS format. The sources sometimes contain missing data, which can be a problem when it comes to analysis.
 In accordance with the SEDD (Scanian Economic Demographic Database) presented by Quaranta in this volume (Quaranta 2017?), the context information on linking individuals to their households causes some problems. Families and households are presented together in the catechetical registers. We find the family on the same page in the registers and an empty line separating them from the next family. Households are however difficult to identify. Servants and others are usually presented at the bottom of the page, and if there are several families/households on the same page it is not always obvious to which family they belong. Furthermore, the separation of families/households can also be difficult, particularly in urban environments where migrations were frequent making the registers more difficult to interpret. Making rules for defining households turned out to be very complicated. The information therefore primarily represent the nuclear families as households. The approach towards how household information is entered differs in some respects between SEDD and DDB.
 
+# Statistical modeling
+
+The first mission of ours is to “operationalize” and interpret the concept of "intergenerational transfer". There are essentially two ways to think about it.
+
+1.    There is a causal link from the IMR of a woman to her daughter’s. That is, if a woman experience a fatality, the the probabilty that her daughter(s) will experience one increases (or decreases). For such a relation to be reasonable, the woman’s fatality must come before (in calendar time) her daughter experience one.
+
+2.    There is no direct causal link as described above, but mother’s and daughters share some common properities, they are more or less prone to have fatalities or not: Either noone or both.
+
+In statistical terms, 1. implies a regression model, while 2. would best be described by a correlation structure. We think that 2. is the most approprate way to think about it.
+
+When we compare a woman's experience of infant death to her daughter's we must take into consideration the fact that by design we *know* that the woman has at least one surviving child, the daughter we are comparing her to. This induces an asymmetry that must be resolved. 
 
 # Data
 
