@@ -534,7 +534,7 @@ Findings that are specific for the Skellefteå project are presented here. The e
 
 ### Model 2
 
-Our data extraction is not well suited for a strict analysis with a minimum of dependency structures. What we need is *family trees* (or rather trees of *women*), and for each node in the tree we want the number of male births and male infant deaths. We must first fing the "atom mothers", that is, women without mothers (in our data set). Since each "MotherID" also has a "GrandmotherID", we find the "atoms" as those grandmothers who are not present as mothers, or
+Our data extraction is not well suited for a strict analysis with a minimum of dependency structures. What we need is *family trees* (or rather trees of *women*), and for each node in the tree we want the number of male births and male infant deaths. We must first find the "atom mothers", that is, women without mothers (in our data set). Since each "MotherID" also has a "GrandmotherID", we find the "atoms" as those grandmothers who are not present as mothers, or
 
 ```{r atoms, echo = TRUE}
 gnom <- ef$GrandmotherID[!(ef$GrandmotherID %in% ef$MotherID)]
@@ -589,6 +589,27 @@ for (id in gen1$id){
 }
 summary(gen1)
 ```
+
+For each woman in *gen1* we put on information from her mother 
+about number of male births and deaths.
+
+```{r putonmoth}
+indx <- match(gen1$m_id, gen0$id)
+gen1$Mm_births <- gen0$m_births[indx]
+gen1$Mm_deaths <- gen0$m_deaths[indx]
+```
+
+We can now test the effect of mother's two infant deaths or more
+on the probability that daughter will experience an infant death.
+
+```{r whipr}
+fit <- glm(I(m_deaths > 0) ~ I(Mm_deaths > 1), data = gen1, family = binomial)
+summary(fit)
+```
+
+The conclusion is as usual: Mother's experience of at least two infant 
+deaths increases daughter's probability of an infant death significantly 
+(odds ratio around 1.6).
 
 ### The Poisson model
 
