@@ -532,6 +532,44 @@ the Poisson regression.
 
 Findings that are specific for the Skellefteå project are presented here. The emphasis is that it generally is a good idea to look at a problem from different angles. 
 
+### Model 2
+
+Our data extraction is not well suited for a strict analysis with a minimum of dependency structures. What we need is *family trees* (or rather trees of *women*), and for each node in the tree we want the number of male births and male infant deaths. We must first fing the "atom mothers", that is, women without mothers (in our data set). Since each "MotherID" also has a "GrandmotherID", we find the "atoms" as those grandmothers who are not present as mothers, or
+
+```{r atoms, echo = TRUE}
+gnom <- ef$GrandmotherID[!(ef$GrandmotherID %in% ef$MotherID)]
+gnom <- unique(gnom)
+length(gnom)
+```
+
+So we have `r lenght(gnom)` atom mothers, and now we want to find their children. 
+Unfortunately, this information is not present, we only have their daughters who 
+survive and have children. However, we have information on the number of male 
+births and male infant deaths for each atom (*G0_M_Births* and *G0_M_InfD*), and 
+we can choose the the first female birth (a "Mother") as a continuation of the tree.
+
+So, first we build generation 0:
+
+```{r gen0}
+gm <- ef[!duplicated(ef$GrandmotherID), ]
+gm <- gm[gm$GrandmotherID %in% gnom, ]
+gm <- gm[order(gm$GrandmotherID), ]
+gnom <- sort(gnom)
+#
+gen0 <- data.frame(id = gnom,
+                   m_id = NA,
+                   generation = 0,
+                   birthdate = gm$Grandmother_birthdate,
+                   m_births = gm$G0_M_Births,
+                   m_deaths = gm$G0_M_InfD)
+```                   
+
+Then we search for the daughters (with births) of generation0:
+
+```{r gen1}
+gm <- ef[ef$GrandmotherID %in% gnom, ]
+mo <- unique(gm$MotherID)
+```
 ### The Poisson model
 
 It turns out that the model fit to data is somewhat better with *number of births* as the offset (log scale). Also showing a slight improvement is to use *gmIMR* as explanatory variable rather than her *absolute number of deaths*. The *IMR* is defined as the number of infant deaths divided by the number of births. These changes also implies that the comparison *mother vs. grandmother* happens on a probability scale rather than on the intensity one.
