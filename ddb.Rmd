@@ -542,7 +542,7 @@ gnom <- unique(gnom)
 length(gnom)
 ```
 
-So we have `r lenght(gnom)` atom mothers, and now we want to find their children. 
+So we have `r length(gnom)` atom mothers, and now we want to find their children. 
 Unfortunately, this information is not present, we only have their daughters who 
 survive and have children. However, we have information on the number of male 
 births and male infant deaths for each atom (*G0_M_Births* and *G0_M_InfD*), and 
@@ -550,7 +550,7 @@ we can choose the the first female birth (a "Mother") as a continuation of the t
 
 So, first we build generation 0:
 
-```{r gen0}
+```{r gen0, echo = TRUE}
 gm <- ef[!duplicated(ef$GrandmotherID), ]
 gm <- gm[gm$GrandmotherID %in% gnom, ]
 gm <- gm[order(gm$GrandmotherID), ]
@@ -562,14 +562,34 @@ gen0 <- data.frame(id = gnom,
                    birthdate = gm$Grandmother_birthdate,
                    m_births = gm$G0_M_Births,
                    m_deaths = gm$G0_M_InfD)
+summary(gen0)
 ```                   
 
 Then we search for the daughters (with births) of generation0:
 
-```{r gen1}
+```{r gen1, echo = TRUE}
 gm <- ef[ef$GrandmotherID %in% gnom, ]
 mo <- unique(gm$MotherID)
+mo <- sort(mo)
+tmp <- ef[ef$MotherID %in% mo, ]
+tmp <- tmp[!duplicated(tmp$MotherID), ]
+tmp <- tmp[order(tmp$MotherID), ]
+gen1 <- data.frame(id = mo,
+                   m_id = tmp$GrandmotherID,
+                   generation = 1,
+                   birthdate = tmp$Mother_birthdate,
+                   m_births = 0,
+                   m_deaths = 0
+                   )
+## Count births and deaths...
+for (id in gen1$id){
+    xx <- ef$event[ef$MotherID == id & ef$sex == "Male"]
+    gen1$m_births[gen1$id == id] <- length(xx)
+    gen1$m_deaths[gen1$id == id] <- sum(xx)
+}
+summary(gen1)
 ```
+
 ### The Poisson model
 
 It turns out that the model fit to data is somewhat better with *number of births* as the offset (log scale). Also showing a slight improvement is to use *gmIMR* as explanatory variable rather than her *absolute number of deaths*. The *IMR* is defined as the number of infant deaths divided by the number of births. These changes also implies that the comparison *mother vs. grandmother* happens on a probability scale rather than on the intensity one.
