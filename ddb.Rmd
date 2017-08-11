@@ -3,15 +3,15 @@ title: "Intergenerational transfers of infant mortality in 19th century northern
 author: "Göran Broström, Sören Edvinsson, and Elisabeth Engberg"
 date: '`r Sys.Date()`'
 output:
+  bookdown::pdf_document2:
+    number_sections: yes
+    toc: yes
+    toc_depth: 2
   bookdown::html_document2:
     number_sections: yes
     toc: yes
     toc_depth: 2
     toc_float: yes
-  bookdown::pdf_document2:
-    number_sections: yes
-    toc: yes
-    toc_depth: 2
   bookdown::word_document2:
     toc: yes
     toc_depth: 2
@@ -464,55 +464,25 @@ E(D_i) = R_i e^{\boldsymbol{\beta} \mathbf{x}_i},
 where $R_i$ is total risk time for mother No. $i$, $\mathbf{x}_i$ a vector of her explanatory variables, and $\boldsymbol{\beta}_i$ is the vector of regression coefficients. (For a mother with no infant deaths, the risk time is equal to her number of births.)
 Formally, $R_i$ is entered into the model as an \emph{offset} after taking logs. 
 
-The results are presented in two steps: First, *the statistical significance* is calculated and shown in Figure @\ref(fig:poisp).
-The solid horizontal red line at 5% is our (conventionally) chosen nominal limit for statistical significance. The dashed line is the limit that should be respected in honor of the *multiple comparisons* situation [@holm79]. The first (leftmost) covariate, *gmDeaths*, is  clearly statistically significant, while *gmBirths* is just barely significant. *mBirthdate* is clearly out. Second, the *effect sizes* are graphically evaluated in Figure \@ref(fig:poiseff). 
 
 
 ```{r poisson}
 options(digits = 8)
 fit.p <- glm(mDeaths ~ offset(log(Mexpon)) + gmDeaths + gmBirths + mBirthdate, data = ef1, family = poisson)
-dr <- drop1(fit.p, test = "Chisq")
+fit.p0 <- glm(mDeaths ~ offset(log(Mexpon)) + gmBirths + mBirthdate, data = ef1, family = poisson)
+dr <- anova(fit.p0, fit.p)
+knitr::kable(dr, row.names = TRUE, digits = 2, caption = "Analysis of deviance with (1) and without (2) gmDeaths.")
 ```
 
-```{r poisp, fig.cap = 'LRT p-values for the covariates, Poisson regression. The dashed line is the significance limit with  "multiple comparisons" correction.'}
-pv <- dr[[5]][-1]
-names(pv) <- c("gmDeaths", "gmBirths", "mBirthdate")
-xp <- sort(pv)
-n <- length(xp)
-mplin <- 1/(n:1) * 0.05
-plot(1:3, xp, type = "h", axes = FALSE, xlab = "Covariates", ylab = "p-value")
-points((1:3)[xp < mplin], xp[xp < mplin], col = "darkgreen", pch = 19, cex = 1.5)
-points((1:3)[xp >= mplin], xp[xp >= mplin], col = "red", pch = 18, cex = 1.5)
-axis(1, at = 1:n, labels = names(xp))
-axis(2, at = c(0, 0.05, 0.2), las = 1, labels = c("0", "5%", "20%"))
-box()
-abline(h = 0.05, col = "red", lty = 1)
-abline(h = 0)
-lines(1:3, 1 / (n:1) * 0.05, col = "magenta", lty = 2)
-##barplot(sort(pv))
 
-```
+The results are presented in two steps: First, *the statistical significance* is calculated and shown in Table \@ref(tab:poisson): The analysis-of-deviance shows a deviance of `r round(dr$Deviance[2], 2)` with two degrees of freedom, corresponding to a *p*-value of
+`r round(pchisq(dr$Deviance[2], df = 2, lower.tail = FALSE), 4)`, implying a strong statistical significance.
 
-```{r poist, results = "asis", include = FALSE}
-xtable(dr, caption = "Analysis of deviance (likelihood ratio tests). Poisson regression.", 
-       label = "tab:poisson", digits = c(0, 0, 4, 4, 4, 4))
-x <- summary(fit.p)$coefficients
-##outp <- matrix(0, ncol = 4, nrow = 6)
-##outp[, 1] <- c(x[1, 1], NA, x[, 1][-1])
-##outp[, 2] <- c(x[1, 2], NA, x[, 2][-1])
-##outp[, 3] <- exp(outp[, 1])
-##outp[, 4] <- c(dr[[5]][1:2], NA, NA, dr[[5]][3], dr[[5]][4])
-##rownames(outp) <- c("(intercept)  ", "G0_InfD   0", "          1", "          2+", "G0_Births", ##"Mother_Birthdate")
-##colnames(outp) <- c("Coef", "S.E.", "exp(Coef)", "L-R p")
-##knitr::kable(outp, format = "pandoc", caption = "Table 2. Poisson regression.", label = "tab:tab1")
-##outp
-##print(xtable(outp), type = "html")
-##summary(fit)
-```
+Regarding the practical significance, see Figure \@ref(fig:poiseff).
 
-So, the likelihood ratio test (LRT) shows that *gmDeaths* and *gmBirths* are highly *statistically* significant in the model. The important result is the \emph{practical} significance, the effect sizes. Figure \@ref(fig:poiseff) shows the \emph{expected risks} of infant death by the number of grandmother's deaths and the number of her births. 
 
-```{r poiseff, fig.cap = "Infant mortality by grandmother's number of infant deaths (left) and grandmother's number of births(right). Comparisons made at reference value of other covariates."}
+
+```{r poiseff, fig.cap = "Infant mortality by grandmother's number of infant deaths (left) and grandmother's number of births(right). Comparisons made at reference value of other covariates.", include = TRUE}
 cat0 <- exp(fit.p$coef[1])
 cat1 <- exp(sum(fit.p$coef[1:2]))
 cat2 <- exp(sum(fit.p$coef[c(1, 3)]))
@@ -535,6 +505,7 @@ barplot(100 * c(cat0, cat1, cat2, cat3), names.arg = c("2", "3", "4-6", "7+"),
 
 ```
 
+The size of the effect of grandmother's infant mortality on mother's is not large, but, maybe surprisingly, the effect of her number of births is. 
 
 ### Survival analysis
 
@@ -543,7 +514,7 @@ explanatory variables are almost the same as in the Poisson regression
 analysis. The difference is that instead of *mBirthdate*, the
 *childBirthdate* is used (no big difference), and a new variable, *mAge*, is introduced. It is categorized into three-year intervals. Other covariates, *parity*,  etc. are omitted, since they do not contribute much to the model. 
 
-```{r surv,results='asis'}
+```{r surv}
 ##ef$G0InfD <- ef$G0_InfD_cat
 ##ef$G0Births.c <- ef$G0_Births -
 ##ef$mAge <- ef$enter - 32
@@ -558,7 +529,7 @@ dr.c <- drop1(fit.c, test = "Chisq")
 ##kable(summary(fit.c)$coef[, 1:3], caption =  "Cox regression, standard model.", booktabs = TRUE)
 ##ltx(fit.c, dr = dr.c, caption = "Cox regression, standard model.", 
   ##     label = Table: (\#label) tab:surv, digits = 4)
-
+dr.c
 ```
 
 
@@ -571,27 +542,6 @@ The *p*-values are ordered increasingly from left to right in the
 figure. All included covariates have a significant influence on the model fit.
 
 
-```{r siginv, fig.cap = 'LRT p-values for the covariates, Cox regression. Dashed line is significance limit with "multiple comparisons" correction.'}
-p <- numeric(3)
-p[1] <- dr.c[[4]][2]
-p[2] <- dr.c[[4]][3]
-p[3] <- dr.c[[4]][4]
-##fit.cb <- coxreg(Surv(exit - enter, event) ~ gmDeaths + gmBirths, data = ef)
-##cstat <- 2 * (fit.c$loglik[2] - fit.cb$loglik[2])
-##p[3] <- pchisq(cstat, df = 2, lower.tail = FALSE)
-names(p) <- c("gmDeaths", "gmBirths", "mAge")
-p <- sort(p)
-mplin <- 1 / (n:1) * 0.05
-plot(1:3, p, type = "h", ylab = "p-value", xlab = "Covariates", axes = FALSE, ylim = c(0, 0.055))
-axis(1, at = 1:3, labels = names(p))
-axis(2, at = c(0, 0.05), labels = c("0", "5%"), las = 1)
-abline(h = 0.05, col = "red")
-points(1:3, p, col = "darkgreen", pch = 19, cex = 1.5)
-lines(1:3, mplin, lty = 2, col = "magenta")
-box()
-abline(h = 0)     
-```
-
 Second, the effects are shown in Figure \@ref(fig:effstcox). For the
 covariate *gmDeaths*, the real effect on
 her daughter's risk of experiencing infant deaths appears when the number
@@ -599,9 +549,9 @@ of deaths are two or larger. *gmBirths* is also
 influential, as is *mAge* with its characteristic *U*-shaped
 effect on infant mortality. 
 
-```{r effstcox, fig.cap = "Effects of included covariates, Cox regression. The leftmost value is the reference in all panels.", fig.height = 2.3}
+```{r effstcox, fig.cap = "Effects of included covariates, Cox regression. The leftmost value is the reference in both panels.", fig.height = 3.3}
 source("R/eff.R")
-oldpar <- par(mfrow = c(1, 3))
+oldpar <- par(mfrow = c(1, 2))
 sdp <- sqrt(diag(fit.c$var))
 ##gmDeaths:
 eff.fact(fit.c$coef[1:2], sdp[1:2], labs = fit.c$levels[[1]], xlab = "No. of GM deaths")
@@ -617,7 +567,7 @@ eff.fact(fit.c$coef[3:5], sdp[3:5], labs = fit.c$levels[[2]], xlab = "No. of GM 
 ##c3 <- 100 * (exp(fit.c$coef[5]) - 1)
 ##barplot(c(c0, c1, c2, c3), names.arg = c("2", "3", "4-6", "7+"), main = "No. of GM births", ylab = "Rel. ##Risk increase (per cent)", ylim = c(0, 60))
 ## mAge:
-eff.fact(fit.c$coef[6:14], sdp[6:14], labs = fit.c$levels[[3]], xlab = "Mother's age")
+##eff.fact(fit.c$coef[6:14], sdp[6:14], labs = fit.c$levels[[3]], xlab = ##"Mother's age")
 ##x <- seq(20, 45, length = 25)
 ##y <- exp(fit.c$coef[6] * (x - 32) + fit.c$coef[7] * (x - 32)^2) - 1
 ##plot(x, 100 * y, xlab = "Age", type = "h", main = "Mother's age", ylab = "Rel. Risk increase (per cent)", ##axes = FALSE, ylim = c(0, 60))
@@ -646,11 +596,13 @@ the Poisson regression.
 
 ### Dependency structures
 
-There are a couple circumstances that introduce dependence structures in the data: Infants being siblings share genetic and environmental unmeasurable properties, some mothers have sisters that themselves are present as mothers, thus sharing grandmother. Possible ways of handling the situation are *shared frailty models* [@aalen08} and the implementation of *robust variances* [@extcox00]. We have tried both, but neither do change the results in any noticeable way. For the shared frailty model we get
+There are a couple circumstances that introduce dependence structures in the data: Infants being siblings share genetic and environmental unmeasurable properties, some mothers have sisters that themselves are present as mothers, thus sharing grandmother. Possible ways of handling the situation are *shared frailty models* [@aalen08} and the implementation of *robust variances* [@extcox00]. We have tried both, but neither do change the results in any noticeable way. For the shared frailty model we get a very strong frailty effect of the grouping of infants by mother (not shown, and not surprising).
 
-
+<!---
 ```{r shared, echo = FALSE}
 library(coxme)
+fit.c2 <- coxph(Surv(exit - enter, event) ~ gmIMR + Child_birthyear + 
+                    parity + sex, data = ef)
 fit.c3 <- coxme(Surv(exit - enter, event) ~ gmIMR + Child_birthyear + parity + sex + (1 | MotherID), data = ef)
 ```
 
@@ -663,7 +615,7 @@ The estimated fixed effects coefficients are found in
 ```{r foundcoxef}
 print(fit.c3, digits = 2)
 ```
-
+--->
 Our main hypothesis, there is no transfer, is still rejected.
 
 

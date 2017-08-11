@@ -25,6 +25,7 @@ eff.fact <- function(yp, sdyp, labs, main = "", las = 1, xlab = "Levels",
     }else{
         ylims <- c(min(y), max(y))
     }
+    ylims <- c(1, 1.7) ## A dirty hack!!
     plot(1:n, y, type = "b", col = "blue", ylim = ylims, axes = FALSE,
          xlab = xlab, ylab = "Rel. Risk", main = main)
     axis(1, at = 1:n, labels = labs, las = las)
