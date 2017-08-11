@@ -7,6 +7,8 @@ output:
     number_sections: yes
     toc: yes
     toc_depth: 2
+    toc_float: yes
+    toc_collapse: no
   bookdown::pdf_document2:
     number_sections: yes
     toc: yes
@@ -14,17 +16,18 @@ output:
   bookdown::word_document2:
     toc: yes
     toc_depth: 2
+biblio-style: apalike
 documentclass: article
 bibliography:
 - cluster.bib
 - surv.bib
-biblio-style: apalike
+abstract: This study is part of an international comparative initiative where the
+  same scientific question is investigated on data sets from different regions, all
+  available in IDS format. It is shown that the IDS data structure indeed can deliver
+  qualified data for demographic analysis (**REALLY?**). Moreover, we show that the
+  propensity of infant death for a mother is inherited from mother to daughter, which
+  was the scientific question to investigate.
 ---
-# Abstract
-
-This study is part of an international comparative initiative where the same analyses are performed on data sets from different regions, all available in IDS format.
-It is shown that the IDS data structure indeed can deliver qualified data for demographic analysis. Moreover, we show that the propensity of infant death for a mother is inherited from mother to daughter.
-
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, comment = NA, fig.height = 2.8, cache = TRUE)
@@ -42,14 +45,16 @@ power of the IDS (Intermediate Data Structure) database on data from DDB (Demogr
 data in applied research will be useful for further development of the IDS
 structure and for its future use in comparative research. The second
 methodological objective is to evaluate and compare different models for
-statistical analysis, in this case of inter-generational transfers. The
+statistical analysis of inter-generational transfers. The
 third and main purpose is to apply the IDS structure and the statistical modelling
-in a demographic study of a possible inter-generational transmission of
-mortality in infancy.  
+to a demographic study of the possible inter-generational transmission of
+death in infancy.  
 
 
 
-# Area
+# The Skellefteå region
+
+## Geography and population
 
 The area under study is the 19th century Skellefteå region in the province
 of 
@@ -66,6 +71,8 @@ first half of the century. By 1850 it had reached to about 17\,000 and at the
 turn of the century it had further doubled. Despite the large increase in
 population, which was mainly the result of a high natural growth, the
 population density on the whole remained low [@as94].
+
+## Economy
 
 Skellefteå was during the studied period a rural area with a mixed economy,
 based on animal husbandry, forestry and sidelines such as tar and saltpeter
@@ -84,6 +91,8 @@ landless households increased. The socio-economic development was also
 influenced by two devastating subsistence crises in the region, in the
 1830s and in the 1860s [@eng05].  
 
+## Fertility and mortality
+
 Infant mortality was comparatively low during the 19th century [@ebrb05; @edv04]. 
 Fertility was high, not only by Swedish
 standards, but also in European comparison and there are no
@@ -99,17 +108,26 @@ fluctuated between three and six per cent during the nineteenth century
 
 # Data sources
 
-The analysis is based on information found in the Swedish church book
+
+The data in this study are based on information found in the Swedish church book
 records, that is, birth, death, migration, and catechetical registers
-[@ndj93]. In the catechetical registers the clergy kept 
+[@ndj93]. 
+
+## The catechetical registers
+
+In the catechetical registers the clergy kept 
 continuous records of all demographic events for all individuals residing in
 a parish. These detailed records make it possible to follow individuals over time and to
 identify their relatives and kin over time and throughout the life course. Furthermore, a rich variety of additional
 information, for example on occupation, was recorded.  From the 1970s, these records have been digitized by the Demographic Data Base at Umeå University, and individual level data from more than one hundred parishes are at present available for research in the databases [POPUM and POPLINK](http://www.cedar.umu.se/). 
 
-The databases differ in two respects: The time dimension and restrictions of data access. The registration in POPUM as well as POPLINK of the Skellefteå data starts in 1699 with birth records. Catechetical registers are available from 1720. The end year of the Popum database is 1900. During recent years, the POPLINK database has been created with an extension of the time span to the 1950s for the Skellefteå and Umeå regions and a generational depth of up to 12 generations [@wee16]. The information in POPLINK is however anonymized due to legal requirements, while this is not the case for POPUM. The version of the IDS utilized in this study is based on the Popum database, thus ending at 1900.
+## POPUM and POPLINK
 
-Unfortunately there are flaws in the 18th and early 19th century data about infant deaths. All death registers are missing before 1815, thus researchers have to rely on death information in the catechetical registers for the earlier time. Children that died young are however under-reported in the 18th century catechetical registers. Hence the analysis in this paper is restricted to the 19th century. It includes the reproductive history of women born 1826-1854 and the association with the reproductive history of the previous generation. There is a possible under-estimation of infant deaths in the grand-mother generation, something we comment on and analyse in the result section. The rather short time window used here have restricted the number of births, but still enough for proper statistical analysis, and we are not able to investigate possible changes in the intergenerational transfers. There are however also some methodological advantages with a shorter time window. We analyse women living in comparatively similar contexts, and we minimize the risk of some women appearing as grand-mothers, mothers as well as children.  
+The POPUM and POPLINK databases differ in two respects: The time dimension and restrictions of data access. The registration in POPUM as well as POPLINK of the Skellefteå data starts in 1699 with birth records. Catechetical registers are available from 1720. The end year of the Popum database is 1900. During recent years, the POPLINK database has been created with an extension of the time span to the 1950s for the Skellefteå and Umeå regions and a generational depth of up to 12 generations [@wee16]. The information in POPLINK is however anonymized due to legal requirements, while this is not the case for POPUM. The version of the IDS utilized in this study is based on the POPUM database, thus ending at 1900.
+
+## Restrictions
+
+There are flaws in the 18th and early 19th century data about infant deaths: All death registers are missing before 1815, thus researchers have to rely on death information in the catechetical registers for the earlier time. Children that died young are however under-reported in the 18th century catechetical registers. Hence the analyses in this paper are restricted to the 19th century. It includes the reproductive history of women born 1826--1854 and the information on the reproductive history of their mothers. There is a possible under-estimation of infant deaths in the grandmother generation, something we comment on and analyse in the result section. The rather short time window used here have  some methodological advantages: Women are living in comparatively similar contexts, and the risk of finding some women appearing as grand-mothers, mothers as well as children is small.  
 
 
 # Implementation of IDS on POPUM
@@ -119,7 +137,21 @@ In accordance with the SEDD (Scanian Economic Demographic Database) presented by
 
 # Statistical modeling
 
-The first mission of ours is to “operationalize” and interpret the concept of "intergenerational transfer". There are essentially two ways to think about it.
+The main objective of this project is to apply some common models to data sets stored in the IDS format, but coming from different data bases. For this purpose, it was desired to use some complicated models to test the strength of the ID format. The scientific objective, on the other hand, is best served by much simpler statistical models. Therefore, we split the analyses into two categories, (i) those performed by all teams, and (ii) those specific to the Skellefteå data. 
+
+## Common models
+
+For the common part, we follow the recipe given by Quaranta (not necessarily the scientifically best) and apply *Cox regression* for estimating the effect of grandmother's infant deaths on the time from birth to death for mother's children. Thus, instead of using the direct and reasonable approach of estimating the effect of grandmother's infant deaths on the probability of surviving to age one, we are taking the detour over proportional hazards modeling of the instantaneous hazard of dying, following infants until death or the first birthdate, whatever comes first.
+
+A step in the right direction is taken by applying a Poisson model, where the number of infant deaths of mother is regressed on grandmother's number of infant deaths.
+
+Both these approaches suffer from a dependent-data problem: Groups of mothers in the data set have a common mother, that is, they are sisters. Another problem is that of an asymmetry between mother and grandmother: For the grandmother only, we know that at least one child survived and got own children.  
+
+## Simple and sound models
+
+The bad effects of the dependent-data problem may be minimized by (i) building family trees (of women), and (ii) only study *male* infant mortality.
+
+In this approach, the first mission is to operationalize and interpret the concept of "intergenerational transfer". There are essentially two ways to think about it.
 
 1.    There is a causal link from the IMR of a woman to her daughter. That is, if a woman experience a fatality, the the probabilty that her daughter will experience one increases (or decreases). For such a relation to be reasonable, the woman’s fatality must come before (in calendar time) her daughter experience one.
 
@@ -129,18 +161,16 @@ In statistical terms, 1. implies a regression model, while 2. would best be desc
 
 When we compare a woman's experience of infant death to her daughter's we must take into consideration the fact that by design we *know* that the woman has at least one surviving child, the daughter we are comparing her to. This induces an asymmetry that must be resolved. We do it by considering only male infant deaths. 
 
-A second issue is to avoid dependencies in the data. Each woman, whether mother or daughter, must be present in the data set at most once. And since data are inherently paired, siblings among daughters are not allowed.  
+A second issue is to avoid dependencies in the data. Each woman, whether mother or daughter, must be present in the data set at most once. And since data are inherently paired (grandmother and mother), siblings among daughters are not allowed.  
 
 # Data
 
 We use the data set that is created from the IDS database with a standard extraction script [@lq16].
-In the analyses presented here we are using **R**, a free software environment for statistical computing and graphics [@R]. The study is limited to
-mothers born between Sunday, January 1, 1826 and Tuesday, December 31,  1850.
 
-Once we had the data, the analyses and report (this one) writing was
-performed in *RStudio* [@rstudio] with the aid of the **R**
-package *knitr* [@knitr; @xie15]. An environment that supports truly
-reproducible statistical research and is free in all aspects of the word.
+## The common approach
+
+The abovementioned data set was used as-is, with the exception that mothers were limited to have been born in the time interval 1826--1854.
+
 
 ```{r loaddata}
 if (!file.exists("ef.rda")){
@@ -337,7 +367,14 @@ The first section of the results, with the standard models, reports the analyses
 The data are first analyzed with Poisson regression, and thereafter with survival analysis. In the second section, with the extended models, alternative approaches and models are investigated.
  
 
-## Standard models
+## The standard models
+
+In the analyses presented here we are using **R**, a free software environment for statistical computing and graphics [@R]. The study is limited to
+mothers born between Sunday, January 1, 1826 and Tuesday, December 31,  1850.
+
+The analyses and report writing was
+performed in *RStudio* [@rstudio] with the aid of the **R**
+package *knitr* [@knitr; @xie15].
 
 ### Poisson regression
 
@@ -528,11 +565,9 @@ deviates. However, this does not disturb the main conclusion: Two or more
 grandmother infant deaths is harmful, quite in line with the results from
 the Poisson regression.  
 
-## Extended models
+## The simple and sound model
 
 Findings that are specific for the Skellefteå project are presented here. The emphasis is that it generally is a good idea to look at a problem from different angles. 
-
-### Model 2
 
 Our data extraction is not well suited for a strict analysis with a minimum of dependency structures. What we need is *family trees* (or rather trees of *women*), and for each node in the tree we want the number of male births and male infant deaths. We must first find the "atom mothers", that is, women without mothers (in our data set). Since each "MotherID" also has a "GrandmotherID", we find the "atoms" as those grandmothers who are not present as mothers, or
 
