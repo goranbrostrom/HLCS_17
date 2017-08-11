@@ -8,7 +8,6 @@ output:
     toc: yes
     toc_depth: 2
     toc_float: yes
-    toc_collapse: no
   bookdown::pdf_document2:
     number_sections: yes
     toc: yes
@@ -41,7 +40,8 @@ library(xtable)
 
 This article has a threefold aim, including two methodological objectives
 and one demographic query. The first methodological aim is to assess the
-power of the IDS (Intermediate Data Structure) database on data from DDB (Demographic Data Base, Umeå University) for demographic analysis. An evaluation of the
+power of the IDS (Intermediate Data Structure) database on data from DDB
+(Demographic Data Base, Umeå University) for demographic analysis. An evaluation of the
 data in applied research will be useful for further development of the IDS
 structure and for its future use in comparative research. The second
 methodological objective is to evaluate and compare different models for
@@ -58,7 +58,10 @@ death in infancy.
 
 The area under study is the 19th century Skellefteå region in the province
 of 
-Västerbotten in the northern part of Sweden. At the outset of the study it consisted of one large rural parish, Skellefteå. By 1900 three new parishes had been detached into separate units, but their populations are still included in the study until 1900.  The region was large, both in terms of
+Västerbotten in the northern part of Sweden. At the outset of the study it
+consisted of one large rural parish, Skellefteå. By 1900 three new parishes
+had been detached into separate units, but their populations are still
+included in the study until 1900.  The region was large, both in terms of
 area and of population. With an area of about 1700 square miles,
 Skellefteå was considerably larger than most rural parishes in Sweden. It
 was considered a one-day journey to travel from the northern to the
@@ -169,7 +172,7 @@ We use the data set that is created from the IDS database with a standard extrac
 
 ## The common approach
 
-The abovementioned data set was used as-is, with the exception that mothers were limited to have been born in the time interval 1826--1854.
+The abovementioned data set was used asis, with the exception that mothers were limited to have been born in the time interval 1826--1854.
 
 
 ```{r loaddata}
@@ -187,29 +190,31 @@ ef$mBirthdate <- as.numeric(ef$Mother_birthdate) / 365.2425 + 130 # 1840 == 0!
 ef$sex <- ef$Child_sex
 ```
 
-## Variables
-Some variables need to be redefined, centered and categorized. Here is a description.
+### Variables
 
+In the Poisson approach, the response variable is Mother's number of infant 
+deaths, **mDeaths**, 
+and the key explanatory variable is Grandmother's number of infant deaths, **gmDeaths**. 
 
-*  **mDeaths** The number of infant deaths a mother experiences. This is the basic *response* variable in all models. In some cases it is categorized.
+In the Cox regression approach, the response variable is **Age at death** instead, 
+but the key explanatory variable is still **gmDeaths**.
 
-*  **gmDeaths** The number of infant deaths a grandmother (mother's mother) experiences. It is the primary \emph{explanatory variable}. It is categorized in the categories "0", "1", and "2+".
+Also included are a bunch of possible confounders, notably
 
 *  **gmBirths** The number of grandmother's births. Is always (by design) two or larger. In the analyses it is categorized: "2", "3", "4-6", "7+".
 
-*  **mBirthdate** Mother's birthdate expressed as years between 1 January 1 and her day of birth, minus one, *minus 1840*. An example: A woman born 3 April 1842 gets the value 1842.253 to begin with. Then subtract 1840, and the value is 2.253. The reason for this \emph{centering} around 1840 is *good statistical practice*: The reference point (zero) of a covariate should lie within the range of the variable in regression analyses.
+*  **mBirthdate** Mother's birthdate expressed as years between 1 January 1 and her day of birth, minus one.
 
 *  **mAge** Mother's age at the birth of a child. Categorized into the intervals "17-19", "20-22", ..., "41-43", "44-49".
 
 * **parity** The birth order of a mother's child.
 
-*  **childBirthdate** The birthdate of a mother's child, centered in the same way as *mBirthdate*.
-
-*  **gmIMR** Grandmother's infant mortality rate, that is, the number of deaths divided by the number of births. Used as an alternative to *gmDeaths* in some analyses. It is also multiplied by 100 and thus measured on a scale ranging from 0 to 100.
+*  **childBirthdate** The birthdate of a mother's child.
 
 *  **sex** The sex of a mother's child.
 
-
+These variables are not explicitly reported in the analyses, bt they are always 
+present as confounders in the common analyses.
 
 ```{r redefine}
 ef$gmBirths <- cut(ef$G0_Births, c(1, 2.5, 3.5, 6.5, 25), labels = c("2", "3", "4-6", "7+"))
@@ -220,7 +225,81 @@ ef$parity <- cut(ef$Birth_order, c(0.5, 1.5, 2.5, 3.5, 6.5, 25), labels = c("1",
 ## ef$mBirthdate : See above!
 ```
 
+## The simple and sound model
 
+Our data extraction is not well suited for a strict analysis with a minimum of 
+dependency structures. What we need is *family trees* (or rather trees of *women*), 
+and for each node in the tree we want the number of male births and male infant 
+deaths. We must first find the "atom mothers", that is, women without mothers 
+(in our data set). Since each "MotherID" also has a "GrandmotherID", we find 
+the "atoms" as those grandmothers who are not present as mothers, or
+
+```{r atoms, echo = TRUE}
+gnom <- ef$GrandmotherID[!(ef$GrandmotherID %in% ef$MotherID)]
+gnom <- unique(gnom)
+length(gnom)
+```
+
+So we have `r length(gnom)` atom mothers, and now we want to find their children. 
+Unfortunately, this information is not present, we only have their daughters who 
+survive and have children. However, we have information on the number of male 
+births and male infant deaths for each atom (*G0_M_Births* and *G0_M_InfD*), and 
+we can choose the the first female birth (a "Mother") as a continuation of the tree.
+
+So, first we build generation 0:
+
+```{r gen0, echo = TRUE}
+gm <- ef[!duplicated(ef$GrandmotherID), ]
+gm <- gm[gm$GrandmotherID %in% gnom, ]
+gm <- gm[order(gm$GrandmotherID), ]
+gnom <- sort(gnom)
+#
+gen0 <- data.frame(id = gnom,
+                   m_id = NA,
+                   generation = 0,
+                   birthdate = gm$Grandmother_birthdate,
+                   m_births = gm$G0_M_Births,
+                   m_deaths = gm$G0_M_InfD)
+summary(gen0)
+```                   
+
+Then we search for the daughters (with births) of generation0:
+
+```{r gen1, echo = TRUE}
+gm <- ef[ef$GrandmotherID %in% gnom, ]
+mo <- unique(gm$MotherID)
+mo <- sort(mo)
+tmp <- ef[ef$MotherID %in% mo, ]
+tmp <- tmp[!duplicated(tmp$MotherID), ]
+tmp <- tmp[order(tmp$MotherID), ]
+gen1 <- data.frame(id = mo,
+                   m_id = tmp$GrandmotherID,
+                   generation = 1,
+                   birthdate = tmp$Mother_birthdate,
+                   m_births = 0,
+                   m_deaths = 0
+                   )
+## Count births and deaths...
+for (id in gen1$id){
+    xx <- ef$event[ef$MotherID == id & ef$sex == "Male"]
+    gen1$m_births[gen1$id == id] <- length(xx)
+    gen1$m_deaths[gen1$id == id] <- sum(xx)
+}
+summary(gen1)
+```
+
+For each woman in *gen1* we put on information from her mother 
+about number of male births and deaths. Note that in this approach we do not 
+include any of the confounders described above. 
+
+```{r putonmoth}
+indx <- match(gen1$m_id, gen0$id)
+gen1$Mm_births <- gen0$m_births[indx]
+gen1$Mm_deaths <- gen0$m_deaths[indx]
+```
+
+We can now test the effect of mother's infant deaths
+on the probability that her daughter will experience an infant death.
 
 
 # Descriptive statistics of the IDS extraction
@@ -369,16 +448,16 @@ The data are first analyzed with Poisson regression, and thereafter with surviva
 
 ## The standard models
 
-In the analyses presented here we are using **R**, a free software environment for statistical computing and graphics [@R]. The study is limited to
-mothers born between Sunday, January 1, 1826 and Tuesday, December 31,  1850.
-
-The analyses and report writing was
+In the analyses presented here we are using **R**, a free software environment for
+statistical computing and graphics [@R].
+The analyses and report writing were
 performed in *RStudio* [@rstudio] with the aid of the **R**
 package *knitr* [@knitr; @xie15].
 
 ### Poisson regression
 
-The expected value of the number of infant deaths $D_i$ for mother No. $i, \, i = 1, \ldots, n$, is modeled by a Poisson distribution as 
+The expected value of the number of infant deaths $D_i$ for mother No. $i, \, i = 1, \ldots, n$,
+is modeled by a Poisson distribution as 
 \begin{equation*}
 E(D_i) = R_i e^{\boldsymbol{\beta} \mathbf{x}_i},
 \end{equation*}
@@ -565,77 +644,33 @@ deviates. However, this does not disturb the main conclusion: Two or more
 grandmother infant deaths is harmful, quite in line with the results from
 the Poisson regression.  
 
+### Dependency structures
+
+There are a couple circumstances that introduce dependence structures in the data: Infants being siblings share genetic and environmental unmeasurable properties, some mothers have sisters that themselves are present as mothers, thus sharing grandmother. Possible ways of handling the situation are *shared frailty models* [@aalen08} and the implementation of *robust variances* [@extcox00]. We have tried both, but neither do change the results in any noticeable way. For the shared frailty model we get
+
+
+```{r shared, echo = FALSE}
+library(coxme)
+fit.c3 <- coxme(Surv(exit - enter, event) ~ gmIMR + Child_birthyear + parity + sex + (1 | MotherID), data = ef)
+```
+
+```{r sharedpres}
+anova(fit.c2, fit.c3)
+```
+
+The estimated fixed effects coefficients are found in
+
+```{r foundcoxef}
+print(fit.c3, digits = 2)
+```
+
+Our main hypothesis, there is no transfer, is still rejected.
+
+
 ## The simple and sound model
 
 Findings that are specific for the Skellefteå project are presented here. The emphasis is that it generally is a good idea to look at a problem from different angles. 
 
-Our data extraction is not well suited for a strict analysis with a minimum of dependency structures. What we need is *family trees* (or rather trees of *women*), and for each node in the tree we want the number of male births and male infant deaths. We must first find the "atom mothers", that is, women without mothers (in our data set). Since each "MotherID" also has a "GrandmotherID", we find the "atoms" as those grandmothers who are not present as mothers, or
-
-```{r atoms, echo = TRUE}
-gnom <- ef$GrandmotherID[!(ef$GrandmotherID %in% ef$MotherID)]
-gnom <- unique(gnom)
-length(gnom)
-```
-
-So we have `r length(gnom)` atom mothers, and now we want to find their children. 
-Unfortunately, this information is not present, we only have their daughters who 
-survive and have children. However, we have information on the number of male 
-births and male infant deaths for each atom (*G0_M_Births* and *G0_M_InfD*), and 
-we can choose the the first female birth (a "Mother") as a continuation of the tree.
-
-So, first we build generation 0:
-
-```{r gen0, echo = TRUE}
-gm <- ef[!duplicated(ef$GrandmotherID), ]
-gm <- gm[gm$GrandmotherID %in% gnom, ]
-gm <- gm[order(gm$GrandmotherID), ]
-gnom <- sort(gnom)
-#
-gen0 <- data.frame(id = gnom,
-                   m_id = NA,
-                   generation = 0,
-                   birthdate = gm$Grandmother_birthdate,
-                   m_births = gm$G0_M_Births,
-                   m_deaths = gm$G0_M_InfD)
-summary(gen0)
-```                   
-
-Then we search for the daughters (with births) of generation0:
-
-```{r gen1, echo = TRUE}
-gm <- ef[ef$GrandmotherID %in% gnom, ]
-mo <- unique(gm$MotherID)
-mo <- sort(mo)
-tmp <- ef[ef$MotherID %in% mo, ]
-tmp <- tmp[!duplicated(tmp$MotherID), ]
-tmp <- tmp[order(tmp$MotherID), ]
-gen1 <- data.frame(id = mo,
-                   m_id = tmp$GrandmotherID,
-                   generation = 1,
-                   birthdate = tmp$Mother_birthdate,
-                   m_births = 0,
-                   m_deaths = 0
-                   )
-## Count births and deaths...
-for (id in gen1$id){
-    xx <- ef$event[ef$MotherID == id & ef$sex == "Male"]
-    gen1$m_births[gen1$id == id] <- length(xx)
-    gen1$m_deaths[gen1$id == id] <- sum(xx)
-}
-summary(gen1)
-```
-
-For each woman in *gen1* we put on information from her mother 
-about number of male births and deaths.
-
-```{r putonmoth}
-indx <- match(gen1$m_id, gen0$id)
-gen1$Mm_births <- gen0$m_births[indx]
-gen1$Mm_deaths <- gen0$m_deaths[indx]
-```
-
-We can now test the effect of mother's two infant deaths or more
-on the probability that daughter will experience an infant death.
 
 ```{r whipr}
 fit <- glm(I(m_deaths > 0) ~ I(Mm_deaths > 1), data = gen1, family = binomial)
@@ -683,28 +718,6 @@ kable(dr.c2, caption = "Cox regression, extended model.", booktabs = TRUE, digit
 
 The regression coefficient for *gmIMR* is `r round(fit.c2$coef[1], 3)`, highly statistically significant, as seen in Table \@ref(tab:extsurv). The other covariates are of less importance.
 
-### Dependency structures
-
-There are a couple circumstances that introduce dependence structures in the data: Infants being siblings share genetic and environmental unmeasurable properties, some mothers have sisters that themselves are present as mothers, thus sharing grandmother. Possible ways of handling the situation are *shared frailty models* [@aalen08} and the implementation of *robust variances* [@extcox00]. We have tried both, but neither do change the results in any noticeable way.
-
-#### A shared frailty model
-
-```{r shared}
-library(coxme)
-fit.c3 <- coxme(Surv(exit - enter, event) ~ gmIMR + Child_birthyear + parity + sex + (1 | MotherID), data = ef)
-```
-
-```{r sharedpres}
-anova(fit.c2, fit.c3)
-```
-
-The estimated fixed effects coefficients are found in
-
-```{r foundcoxef}
-print(fit.c3, digits = 2)
-```
-
-Our main hypothesis, there is no transfer, is still rejected.
 
 #### Other ways of eliminating sibling effects
 
