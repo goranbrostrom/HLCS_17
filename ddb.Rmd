@@ -15,8 +15,8 @@ output:
   bookdown::word_document2:
     toc: yes
     toc_depth: 2
-biblio-style: apalike
-documentclass: article
+biblio-style: "natbib"
+documentclass: "article"
 bibliography:
 - cluster.bib
 - surv.bib
@@ -162,9 +162,9 @@ In this approach, the first mission is to operationalize and interpret the conce
 
 In statistical terms, 1. implies a regression model, while 2. would best be described by a correlation structure. We think that 2. is the most approprate way to think about it, but for the sake of testing the extraction of data via the IDS format, both implied models will be considered.
 
-When we compare a woman's experience of infant death to her daughter's we must take into consideration the fact that by design we *know* that the woman has at least one surviving child, the daughter we are comparing her to. This induces an asymmetry that must be resolved. We do it by considering only male infant deaths. 
+When we compare a woman's experience of infant death to her daughter's we must take into consideration the fact that by design we *know* that the woman has at least one surviving child, the daughter we are comparing her to. This induces an asymmetry that must be resolved. We can do it by considering only male infant deaths. 
 
-A second issue is to avoid dependencies in the data. Each woman, whether mother or daughter, must be present in the data set at most once. And since data are inherently paired (grandmother and mother), siblings among daughters are not allowed.  
+A second issue is to avoid dependencies in the data. Each woman, whether mother or daughter, should be present in the data set at most once. And since data are inherently paired (grandmother and mother), siblings among daughters should not be allowed.  
 
 # Data
 
@@ -225,30 +225,31 @@ ef$parity <- cut(ef$Birth_order, c(0.5, 1.5, 2.5, 3.5, 6.5, 25), labels = c("1",
 ## ef$mBirthdate : See above!
 ```
 
-## The simple and sound model
+## The simple-and-sound approach
 
 Our data extraction is not well suited for a strict analysis with a minimum of 
 dependency structures. What we need is *family trees* (or rather trees of *women*), 
-and for each node in the tree we want the number of male births and male infant 
+and for each node in the tree we want the number of male and female births and 
+male and female infant 
 deaths. We must first find the "atom mothers", that is, women without mothers 
 (in our data set). Since each "MotherID" also has a "GrandmotherID", we find 
 the "atoms" as those grandmothers who are not present as mothers, or
 
-```{r atoms, echo = TRUE}
+```{r atoms, echo = FALSE}
 gnom <- ef$GrandmotherID[!(ef$GrandmotherID %in% ef$MotherID)]
 gnom <- unique(gnom)
-length(gnom)
+##length(gnom)
 ```
 
 So we have `r length(gnom)` atom mothers, and now we want to find their children. 
 Unfortunately, this information is not present, we only have their daughters who 
-survive and have children. However, we have information on the number of male 
-births and male infant deaths for each atom (*G0_M_Births* and *G0_M_InfD*), and 
+survive and have children. However, we have information on the number of male and
+female births and male and female infant deaths for each atom, and 
 we can choose the the first female birth (a "Mother") as a continuation of the tree.
 
-So, first we build generation 0:
+So, first we build generation 0 (first six rows shown, Table \@ref(tab:gen0)):
 
-```{r gen0, echo = TRUE}
+```{r gen0, echo = FALSE}
 gm <- ef[!duplicated(ef$GrandmotherID), ]
 gm <- gm[gm$GrandmotherID %in% gnom, ]
 gm <- gm[order(gm$GrandmotherID), ]
@@ -259,13 +260,16 @@ gen0 <- data.frame(id = gnom,
                    generation = 0,
                    birthdate = gm$Grandmother_birthdate,
                    m_births = gm$G0_M_Births,
-                   m_deaths = gm$G0_M_InfD)
-summary(gen0)
+                   births = gm$G0_Births,
+                   m_deaths = gm$G0_M_InfD,
+                   deaths = gm$G0_InfD)
+knitr::kable(head(gen0), caption = "Generation 0.")
 ```                   
 
-Then we search for the daughters (with births) of generation0:
+Then we search for the daughters (with births) of generation 0, generation 1 
+(first six rows shown, Table \@ref(tab:gen1)):
 
-```{r gen1, echo = TRUE}
+```{r gen1, echo = FALSE, caption = "Generation 1"}
 gm <- ef[ef$GrandmotherID %in% gnom, ]
 mo <- unique(gm$MotherID)
 mo <- sort(mo)
@@ -281,21 +285,32 @@ gen1 <- data.frame(id = mo,
                    )
 ## Count births and deaths...
 for (id in gen1$id){
+    ## Boys:
     xx <- ef$event[ef$MotherID == id & ef$sex == "Male"]
     gen1$m_births[gen1$id == id] <- length(xx)
     gen1$m_deaths[gen1$id == id] <- sum(xx)
+    ## All infants:
+    xx <- ef$event[ef$MotherID == id]
+    gen1$births[gen1$id == id] <- length(xx)
+    gen1$deaths[gen1$id == id] <- sum(xx)
 }
-summary(gen1)
+knitr::kable(head(gen1), caption = "Generation 1.")
 ```
 
 For each woman in *gen1* we put on information from her mother 
-about number of male births and deaths. Note that in this approach we do not 
+about number of male births and deaths. See Table \@ref(tab:putonmoth), where 
+some not so interesting columns are removed. 
+
+Note that in this approach we do not 
 include any of the confounders described above. 
 
-```{r putonmoth}
+```{r putonmoth, echo = FALSE}
 indx <- match(gen1$m_id, gen0$id)
 gen1$Mm_births <- gen0$m_births[indx]
+gen1$M_births <- gen0$births[indx]
 gen1$Mm_deaths <- gen0$m_deaths[indx]
+gen1$M_deaths <- gen0$deaths[indx]
+knitr::kable(head(gen1[, -(1:4), ]), caption = "Mother/Grandmother pairs, final table. First six rows shown.")
 ```
 
 We can now test the effect of mother's infant deaths
@@ -417,7 +432,7 @@ n.gm <- length(unique(ef1$GrandmotherID)) # No. of grandmothers
 x <- table(table(ef1$GrandmotherID)) # 'Mother siblings'
 ```
 
-There are `r n.m` mothers and `n.gm` grandmothers in the data, so
+There are `r n.m` mothers and `r n.gm` grandmothers in the data, so
 obviously there are many sister groups among mothers in the data. This fact
 induces dependencies in the data set, which may either be a problem (using
 methods assuming independence), but it may also be possible to turn this
@@ -437,7 +452,7 @@ m.gm <- with(ef1, sum(unique(GrandmotherID) %in% MotherID))
 ```
 
 How many grandmothers are also mothers (and vice versa)? The answer is `r m.gm`, or 
-` round(m.gm / n.gm * 100, 2)` per cent of the grandmothers. This
+`r round(m.gm / n.gm * 100, 2)` per cent of the grandmothers. This
 small amount is of no practical importance for the results.
 
 # Results, common models
@@ -507,7 +522,7 @@ The size of the effect of grandmother's infant mortality on mother's is not larg
 
 ## Survival analysis
 
-The **R** package *survival* [@survival] is used, and the
+The **R** [@R] packages *eha* [@eha; @ehar12] and  *survival* [@survival] are used, and the
 explanatory and potentially confounder variables are the same as in the Poisson regression
 analysis. The statistical significance of a Cox regression is shown in Table \@ref(tab:surv): The first row is the full model, the second with the variable *gmDeaths* removed, and the third with both *gmDeaths* and *gmBirths* removed. The small *p*-values show that both variables are needed in the model. 
 
@@ -582,13 +597,13 @@ save(ef_fix, file = "ef_fix.rda")
 ```
 
 There is an evident deviation from the assumption of *proportional
-  hazards*: However, this does not disturb the main conclusion: Two or more
-grandmother infant deaths is harmful, quite in line with the results from
+  hazards*: However, this does not disturb the main conclusion too much: Two or more
+grandmother infant deaths are harmful, quite in line with the results from
 the Poisson regression. The reported *p*-values are cast in doubt, however.  
 
 ### Dependency structures
 
-There are a couple circumstances that introduce dependence structures in the data: Infants being siblings share genetic and environmental unmeasurable properties, some mothers have sisters that themselves are present as mothers, thus sharing grandmother. Possible ways of handling the situation are *shared frailty models* [@aalen08} and the implementation of *robust variances* [@extcox00]. We have tried both, but neither do change the results in any noticeable way. For the shared frailty model we get a very strong frailty effect of the grouping of infants by mother (not shown, and not surprising).
+There are a couple circumstances that introduce dependence structures in the data: Infants being siblings share genetic and environmental (unmeasurable) properties, some mothers have sisters that themselves are present as mothers, thus sharing grandmother. Possible ways of handling the situation are *shared frailty models* [@aalen08] and the implementation of *robust variances* [@extcox00]. We have tried both, but neither do change the results in any noticeable way. For the shared frailty model we get a very strong frailty effect of the grouping of infants by mother (not shown, and not surprising).
 
 <!---
 ```{r shared, echo = FALSE}
@@ -611,36 +626,35 @@ print(fit.c3, digits = 2)
 Our main hypothesis, there is no intergenerational transfer, is still rejected.
 
 
-# Extended results
+# Simple-and-sound results
 
 Findings that are specific for the Skellefteå project are presented here. 
-First we look at the simple-and-sound model based on the family trees with only 
-male infant mortality. Then, for comparison, the survival analysis is repeated 
-with only male infants.  
+First we look at the simple-and-sound model based on the family trees with 
+both female and male infant mortality. 
 
-## Simple-and-sound
+The simple data can be summarized in a (collapsed) contingency table (Table \@ref(tab:sos2)).
 
-The simple data can be summarized in a contingency table (Table \@ref(tab:sos)).
-
-```{r sos}
-x <- with(gen1, table(m_deaths, Mm_deaths))
-col_names <- paste("gmD =", 0:5)
-rownames(x) <- paste("mD = ", 0:3)
+```{r sos, include = FALSE}
+##gen1 <- gen1[gen1$birthdate > as.Date("1825-12-31") & gen1$birthdate < as.Date("1855-01-01"), ]
+x <- with(gen1, table(deaths, M_deaths))
+#col_names <- paste("gmD =", 0:5)
+#rownames(x) <- paste("mD = ", 0:3)
 knitr::kable(x, caption = "Contingency table of mother's (mD) and grandmother's (gmD) infant deaths.",
-             col.names = col_names, row.names = TRUE)
+             #col.names = col_names, 
+             row.names = TRUE)
 ```
 
-This table needs to be collapsed before an analysis. Inspired by previous results, we do it as in Table \@ref(tab:sos2).
 
 ```{r sos2}
-gen1$gmD <- cut(gen1$Mm_deaths, c(-1, 0, 1, 8), 
+gen1$gmD <- cut(gen1$M_deaths, c(-1, 0, 1, 20), 
                 labels = c("gmD = 0", "gmD = 1", "gmD = 2+"))
-gen1$mD <- cut(gen1$m_deaths, c(-1, 0, 8), 
-               labels = c("mD = 0", "mD = 1+"))
+gen1$mD <- cut(gen1$deaths, c(-1, 0, 1, 20), 
+               labels = c("mD = 0", "mD = 1", "mD = 2+"))
 x <- with(gen1, table(mD, gmD))
 
-knitr::kable(x, caption = "Contingency table of mother's (mD) and grandmother's (gmD) infant deaths, collapsed.",
-             col.names = colnames(x), row.names = TRUE)
+y <- addmargins(x)
+knitr::kable(y, caption = "Contingency table of mother's (mD) and grandmother's (gmD) infant deaths, collapsed.",
+             col.names = colnames(y), row.names = TRUE)
 ```
 
 
@@ -649,23 +663,66 @@ knitr::kable(x, caption = "Contingency table of mother's (mD) and grandmother's 
 rr <- chisq.test(x)
 ```
 
-A standard $\chi^2$ test of Table \@ref(tab:sos2) results in a *p*-value of `r round(rr$p.value, 2)`, not very spectacular. 
+A standard $\chi^2$ test of independence in Table \@ref(tab:sos2) results in a *p*-value of 
+`r round(rr$p.value, 2)`, not very spectacular. In order to get a hint of the 
+direction of the association, a look at the *raw residuals* (observed minus 
+expected number of cases) is 
+illuminating, see Table \@ref(tab:stref). The main diagonal is "heavy positive",
+implying that mothers and grandmother share infant mortality experiences in a 
+higher degree than expected, were there no association at all.
 
 
-## Survival analysis, male mortality
-
-In an attemt to match the result in the previous section, the survival analysis is restricted to male mortality and one mother per grandmother.
-
-```{r extsurv, fig.cap = "Cumulative hazards of male mortality by number of grandmother male deaths.", fig.height = 4.2}
-ef$childBirthdate <- ef$mBirthdate + ef$enter
-eff <- ef[!duplicated(ef$GrandmotherID), ]
-fit.c2 <- coxreg(Surv(exit - enter, event) ~ strata(gmDeaths) + gmBirths + Child_birthyear + parity, data = eff[eff$sex == "Male", ])
-plot(fit.c2, lty = c(1, 2, 4), 
-     col = c("black", "blue", "red"))
-#dr.c2 <- drop1(fit.c2, test = "Chisq")
-##ltx(fit.c2, dr = dr.c2, caption = "Cox regression, extended model.", digits = 4, label = "tab:extsurv")
-##kable(dr.c2, caption = "Cox regression, extended model.", booktabs = ##TRUE, digits = 3)
+```{r stref}
+y <- addmargins(x - rr$expected)
+knitr::kable(y, col.names = colnames(y), row.names = TRUE, 
+             caption = "Excess number of cases compared to independence.", digits = 0)
 ```
+
+Second, the idea of only looking at male infant mortality (for "balance" reasons 
+discussed earlier) was 
+also executed, but the result was not very illuminating: Essentially the same 
+effects were found, but with weaker statistical significance, which is a natural 
+consequence of the fact that half the sample of infants was lost. 
+
+Third, restricting to mothers born 1826--1814 gives Table \@ref(tab:sos2c). In
+order to calculate risks of experience *any* infant death for a mother, we 
+calcluate proportions from Table \@ref(tab:sos2c), shown in Table \@ref(tab:sos2d). 
+
+```{r sos3, include = FALSE}
+gen1 <- gen1[gen1$birthdate > as.Date("1825-12-31") & gen1$birthdate < as.Date("1855-01-01"), ]
+x <- with(gen1, table(deaths, M_deaths))
+#col_names <- paste("gmD =", 0:5)
+#rownames(x) <- paste("mD = ", 0:3)
+knitr::kable(x, caption = "Contingency table of mother's (mD) and grandmother's (gmD) infant deaths.",
+             #col.names = col_names, 
+             row.names = TRUE)
+```
+
+```{r sos2c}
+gen1$gmD <- cut(gen1$M_deaths, c(-1, 0, 20), 
+                labels = c("gmD = 0", "gmD = 1+"))
+gen1$mD <- cut(gen1$deaths, c(-1, 0, 20), 
+               labels = c("mD = 0", "mD = 1+"))
+x <- with(gen1, table(mD, gmD))
+y <- addmargins(x)
+knitr::kable(y, caption = "Contingency table of mother's (mD, 1826--1854) and grandmother's (gmD) infant deaths, collapsed.",
+             col.names = colnames(y), row.names = TRUE)
+```
+
+```{r sos2d}
+y <- round(addmargins(prop.table(x, margin = 2) * 100, 1), 0)
+knitr::kable(y, caption = "Contingency table of mother's (mD, 1826--1854) and grandmother's (gmD) infant deaths, per cent.",
+             col.names = colnames(y), row.names = TRUE)
+```
+
+From Table \@ref(tab:sos2d) we see that the risk of experiencing *any* infant death 
+increases from `r y[2, 1]` to `r y[2, 2]` per cent if grandmother has 
+experienced an infant death.
+
+```{r chi2.c}
+rr <- chisq.test(x)
+```
+
 
 # Concluding remarks
 
@@ -673,24 +730,25 @@ Three main aims were set out. The first was about
 assessing the usefulness of the IDS data format for demographic analysis, in
 this case in relation to transnational comparative research.
 We can confirm that applying the IDS format, and the general script made by
-@lq16, has fulfilled its purposess well. The use of the script has
+@lq16, has fulfilled its purposes well. The use of the script has
 facilitated comparisons between countries. 
 However, it is important to remember that the IDS format do not relieve the
 researcher from the duty of carefully evaluating the sources and their usefulness for
 the research questions raised. In the database for the Skellefteå region,
 we had to restrict our studied period substantially, due to deficient data
 for the 18th century, where infant deaths were severely underestimated. 
-This problem can eventually be taken care of by applying clear definitions of rules on how to 
-identify infant deaths, but that must be performed in a preparatory state.
+This problem can eventually be taken care of by applying clear definitions of 
+rules on how to identify infant deaths, but that must be performed in a 
+preparatory state.
 
 Second, we have tried different analytic models, ranging from complicated
 (proportional hazards models for survival times of infants)
 to simple (had a woman and/or her oldest daughter an infant death or not: A
-contingency table analysis). ``Complicated'' refers to ``strong
-assumptions and strict model checking'': The hard part is dealing with the
+contingency table analysis). "Complicated"" refers to "strong
+assumptions and strict model checking": The hard part is dealing with the
 complicated dependency structures arising from sisters having the same
 mother and the dependency between life lengths of sibling infants. On the
-other hand, ``simple'' means almost no restrictive assumptions, no
+other hand, "simple" means almost no restrictive assumptions, no
 complicated dependency structures, and results
 that are directly interpretable in terms of simple-to-understand probabilities.
 As is often the case, simple is at least as good as complicated: The
@@ -698,12 +756,14 @@ different models give similar results, and it is easy to feel confident in
 the ones with the weakest assumptions. On the other
 hand, it is generally good (statistical) practice to try different approaches to the
 analysis of the
-same problem. You may call it *sensitivity analysis* [@co84,chapter
-6] if you wish.  
+same problem. It may be called it *sensitivity analysis* [@co84,chapter
+6].  
 
 Third, when it comes to the results, we find a clear association between infant
 mortality among the mothers and the grandmothers.  Another question is if
-this is of practical significance? The simplest model is the easiest to interpret: If grandmother has no infant deaths, then the probability for mother to have one is 38 per cent, otherwise it is 45 per cent.  
+this is of practical significance? The simplest model is the easiest to 
+interpret: If grandmother has no infant deaths, then the probability for mother 
+to have one is `r y[2, 1]` per cent, otherwise it is `r y[2, 2]` per cent.  
 
 
 # Discussion
@@ -715,18 +775,18 @@ important, a division that now is becoming muddled and partly obsolete due
 to recent scientific developments [@mel14]. In the
 analytic approach taken here, we cannot really distinguish between purely
 biological versus social and cultural factors, but there are
-possible pathways. 
+some plausible alternatives. 
 
 One obvious possible factor refers to genetics. People are differently frail and it is
 reasonable that this frailty is genetically transferred. This might affect childrens' 
 capacity of survival as well as factors related to the mother associated with delivery and her
 the ability to take care of the newborn. There are also
 other possible biological reasons. The Rh negative blood group is common in
-our region, thus increasing the risk for Rh disease. It has been shown that
+the Skellefteå region, thus increasing the risk for Rh disease. It has been shown that
 this condition did have some impact on perinatal health in the region, although on a
-fairly restricted level. Still it can still be a component in the observed
+fairly restricted level, but it can still be a component in the observed
 association [@hle12]. Furthermore, a
-mother and her sibling group can have experienced problematic conditions in
+mother and her sibling group may have experienced problematic conditions in
 early childhood that may have scarred her for life, making her biologically
 less fit for child birth and thereby increasing the mortality risks for her
 children [@lq13].   
@@ -734,7 +794,7 @@ children [@lq13].
 Can the survival of children have to do with transferred behaviours between
 generations? We know that the ways children are taken care of is crucial
 for their health and survival, particularly in a high mortality
-regime. This can relate to local patterns of childcare, for example to the
+regime. This may relate to local patterns of childcare, for example to the
 practice of breast-feeding, but also to practices that are
 transferred within families. Our immediate family is the closest social
 organization for learning. In 19th century Sundsvall, mothers
@@ -747,11 +807,11 @@ could be more thoroughly analyzed in models where residence and/or social
 position are considered. 
 
 
-Regarding the results, the main hypothesis was confirmed: The risk for a
+The main result is that the null hypothesis of no association was rejected: The risk for a
 woman to experience infant deaths is increased if her mother also had
-that experience. While statistically significant, the effect size is moderate. 
-We applied different models, all plausible, and got almost
-identical results in all cases. 
+that experience. While statistically significant, the effect size (18 per cent) is moderate. 
+We applied different models, all plausible, and got very
+similar results. 
 
 # References 
 
