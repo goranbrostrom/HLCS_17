@@ -213,7 +213,7 @@ Also included are a bunch of possible confounders, notably
 
 *  **sex** The sex of a mother's child.
 
-These variables are not explicitly reported in the analyses, bt they are always 
+These variables are not explicitly reported in the analyses, but they are always 
 present as confounders in the common analyses.
 
 ```{r redefine}
@@ -684,7 +684,7 @@ also executed, but the result was not very illuminating: Essentially the same
 effects were found, but with weaker statistical significance, which is a natural 
 consequence of the fact that half the sample of infants was lost. 
 
-Third, restricting to mothers born 1826--1814 gives Table \@ref(tab:sos2c). In
+Third, restricting to mothers born 1826--1854 gives Table \@ref(tab:sos2c). In
 order to calculate risks of experience *any* infant death for a mother, we 
 calcluate proportions from Table \@ref(tab:sos2c), shown in Table \@ref(tab:sos2d). 
 
