@@ -15,8 +15,8 @@ output:
   bookdown::word_document2:
     toc: yes
     toc_depth: 2
-biblio-style: "natbib"
-documentclass: "article"
+biblio-style: natbib
+documentclass: article
 bibliography:
 - cluster.bib
 - surv.bib
@@ -48,8 +48,7 @@ methodological objective is to evaluate and compare different models for
 statistical analysis of inter-generational transfers. The
 third and main purpose is to apply the IDS structure and the statistical modelling
 to a demographic study of the possible inter-generational transmission of
-death in infancy.  
-
+death in infancy. More specifically, the hypothesis of no intergenerational transfer is tested.
 
 
 # The Skellefteå region
@@ -77,10 +76,9 @@ population density on the whole remained low [@as94].
 
 ## Economy
 
-Skellefteå was during the studied period a rural area with a mixed economy,
-based on animal husbandry, forestry and sidelines such as tar and saltpeter
-production. By the mid-19th century export of tar and lumber became an
-increasingly important part of the economy. The majority of the farmers in
+Skellefteå was a rural area with a mixed economy,
+based on animal husbandry, forestry and sidelines such as tar and saltpeter production. By the mid-19th century export of tar and lumber became an
+increasingly important part of the economy. Most farmers in
 the region were smallholders and there were no large estates. Some small
 sawmills were established early in the century, but before 1900,
 industrialization had little impact on the local economy. In 1835,
@@ -102,7 +100,7 @@ standards, but also in European comparison and there are no
 indications of family planning. Total fertility fluctuated around five
 children per woman and, although fertility did decline during the
 nineteenth century, the actual fertility transition occurred late in the
-district [@as94; @coa86]. The rate of illegitimacy was low in comparison
+region [@as94; @coa86]. The rate of illegitimacy was low in comparison
 with many other parts of Northern Sweden, where frequent pre-nuptial
 conceptions and illegitimate births were common [@bredro02]. The illegitimacy rate
 fluctuated between three and six per cent during the nineteenth century
@@ -112,7 +110,7 @@ fluctuated between three and six per cent during the nineteenth century
 # Data sources
 
 
-The data in this study are based on information found in the Swedish church book
+The data in this study are based on information found in the Swedish parish
 records, that is, birth, death, migration, and catechetical registers
 [@ndj93]. 
 
@@ -122,7 +120,7 @@ In the catechetical registers the clergy kept
 continuous records of all demographic events for all individuals residing in
 a parish. These detailed records make it possible to follow individuals over time and to
 identify their relatives and kin over time and throughout the life course. Furthermore, a rich variety of additional
-information, for example on occupation, was recorded.  From the 1970s, these records have been digitized by the Demographic Data Base at Umeå University, and individual level data from more than one hundred parishes are at present available for research in the databases [POPUM and POPLINK](http://www.cedar.umu.se/). 
+information, for example on occupation, was recorded.  The historical parish records have been digitized by the Demographic Data Base at Umeå University, and individual level data from more than one hundred parishes are at present available for research in the databases [POPUM and POPLINK](http://www.cedar.umu.se/). 
 
 ## POPUM and POPLINK
 
@@ -130,21 +128,21 @@ The POPUM and POPLINK databases differ in two respects: The time dimension and r
 
 ## Restrictions
 
-There are flaws in the 18th and early 19th century data about infant deaths: All death registers are missing before 1815, thus researchers have to rely on death information in the catechetical registers for the earlier time. Children that died young are however under-reported in the 18th century catechetical registers. Hence the analyses in this paper are restricted to the 19th century. It includes the reproductive history of women born 1826--1854 and the information on the reproductive history of their mothers. There is a possible under-estimation of infant deaths in the grandmother generation, something we comment on and analyse in the result section. The rather short time window used here have  some methodological advantages: Women are living in comparatively similar contexts, and the risk of finding some women appearing as grand-mothers, mothers as well as children is small.  
+There are flaws in the 18th and early 19th century data about infant deaths: All death registers are missing before 1815 and 1823--1830, thus researchers have to rely on death information in the catechetical registers for the earlier time. The deaths of infants that died soon after birth are thus under-reported in the 18th century catechetical registers. Hence the analyses in this paper are restricted to the 19th century. It includes the reproductive history of women born 1826--1854, the information on the reproductive history of their mothers, and the deaths of all infants involved. There is a possible under-estimation of infant deaths in the grandmother generation, something we comment on and analyse in the result section. The rather short time window used here have  some methodological advantages: Women are living in comparatively similar contexts, and the risk of finding some women appearing as grand-mothers, mothers as well as children is small.  
 
 
 # Implementation of IDS on POPUM
 
-The implementation of the IDS format is based on the relational database POPUM. POPUM consists of a large amount of variables, whereof some represent the literal information from the sources, while others present updated information. The structure of POPUM differs from the one of IDS, so implementing IDS consists basically of restructuring the data. DDB was one of the pioneers in the work of testing and implementing IDS, the first version was created in 2009. Thereafter, new and improved versions have been developed. In this study we have used version 3 of IDS, which is based on only a sub-section of available parishes in POPUM - Skellefteå parish from the early 18th century until 1900. Quite a lot of variables have already been constructed in POPUM and much of the problems with inconsistent and fuzzy data, as well as duplicate information, have been taken care of. These variables are constructed from a set of well-defined and documented rules. Furthermore, record linkage as well as relational linkages have already been performed, and tests have proven the linkage process to be of high quality [@webl14]. The transformation of the data from POPUM to IDS has been quite straight-forward. This does not mean that the available information is without problems, something that will be illustrated below, but it has simplified much of the transfer of data into IDS format. The sources sometimes contain missing data, which can be a problem when it comes to analysis.
-In accordance with the SEDD (Scanian Economic Demographic Database) presented by Quaranta in this volume (Quaranta 2017?), the context information on linking individuals to their households causes some problems. Families and households are presented together in the catechetical registers. We find the family on the same page in the registers and an empty line separating them from the next family. Households are however difficult to identify. Servants and others are usually presented at the bottom of the page, and if there are several families/households on the same page it is not always obvious to which family they belong. Furthermore, the separation of families/households can also be difficult, particularly in urban environments where migrations were frequent making the registers more difficult to interpret. Making rules for defining households turned out to be very complicated. The information therefore primarily represent the nuclear families as households. The approach towards how household information is entered differs in some respects between SEDD and DDB.
+The implementation of the IDS format is based on the relational database POPUM. POPUM consists of a large amount of variables, whereof some represent the literal information from the sources, while others present updated information. The structure of POPUM differs from the one of IDS, so implementing IDS consists basically of restructuring the data. DDB was one of the pioneers in the work of testing and implementing IDS, the first version was created in 2009. Thereafter, new and improved versions have been developed. In this study we use version 3 of IDS, which is based on only a sub-section of available parishes in POPUM: Skellefteå parish from the early 18th century until 1900. Quite a lot of variables have already been constructed in POPUM and much of the problems with inconsistent and fuzzy data, as well as duplicate information, have been taken care of. These variables are constructed from a set of well-defined and documented rules. Furthermore, record linkage as well as relational linkages have already been performed, and tests have proven the linkage process to be of high quality [@webl14]. The transformation of the data from POPUM to IDS has been quite straight-forward. This does not mean that the available information is without problems, but it has simplified much of the transfer of data into IDS format. The sources sometimes contain missing data, which can be a problem when it comes to analysis.
+In accordance with the SEDD (Scanian Economic Demographic Database) presented by Quaranta in this volume (Quaranta 2017?), the context information on linking individuals to their households causes some problems. Families and households are presented together in the catechetical registers. We find the family on the same page in the registers with an empty line separating it from the next family. Households are however difficult to identify. Servants and others are usually presented at the bottom of the page, and if there are several families/households on the same page it is not always obvious to which family they belong. Furthermore, the separation of families/households can also be difficult, particularly in urban environments where migrations were frequent making the registers more difficult to interpret. Making rules for defining households turned out to be very complicated. The information therefore primarily represent the nuclear families as households. The approach towards how household information is entered differs in some respects between SEDD and DDB.
 
 # Statistical modeling
 
-The main objective of this project is to apply some common models to data sets stored in the IDS format, but coming from different data bases. For this purpose, it was desired to use some complicated models to test the strength of the ID format. The scientific objective, on the other hand, is best served by much simpler statistical models. Therefore, we split the analyses into two categories, (i) those performed by all teams, and (ii) those specific to the Skellefteå data. 
+The main objective of this project is to apply some common models to data sets stored in the IDS format, but coming from different data bases. For this purpose, it was desired to use some complicated models to test the strength of the IDS format. The scientific objective, on the other hand, is best served by much simpler statistical models. Therefore, we split the analyses into two categories, (i) those performed by all teams, and (ii) those specific to the Skellefteå data. 
 
 ## Common models
 
-For the common part, we follow the recipe given by Quaranta (not necessarily the scientifically best) and apply *Cox regression* for estimating the effect of grandmother's infant deaths on the time from birth to death for mother's children. Thus, instead of using the direct and reasonable approach of estimating the effect of grandmother's infant deaths on the probability of surviving to age one, we are taking the detour over proportional hazards modeling of the instantaneous hazard of dying, following infants until death or the first birthdate, whatever comes first.
+For the common part, we follow the recipe given by Quaranta and apply *Cox regression* for estimating the effect of grandmother's infant deaths on the time from birth to death for mother's children. Thus, instead of using the direct and reasonable approach of estimating the effect of grandmother's infant deaths on the probability of surviving to age one, we are taking the detour over proportional hazards modeling of the instantaneous hazard of dying, following infants until death or the first birthdate, whatever comes first.
 
 A step in the right direction is taken by applying a Poisson model, where the number of infant deaths of mother is regressed on grandmother's number of infant deaths.
 
@@ -158,11 +156,11 @@ In this approach, the first mission is to operationalize and interpret the conce
 
 1.    There is a causal link from the IMR of a woman to her daughter. That is, if a woman experience a fatality, the the probabilty that her daughter will experience one increases (or decreases). For such a relation to be reasonable, the woman’s fatality must come before (in calendar time) her daughter experience one.
 
-2.    There is no direct causal link as described above, but a mother and her daughter share some common properities, they are more or less prone to have fatalities or not: Either noone or both.
+2.    There is no direct causal link as described above, but a mother and her daughter share some common properties, they are more or less prone to have fatalities or not: Either noone or both.
 
 In statistical terms, 1. implies a regression model, while 2. would best be described by a correlation structure. We think that 2. is the most approprate way to think about it, but for the sake of testing the extraction of data via the IDS format, both implied models will be considered.
 
-When we compare a woman's experience of infant death to her daughter's we must take into consideration the fact that by design we *know* that the woman has at least one surviving child, the daughter we are comparing her to. This induces an asymmetry that must be resolved. We can do it by considering only male infant deaths. 
+When we compare a woman's experience of death of her infants to her daughter's we must take into consideration the fact that by design we *know* that the woman has at least one surviving child, the daughter we are comparing her to. This induces an asymmetry that must be resolved. We can do it by considering only male infant deaths. 
 
 A second issue is to avoid dependencies in the data. Each woman, whether mother or daughter, should be present in the data set at most once. And since data are inherently paired (grandmother and mother), siblings among daughters should not be allowed.  
 
@@ -172,7 +170,7 @@ We use the data set that is created from the IDS database with a standard extrac
 
 ## The common approach
 
-The abovementioned data set was used asis, with the exception that mothers were limited to have been born in the time interval 1826--1854.
+The abovementioned data set was used as is, with the exception that mothers were limited to have been born in the time interval 1826--1854.
 
 
 ```{r loaddata}
@@ -192,9 +190,9 @@ ef$sex <- ef$Child_sex
 
 ### Variables
 
-In the Poisson approach, the response variable is Mother's number of infant 
+In the Poisson approach, the response variable is mother's number of infant 
 deaths, **mDeaths**, 
-and the key explanatory variable is Grandmother's number of infant deaths, **gmDeaths**. 
+and the key explanatory variable is grandmother's number of infant deaths, **gmDeaths**. 
 
 In the Cox regression approach, the response variable is **Age at death** instead, 
 but the key explanatory variable is still **gmDeaths**.
@@ -233,7 +231,7 @@ and for each node in the tree we want the number of male and female births and
 male and female infant 
 deaths. We must first find the "atom mothers", that is, women without mothers 
 (in our data set). Since each "MotherID" also has a "GrandmotherID", we find 
-the "atoms" as those grandmothers who are not present as mothers, or
+the "atoms" as those grandmothers who are not present as mothers.
 
 ```{r atoms, echo = FALSE}
 gnom <- ef$GrandmotherID[!(ef$GrandmotherID %in% ef$MotherID)]
@@ -242,10 +240,10 @@ gnom <- unique(gnom)
 ```
 
 So we have `r length(gnom)` atom mothers, and now we want to find their children. 
-Unfortunately, this information is not present, we only have their daughters who 
+Unfortunately, this information is not present in this IDS extraction, we only have their daughters who 
 survive and have children. However, we have information on the number of male and
 female births and male and female infant deaths for each atom, and 
-we can choose the the first female birth (a "Mother") as a continuation of the tree.
+we can choose the first female birth (a "Mother") as a continuation of the tree.
 
 So, first we build generation 0 (first six rows shown, Table \@ref(tab:gen0)):
 
@@ -298,8 +296,7 @@ knitr::kable(head(gen1), caption = "Generation 1.")
 ```
 
 For each woman in *gen1* we put on information from her mother 
-about number of male births and deaths. See Table \@ref(tab:putonmoth), where 
-some not so interesting columns are removed. 
+about number of male births and deaths, see Table \@ref(tab:putonmoth). 
 
 Note that in this approach we do not 
 include any of the confounders described above. 
@@ -319,7 +316,9 @@ on the probability that her daughter will experience an infant death.
 
 # Descriptive statistics of the IDS extraction
 
-The yearly numbers of births and deaths for the *mothers in the data set* and, as a comparison, for the data in *Poplink*,  are shown in Figure \@ref(fig:numbirth).
+The yearly numbers of births and infant deaths for the *mothers in the data set* and, as a comparison, for the data in *Popum*,  are shown in Figure \@ref(fig:numbirth). The number of births in the data set is
+`r NROW(ef)`, and the number of infant deaths is `r sum(ef$event)`, constituting an overall infant mortality rate of `r round(sum(ef$event) / NROW(ef) * 100, 1)` per cent. 
+
 
 ```{r numbirth, fig.cap="Number of births and infant deaths and infant mortality by year.", fig.height = 6}
 oldpar = par(mfrow = c(2, 2))
@@ -355,7 +354,7 @@ x <- table(byear)
 years <- as.numeric(names(x))
 x <- x[years < 1903]
 years <- years[years < 1903]
-plot(years, as.numeric(x), type = "l", col = "blue", xlim = c(1742, 1902), ylab = "",  xlab = "Birth/Death year", ylim = c(0, 1500), main = "POPLINK")
+plot(years, as.numeric(x), type = "l", col = "blue", xlim = c(1742, 1902), ylab = "",  xlab = "Birth/Death year", ylim = c(0, 1500), main = "POPUM")
 dyear <- floor(per1$doddat[per1$event])
 y <- table(dyear)
 years <- as.numeric(names(y))
@@ -369,7 +368,7 @@ text(1825, 700, "Births", col = "blue")
 ss <- with(obs, cbind(enter, exit, sluttyp == 2, birthdate))
 x <- perstat(ss, seq(1801, 1901, by = 1), age = c(0, 1))
 aver <- perstat(ss, seq(1801, 1901, by = 100), age = c(0, 1))$intensity
-plot(1801:1900, x$intensity, xlab = "year", ylab = "Infant mortality", main = "POPLINK", type = "l", 
+plot(1801:1900, x$intensity, xlab = "year", ylab = "Infant mortality", main = "POPUM", type = "l", 
      ylim = c(0, 0.4), col = "blue")
 abline(h = 0)
 abline(h = aver, lty = 2, col = "blue")
@@ -406,7 +405,7 @@ The average number of births to a mother in the data set is
 
 ## The covered time period
 
-Our study sample consists of all mothers born 1826--1950. The distribution of their birth years and their infant mortality (by year of child death) are shown in  Figure \@ref(fig:sample). The distribution of the grandmothers' birthdates is unknown, because it is not part of the IDS retrieval. The first births ought to have appeared in the early 1800s.  
+Our study sample consists of all mothers born 1826--1954. The distribution of their birth years and their infant mortality (by year of child death) are shown in  Figure \@ref(fig:sample). The distribution of the grandmothers' birthdates is unknown, because it is not part of the IDS retrieval. The first births ought to have appeared in the early 1800s.  
 
 
 
@@ -518,7 +517,7 @@ barplot(100 * c(cat0, cat1, cat2, cat3), names.arg = c("2", "3", "4-6", "7+"),
 
 ```
 
-The size of the effect of grandmother's infant mortality on mother's is not large, but, maybe surprisingly, the effect of her number of births is. 
+The size of the effect of grandmother's infant mortality on mother's is not large, but, maybe surprisingly, the effect of her number of births is slightly larger. 
 
 ## Survival analysis
 
@@ -551,7 +550,7 @@ knitr::kable(dr.c, row.names = TRUE, digits = 4, caption = "Analysis of deviance
 Second, the sizes of the effects are shown in Figure \@ref(fig:effstcox). For the
 covariate *gmDeaths*, the real effect on
 her daughter's risk of experiencing infant deaths appears when the number
-of deaths are two or larger. *gmBirths* is also
+of deaths are two or larger. The variable *gmBirths* is also
 influential. 
 
 ```{r effstcox, fig.cap = "Effects of included covariates, Cox regression. The leftmost value is the reference in both panels.", fig.height = 3.3}
@@ -686,7 +685,7 @@ consequence of the fact that half the sample of infants was lost.
 
 Third, restricting to mothers born 1826--1854 gives Table \@ref(tab:sos2c). In
 order to calculate risks of experience *any* infant death for a mother, we 
-calcluate proportions from Table \@ref(tab:sos2c), shown in Table \@ref(tab:sos2d). 
+calculate proportions from Table \@ref(tab:sos2c), shown in Table \@ref(tab:sos2d). 
 
 ```{r sos3, include = FALSE}
 gen1 <- gen1[gen1$birthdate > as.Date("1825-12-31") & gen1$birthdate < as.Date("1855-01-01"), ]
@@ -724,46 +723,6 @@ rr <- chisq.test(x)
 ```
 
 
-# Concluding remarks
-
-Three main aims were set out. The first was about
-assessing the usefulness of the IDS data format for demographic analysis, in
-this case in relation to transnational comparative research.
-We can confirm that applying the IDS format, and the general script made by
-@lq16, has fulfilled its purposes well. The use of the script has
-facilitated comparisons between countries. 
-However, it is important to remember that the IDS format do not relieve the
-researcher from the duty of carefully evaluating the sources and their usefulness for
-the research questions raised. In the database for the Skellefteå region,
-we had to restrict our studied period substantially, due to deficient data
-for the 18th century, where infant deaths were severely underestimated. 
-This problem can eventually be taken care of by applying clear definitions of 
-rules on how to identify infant deaths, but that must be performed in a 
-preparatory state.
-
-Second, we have tried different analytic models, ranging from complicated
-(proportional hazards models for survival times of infants)
-to simple (had a woman and/or her oldest daughter an infant death or not: A
-contingency table analysis). "Complicated"" refers to "strong
-assumptions and strict model checking": The hard part is dealing with the
-complicated dependency structures arising from sisters having the same
-mother and the dependency between life lengths of sibling infants. On the
-other hand, "simple" means almost no restrictive assumptions, no
-complicated dependency structures, and results
-that are directly interpretable in terms of simple-to-understand probabilities.
-As is often the case, simple is at least as good as complicated: The
-different models give similar results, and it is easy to feel confident in
-the ones with the weakest assumptions. On the other
-hand, it is generally good (statistical) practice to try different approaches to the
-analysis of the
-same problem. It may be called it *sensitivity analysis* [@co84,chapter
-6].  
-
-Third, when it comes to the results, we find a clear association between infant
-mortality among the mothers and the grandmothers.  Another question is if
-this is of practical significance? The simplest model is the easiest to 
-interpret: If grandmother has no infant deaths, then the probability for mother 
-to have one is `r y[2, 1]` per cent, otherwise it is `r y[2, 2]` per cent.  
 
 
 # Discussion
@@ -812,6 +771,47 @@ woman to experience infant deaths is increased if her mother also had
 that experience. While statistically significant, the effect size (18 per cent) is moderate. 
 We applied different models, all plausible, and got very
 similar results. 
+
+# Concluding remarks
+
+Three main aims were set out. The first was about
+assessing the usefulness of the IDS data format for demographic analysis, in
+this case in relation to transnational comparative research.
+We can confirm that applying the IDS format, and the general script made by
+@lq16, has fulfilled its purposes well. The use of the script has
+facilitated comparisons between countries. 
+However, it is important to remember that the IDS format do not relieve the
+researcher from the duty of carefully evaluating the sources and their usefulness for
+the research questions raised. In the database for the Skellefteå region,
+we had to restrict our studied period substantially, due to deficient data
+for the 18th century, where infant deaths were severely underestimated. 
+This problem can eventually be taken care of by applying clear definitions of 
+rules on how to identify infant deaths, but that must be performed in a 
+preparatory state.
+
+Second, we have tried different analytic models, ranging from complicated
+(proportional hazards models for survival times of infants)
+to simple (had a woman and/or her oldest daughter an infant death or not: A
+contingency table analysis). "Complicated"" refers to "strong
+assumptions and strict model checking": The hard part is dealing with the
+complicated dependency structures arising from sisters having the same
+mother and the dependency between life lengths of sibling infants. On the
+other hand, "simple" means almost no restrictive assumptions, no
+complicated dependency structures, and results
+that are directly interpretable in terms of simple-to-understand probabilities.
+As is often the case, simple is at least as good as complicated: The
+different models give similar results, and it is easy to feel confident in
+the ones with the weakest assumptions. On the other
+hand, it is generally good (statistical) practice to try different approaches to the
+analysis of the
+same problem. It may be called it *sensitivity analysis* [@co84,chapter
+6].  
+
+Third, when it comes to the results, we find a clear association between infant
+mortality among the mothers and the grandmothers.  Another question is if
+this is of practical significance? The simplest model is the easiest to 
+interpret: If grandmother has no infant deaths, then the probability for mother 
+to have one is `r y[2, 1]` per cent, otherwise it is `r y[2, 2]` per cent.  
 
 # References 
 
