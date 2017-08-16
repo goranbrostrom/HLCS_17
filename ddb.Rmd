@@ -2,6 +2,8 @@
 title: "Intergenerational transfers of infant mortality in 19th century northern Sweden"
 author: "Göran Broström, Sören Edvinsson, and Elisabeth Engberg"
 date: '`r Sys.Date()`'
+fontsize: 11pt
+geometry: a4paper
 output:
   bookdown::pdf_document2:
     number_sections: yes
@@ -299,7 +301,9 @@ For each woman in *gen1* we put on information from her mother
 about number of male births and deaths, see Table \@ref(tab:putonmoth). 
 
 Note that in this approach we do not 
-include any of the confounders described above. 
+include any of the confounders described above, and there is no restriction of 
+mother's birthdate, which is the case in the common analyses. However, 
+for comparative reasons, the restriction is imposed later, see the results. 
 
 ```{r putonmoth, echo = FALSE}
 indx <- match(gen1$m_id, gen0$id)
