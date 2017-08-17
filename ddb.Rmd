@@ -9,6 +9,7 @@ output:
     number_sections: yes
     toc: yes
     toc_depth: 2
+    keep_tex: yes
   bookdown::html_document2:
     number_sections: yes
     toc: yes
@@ -24,10 +25,9 @@ bibliography:
 - surv.bib
 abstract: This study is part of an international comparative initiative where the
   same scientific question is investigated on data sets from different regions, all
-  available in IDS format. It is shown that the IDS data structure indeed can deliver
-  qualified data for demographic analysis (**REALLY?**). Moreover, we show that the
-  propensity of infant death for a mother is inherited from mother to daughter, which
-  was the scientific question to investigate.
+  available in IDS format. The main result is that the
+  probability of an infant death for a woman is increased if her mother also had 
+  experienced an infant death, which was the scientific question to investigate.
 ---
 
 ```{r setup, include=FALSE}
@@ -51,6 +51,25 @@ statistical analysis of inter-generational transfers. The
 third and main purpose is to apply the IDS structure and the statistical modelling
 to a demographic study of the possible inter-generational transmission of
 death in infancy. More specifically, the hypothesis of no intergenerational transfer is tested.
+
+Observed family dependencies has led to an increased
+attention to a possible inter-generational transmission of demographic 
+patterns [@edja12], sometimes even considering epigenetic effects
+[@pem14]. Studies of inter-generational effects require individual data covering long periods, extending several generations, data that have not been available until the recent development of historical population databases.
+ 
+There are also major regional differences in
+the strength of the inter-generational transmission of infant
+mortality. While in certain regions the mortality history of infants is
+strongly correlated with the survival of infants in the previous 
+generation, in other regions this effect is weak or completely absent
+[@belr08]. @vande12 suggests that this can be
+attributed to differences in local culture and family systems, but also
+proposes the hypothesis that the variations also might be related to strong
+local variants in gene defects. In practice, regional differences could
+also be related to the fact that most studies focus on a limited number of
+rather small regions, and that different studies thus are hard to compare
+due to differences in methodology, both in terms of database management and
+in terms of statistical analysis. 
 
 
 # The Skellefteå region
@@ -154,13 +173,13 @@ Both these approaches suffer from a dependent-data problem: Groups of mothers in
 
 The bad effects of the dependent-data problem may be minimized by (i) building family trees (of women), and (ii) only study *male* infant mortality.
 
-In this approach, the first mission is to operationalize and interpret the concept of "intergenerational transfer". There are essentially two ways to think about it.
+In this approach, the first mission is to operationalize and interpret the concept of "inter-generational transfer". There are essentially two ways to think about it.
 
-1.    There is a causal link from the IMR of a woman to her daughter. That is, if a woman experience a fatality, the the probabilty that her daughter will experience one increases (or decreases). For such a relation to be reasonable, the woman’s fatality must come before (in calendar time) her daughter experience one.
+1.    There is a causal link from the IMR of a woman to her daughter. That is, if a woman experience a fatality, the the probability that her daughter will experience one increases (or decreases). For such a relation to be reasonable, the woman’s fatality must come before (in calendar time) her daughter experience one.
 
-2.    There is no direct causal link as described above, but a mother and her daughter share some common properties, they are more or less prone to have fatalities or not: Either noone or both.
+2.    There is no direct causal link as described above, but a mother and her daughter share some common properties, they are more or less prone to have fatalities or not: Either no one or both.
 
-In statistical terms, 1. implies a regression model, while 2. would best be described by a correlation structure. We think that 2. is the most approprate way to think about it, but for the sake of testing the extraction of data via the IDS format, both implied models will be considered.
+In statistical terms, 1. implies a regression model, while 2. would best be described by a correlation structure. We think that 2. is the most appropriate way to think about it, but for the sake of testing the extraction of data via the IDS format, both implied models will be considered.
 
 When we compare a woman's experience of death of her infants to her daughter's we must take into consideration the fact that by design we *know* that the woman has at least one surviving child, the daughter we are comparing her to. This induces an asymmetry that must be resolved. We can do it by considering only male infant deaths. 
 
@@ -172,7 +191,7 @@ We use the data set that is created from the IDS database with a standard extrac
 
 ## The common approach
 
-The abovementioned data set was used as is, with the exception that mothers were limited to have been born in the time interval 1826--1854.
+The above-mentioned data set was used as is, with the exception that mothers were limited to have been born in the time interval 1826--1854.
 
 
 ```{r loaddata}
@@ -203,13 +222,13 @@ Also included are a bunch of possible confounders, notably
 
 *  **gmBirths** The number of grandmother's births. Is always (by design) two or larger. In the analyses it is categorized: "2", "3", "4-6", "7+".
 
-*  **mBirthdate** Mother's birthdate expressed as years between 1 January 1 and her day of birth, minus one.
+*  **mBirthdate** Mother's birth date expressed as years between 1 January 1 and her day of birth, minus one.
 
 *  **mAge** Mother's age at the birth of a child. Categorized into the intervals "17-19", "20-22", ..., "41-43", "44-49".
 
 * **parity** The birth order of a mother's child.
 
-*  **childBirthdate** The birthdate of a mother's child.
+*  **childBirthdate** The birthrate of a mother's child.
 
 *  **sex** The sex of a mother's child.
 
@@ -302,7 +321,7 @@ about number of male births and deaths, see Table \@ref(tab:putonmoth).
 
 Note that in this approach we do not 
 include any of the confounders described above, and there is no restriction of 
-mother's birthdate, which is the case in the common analyses. However, 
+mother's birth date, which is the case in the common analyses. However, 
 for comparative reasons, the restriction is imposed later, see the results. 
 
 ```{r putonmoth, echo = FALSE}
@@ -409,7 +428,7 @@ The average number of births to a mother in the data set is
 
 ## The covered time period
 
-Our study sample consists of all mothers born 1826--1954. The distribution of their birth years and their infant mortality (by year of child death) are shown in  Figure \@ref(fig:sample). The distribution of the grandmothers' birthdates is unknown, because it is not part of the IDS retrieval. The first births ought to have appeared in the early 1800s.  
+Our study sample consists of all mothers born 1826--1954. The distribution of their birth years and their infant mortality (by year of child death) are shown in  Figure \@ref(fig:sample). The distribution of the grandmothers' birth dates is unknown, because it is not part of the IDS retrieval. The first births ought to have appeared in the early 1800s.  
 
 
 
