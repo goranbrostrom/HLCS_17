@@ -18,7 +18,7 @@ output:
   bookdown::word_document2:
     toc: yes
     toc_depth: 2
-biblio-style: natbib
+biblio-style: apalike
 documentclass: article
 bibliography:
 - cluster.bib
