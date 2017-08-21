@@ -131,11 +131,12 @@ fluctuated between three and six per cent during the nineteenth century
 # Data sources
 
 
+## The parish records
+
 The data in this study are based on information found in the Swedish parish
 records, that is, birth, death, migration, and catechetical registers
 [@ndj93]. 
 
-## The catechetical registers
 
 In the catechetical registers the clergy kept 
 continuous records of all demographic events for all individuals residing in
@@ -154,8 +155,12 @@ There are flaws in the 18th and early 19th century data about infant deaths: All
 
 # Implementation of IDS on POPUM
 
-The implementation of the IDS format is based on the relational database POPUM. POPUM consists of a large amount of variables, whereof some represent the literal information from the sources, while others present updated information. The structure of POPUM differs from the one of IDS, so implementing IDS consists basically of restructuring the data. DDB was one of the pioneers in the work of testing and implementing IDS, the first version was created in 2009. Thereafter, new and improved versions have been developed. In this study we use version 3 of IDS, which is based on only a sub-section of available parishes in POPUM: Skellefteå parish from the early 18th century until 1900. Quite a lot of variables have already been constructed in POPUM and much of the problems with inconsistent and fuzzy data, as well as duplicate information, have been taken care of. These variables are constructed from a set of well-defined and documented rules. Furthermore, record linkage as well as relational linkages have already been performed, and tests have proven the linkage process to be of high quality [@webl14]. The transformation of the data from POPUM to IDS has been quite straight-forward. This does not mean that the available information is without problems, but it has simplified much of the transfer of data into IDS format. The sources sometimes contain missing data, which can be a problem when it comes to analysis.
-In accordance with the SEDD (Scanian Economic Demographic Database) presented by Quaranta in this volume (Quaranta 2017?), the context information on linking individuals to their households causes some problems. Families and households are presented together in the catechetical registers. We find the family on the same page in the registers with an empty line separating it from the next family. Households are however difficult to identify. Servants and others are usually presented at the bottom of the page, and if there are several families/households on the same page it is not always obvious to which family they belong. Furthermore, the separation of families/households can also be difficult, particularly in urban environments where migrations were frequent making the registers more difficult to interpret. Making rules for defining households turned out to be very complicated. The information therefore primarily represent the nuclear families as households. The approach towards how household information is entered differs in some respects between SEDD and DDB.
+The implementation of the IDS format is based on the relational database POPUM. POPUM consists of a large amount of variables, whereof some represent the literal information from the sources, while others present updated information. The structure of POPUM differs from the one of IDS, so implementing IDS consists basically of restructuring the data. DDB was one of the pioneers in the work of testing and implementing IDS, the first version was created in 2009. Thereafter, new and improved versions have been developed. In this study we use version 3 of IDS, which is based on only a sub-section of available parishes in POPUM: Skellefteå parish from the early 18th century until 1900. Quite a lot of variables have already been constructed in POPUM and much of the problems with inconsistent and fuzzy data, as well as duplicate information, have been taken care of. These variables are constructed from a set of well-defined and documented rules. Furthermore, record linkage as well as relational linkages have already been performed, and tests have proven the linkage process to be of high quality [@webl14]. 
+
+The transformation of the data from POPUM to IDS has been quite straight-forward. This does not mean that the available information is without problems, but it has simplified much of the transfer of data into IDS format. The sources sometimes contain missing data, which can be a problem when it comes to analysis. The missing data due to death records not being preserved as mentioned above are a problem. In family reconstitution, children born are often considered alive if there is no information on them having died and the family is still present in the studied area. When death records are missing we have no reliable information on their death or survival. The Swedish system of catechetical registers reported however the complete population, and therefore we still have the possibility to analyse mortality in most age groups. This is unfortunately not the case when it comes to infant mortality. In many parishes, newborn children were not entered into these registers immediately after birth. The time elapsed between actual birth and it being entered in the register varied in time and between parishes. In the case of Skellefteå for the period when death records are missing, a reasonable assumption is that children with only a birth entry and no further information while the rest of the family is still resident in the parish died quite young. To finally establish this require however further controls and the use of precise definitions, something that we have refrained from in this article. This circumstance is however a good illustration of the need to carefully evaluate the sources and what implications possible deficiencies may have on the analysis.
+
+The context information on linking individuals to their households causes some problems. Families and households are presented together in the catechetical registers. We find the family on the same page in the registers with an empty line separating it from the next family. Households are however difficult to identify. Servants and others are usually presented at the bottom of the page, and if there are several families/households on the same page it is not always obvious to which family they belong. Furthermore, the separation of families/households can also be difficult, particularly in urban environments where migrations were frequent making the registers more difficult to interpret. Making rules for defining households turned out to be very complicated. The information therefore primarily represent the nuclear families as households.
+
 
 # Statistical modeling
 
@@ -163,19 +168,17 @@ The main objective of this project is to apply some common models to data sets s
 
 ## Common models
 
-For the common part, we follow the recipe given by Quaranta and apply *Cox regression* for estimating the effect of grandmother's infant deaths on the time from birth to death for mother's children. Thus, instead of using the direct and reasonable approach of estimating the effect of grandmother's infant deaths on the probability of surviving to age one, we are taking the detour over proportional hazards modeling of the instantaneous hazard of dying, following infants until death or the first birthdate, whatever comes first.
-
-A step in the right direction is taken by applying a Poisson model, where the number of infant deaths of mother is regressed on grandmother's number of infant deaths.
+For the common part, two approaches are implemented. First *Cox regression* is applied for estimating the effect of grandmother's infant deaths on the age at death for mother's children, then the more direct approach of estimating the effect of grandmother's infant deaths on the probability of an infant death for mother is taken by applying *Poisson regression*, where the number of infant deaths of mother is regressed on grandmother's number of infant deaths.
 
 Both these approaches suffer from a dependent-data problem: Groups of mothers in the data set have a common mother, that is, they are sisters. Another problem is that of an asymmetry between mother and grandmother: For the grandmother only, we know that at least one child survived and got own children.  
 
 ## Simple and sound models
 
-The bad effects of the dependent-data problem may be minimized by (i) building family trees (of women), and (ii) only study *male* infant mortality.
+The negative effects of the dependent-data problem in the common approach may be minimized by (1) building family trees (of women), and (2) only study *male* infant mortality.
 
 In this approach, the first mission is to operationalize and interpret the concept of "inter-generational transfer". There are essentially two ways to think about it.
 
-1.    There is a causal link from the IMR of a woman to her daughter. That is, if a woman experience a fatality, the the probability that her daughter will experience one increases (or decreases). For such a relation to be reasonable, the woman’s fatality must come before (in calendar time) her daughter experience one.
+1.    There is a causal link from the IMR of a woman to her daughter. That is, if a woman experience a fatality, the probability that her daughter will experience one increases (or decreases). For such a relation to be reasonable, the woman’s fatality must come before (in calendar time) her daughter experience one.
 
 2.    There is no direct causal link as described above, but a mother and her daughter share some common properties, they are more or less prone to have fatalities or not: Either no one or both.
 
@@ -750,6 +753,12 @@ rr <- chisq.test(x)
 
 # Discussion
 
+The main result is that the null hypothesis of no association was rejected: The risk for a
+woman to experience infant deaths is increased if her mother also had
+that experience. While statistically significant, the effect size (18 per cent) is moderate. 
+We applied different models, all plausible, and got very
+similar results. 
+
 Our study confirms the existence of family dependency in infant mortality
 risks. How can the association be explained? This relates to the old debate
 of whether humans are primarily formed by nature or if nurture is
@@ -789,11 +798,6 @@ could be more thoroughly analyzed in models where residence and/or social
 position are considered. 
 
 
-The main result is that the null hypothesis of no association was rejected: The risk for a
-woman to experience infant deaths is increased if her mother also had
-that experience. While statistically significant, the effect size (18 per cent) is moderate. 
-We applied different models, all plausible, and got very
-similar results. 
 
 # Concluding remarks
 
@@ -827,12 +831,11 @@ different models give similar results, and it is easy to feel confident in
 the ones with the weakest assumptions. On the other
 hand, it is generally good (statistical) practice to try different approaches to the
 analysis of the
-same problem. It may be called it *sensitivity analysis* [@co84,chapter
-6].  
+same problem. It may be called it *sensitivity analysis* [@co84,chapter 6].  
 
 Third, when it comes to the results, we find a clear association between infant
 mortality among the mothers and the grandmothers.  Another question is if
-this is of practical significance? The simplest model is the easiest to 
+this is of practical significance. The simplest model is the easiest to 
 interpret: If grandmother has no infant deaths, then the probability for mother 
 to have one is `r y[2, 1]` per cent, otherwise it is `r y[2, 2]` per cent.  
 
