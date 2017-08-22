@@ -168,9 +168,11 @@ The main objective of this project is to apply some common models to data sets s
 
 ## Common models
 
-For the common part, two approaches are implemented. First *Cox regression* is applied for estimating the effect of grandmother's infant deaths on the age at death for mother's children, then the more direct approach of estimating the effect of grandmother's infant deaths on the probability of an infant death for mother is taken by applying *Poisson regression*, where the number of infant deaths of mother is regressed on grandmother's number of infant deaths.
+For the common part, two approaches are implemented. First *Cox regression* is applied for estimating the effect of the number of grandmother's infant deaths on the age at death for mother's children, then the more direct approach of estimating the effect of the number of grandmother's infant deaths on the number of infant deaths for mother is taken by applying *Poisson regression*.
 
-Both these approaches suffer from a dependent-data problem: Groups of mothers in the data set have a common mother, that is, they are sisters. Another problem is that of an asymmetry between mother and grandmother: For the grandmother only, we know that at least one child survived and got own children.  
+The Cox regression approach suffers from a severe dependent-data problem: Each infant to a mother is treated as an independent observation, neglecting the fact that siblings tend to be very similar. By summing over mothers, using her number of infant deaths as response, this dependency is eliminated, as in the Poisson regression approach. However, on the next level, groups of mothers in the data set have a common mother, that is, they are sisters, creating dependency problems in both approaches. Frailty models [@hou00] are often used in attempts to handle dependencies of this kind in survival analysis, but they come at a price of complicated validity problems.  Aggregation, when applicable as here, is preferred. 
+
+In addition, a problem is that of an asymmetry between mother and grandmother: For the grandmother only, we know that at least one female child survived and got own children. An attempt to overcome all those problems is made by the "family tree" approach, presented next. 
 
 ## Simple and sound models
 
