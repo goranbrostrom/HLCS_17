@@ -1,8 +1,7 @@
 ---
 output: html_document
 ---
-# Intergenerational transfers of infant mortality
-in 19th century northern Sweden
+# Intergenerational transfers of infant mortality in 19th century northern Sweden
 
 
 ## The report on infant mortality for the HLCS journal.
@@ -12,7 +11,7 @@ Note that data is missing.
 ## General
 
 Install **R** and *RStudio* and run the Rmarkdown files. You need data,
-which is *not* included here. *RStudio* will guide you in installing the
+which is *not* included here (ask me). *RStudio* will guide you in installing the
 necessary add-on packages.
 
 You can choose as output media from *html*, *pdf* and *word*.
