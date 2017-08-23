@@ -1,33 +1,33 @@
 ---
 title: "Intergenerational transfers of infant mortality in 19th century northern Sweden"
 author: "Göran Broström, Sören Edvinsson, and Elisabeth Engberg"
-date: '`r Sys.Date()`'
-fontsize: 11pt
-geometry: a4paper
+date: "`r Sys.Date()`"
 output:
-  bookdown::pdf_document2:
-    number_sections: yes
-    toc: yes
-    toc_depth: 2
-    keep_tex: yes
   bookdown::html_document2:
     number_sections: yes
     toc: yes
     toc_depth: 2
     toc_float: yes
+  bookdown::pdf_document2:
+    keep_tex: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: 2
   bookdown::word_document2:
     toc: yes
     toc_depth: 2
 biblio-style: apalike
 documentclass: article
+fontsize: 11pt
+geometry: a4paper
 bibliography:
 - cluster.bib
 - surv.bib
 abstract: This study is part of an international comparative initiative where the
   same scientific question is investigated on data sets from different regions, all
-  available in IDS format. The main result is that the
-  probability of an infant death for a woman is increased if her mother also had 
-  experienced an infant death, which was the scientific question to investigate.
+  available in IDS format. The main result is that the probability of an infant death
+  for a woman is increased if her mother also had experienced an infant death, which
+  was the scientific question to investigate.
 ---
 
 ```{r setup, include=FALSE}
