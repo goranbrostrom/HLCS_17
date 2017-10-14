@@ -1,0 +1,90 @@
+---
+title: "Reviewers' comments"
+author: "Göran Broström"
+date: "14 oktober 2017"
+output: 
+  bookdown::pdf_document2:
+    keep_tex: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: 2
+  bookdown::html_document2:
+    number_sections: yes
+    toc: yes
+    toc_depth: 2
+    toc_float: yes
+  bookdown::word_document2:
+    toc: yes
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+# The reviews and our answers
+
+## Reviewer A
+
+*This paper makes a number of valuable contributions.  First, it is an example of sharing program code across databases using the IDS format.  Second, it considers a variety of potential biases in an analysis of intergenerational data.  Third, it compares several analytical for detecting a correlation in infant mortality across generations.  It provides a very good example of the potential problems in this kind of research, and it is reassuring that several different methods lead to the same conclusion.*
+
+*The biggest problem with the paper is that it is too terse.  Here are some examples:*
+
+1.   *The paper refers several times to the comparative project, but it does not describe that project.*  
+
+It is our understanding that the comparative project will be described in a separate article in the same issue of the journal. 
+
+2.   *What are "simple and sound models"?*
+
+A simple model makes as few assumptions as possible about the data-generating process in the real-world problem. For instance, a non-parametric model makes fewer assumptions than a parametric one. A sound model focuses on the target in an unbiased (as much as possible, unbiasedness is not necessarily an important property) and efficient (for instance, small variance) way. A "simple and sound" model has both these properties. 
+
+3.   *Why is the asymmetry between mother and grandmother a problem?  The asymmetry occurs because every grandmother must have at least one surviving daughter, but a mother may have no surviving children.  But all mothers have grandmothers, and all grandmothers have at least one surviving daughter.  What’s the problem?*
+
+4.   *Why does studying male infant mortality reduce the asymmetry problem?  Doesn’t this introduce a new selection effect---all mothers and grandmothers must have at least one son? If this is worth doing, why is it dismissed at the end?
+Why are the “atom mothers” important?  Why should a grandmother-mother pair be different if it is gen0-gen1 rather than gen1--gen2?*
+
+5.   *Explain more about taking advantage of similarity among sisters.*  
+
+6.   *How is censoring managed in the Cox regression?*
+
+7.   *More discussion and examples of results of the shared frailty and robust variances models would be useful.*
+
+## Reviewer B
+
+*The paper is interesting and well written. I have some suggestions, discussed below.* 
+
+### Introduction
+
+*One sentence could be added to the introduction to state which is the area and period that is being studied.* 
+
+### Data sources
+
+1.   *Section 3.2 states that the POPUM database is not anonymized and therefore ends in 1900. It is not clear why the data has to be anonymized if it is used by local researchers.* 
+
+2.   *Section 3.3 discusses data restrictions. The fact that registers of death are missing before 1815 and during the years 1823-1830 is mentioned and the possibility that this could lead to under-estimations of the deaths in the grandmother’s generation is also stated. Whereas it is also said that comments on and analyses of this potential problem are included in the results section, such comments and analyses are not found in such section.* 
+
+3.   *The choice to restrict the sample only to mothers born between 1826 and 1854 should be motivated and discussed in the paper.* 
+
+
+### Implementation of IDS on POPUM
+
+*The last paragraph of section 4 discusses the difficulty in identifying households in the records of Skellefteå. Although the problem is clearly explained, it is unclear whether it also affects the data selected for the project and if so how. Are married servants with children recorded? If they are not, what are the implications for the results?*
+
+### Statistical modelling
+
+*The analysis is divided into common models and simple and sound models. The common models refer to a Cox and a Poisson model, in accordance to previous versions of the project. However, in the latest version of the common STATA programs for the project, a Cox model, a Weibull model with shared frailty on the mother, and a Weibull model with shared frailty on the grandmother are estimated. I suggest to either 1) change the section of Common models to include the Cox and the two Weibull models instead of the Poisson model or 2) keep the models as they are in the paper, without referring them as common models done across the different databases of the project. In case of choosing the second option I suggest to present the simple models before the Cox and Poisson models.* 
+
+### Descriptive statistics 
+
+*Figure 1 is missing from the paper*
+
+### Results
+
+*More detail could be added to the results section, particularly when referring to tables and figures.  Now much of the reading and understanding of tables and figures is left to be done by the reader. For example, the last sentence of section 8.1 states “The size of the effect of grandmother’s infant mortality on mother’s is not large, but, maybe surprisingly, the effect of her number of births is slightly larger.” This paragraph could be expanded with more detail about the magnitude of these effects. The same applies to the last paragraph of section 8.2.* 
+
+### Conclusions
+
+*The last paragraph of the conclusions could be expanded. In particular, the meaning of “another question if this is of practical significance” could be better explained, stating also whether the results are or are not of practical significance and what do such results imply. The concluding paragraph could also mention the fact that, with respect to the contingency tables, stronger results are obtained when estimating survival models that include control variables, and that the strongest effects in such models are observed for infants whose maternal grandmothers experienced two or more infant deaths.* 
+
