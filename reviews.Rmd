@@ -3,16 +3,16 @@ title: "Reviewers' comments"
 author: "Göran Broström"
 date: "14 oktober 2017"
 output: 
-  bookdown::pdf_document2:
-    keep_tex: yes
-    number_sections: yes
-    toc: yes
-    toc_depth: 2
   bookdown::html_document2:
     number_sections: yes
     toc: yes
     toc_depth: 2
     toc_float: yes
+  bookdown::pdf_document2:
+    keep_tex: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: 2
   bookdown::word_document2:
     toc: yes
     toc_depth: 2
@@ -88,3 +88,23 @@ Why are the “atom mothers” important?  Why should a grandmother-mother pair 
 
 *The last paragraph of the conclusions could be expanded. In particular, the meaning of “another question if this is of practical significance” could be better explained, stating also whether the results are or are not of practical significance and what do such results imply. The concluding paragraph could also mention the fact that, with respect to the contingency tables, stronger results are obtained when estimating survival models that include control variables, and that the strongest effects in such models are observed for infants whose maternal grandmothers experienced two or more infant deaths.* 
 
+## Reviewer C
+
+*In general, the paper fits the scope of the journal. The subject is important and the author(s) have made valuable new insight, regarding both IDS and intergenerational transmission of infant mortality research. I recommend the paper to be published with some revision.*
+
+1.   **Introduction:** *Your demographic analysis targets the probability of an intergenerational transmission of infant mortality. Skellefteå region of Northern Sweden are the studied area, and the period is set to the 19th century. In the introduction, you present a brief literature on the topic, and I urge you to expand this section. First, time is essential. Your literature review give no sense of whether family dependency and intergenerational transmission is a continuous pattern found in societies today or if it relates to historical settings only. Next, you refer to regional differences and possible explanations. Though I have my suspicions, it is not clear to me why regional variations are relevant for your paper. My guess is that you want to evaluate to what extent IDS can serve as a platform to fill the research gap mentioned. If I am right, please contextualize.*
+
+2.   **Data sources:** *In 3.1: You say that POPUM consist of parish records (birth, deaths, migration) and catechetical registers (my cursive). Are the parish records and the catechetical register two independent sources? The catechetical registers are continuous records, and as I understand from your text, these registers constitute the basis of POPUM. On page 4, you say that all death registers are missing before 1815 and during 1823-1830 resulting in trust on the catechetical registers only. I am wondering, since most demographic events in the two sources complement each other, how is this operationalized in POPUM? Strictly speaking, parish records do not report births and deaths, but rather baptism and burials, and related to the IDS implementation and source criticism in general, it would be appreciated if this were further elaborated upon. Next, on page 5 you say that newborn children were not entered into the catechetical register immediately after birth, giving a possible underreporting of early infant deaths. Since catechetical registers in a way is annual censuses conducted upon the yearly visit by the clergy, why does the underreporting only concern “infants that died soon after birth” (soon is a vague term)? I assume that newborn were rather quickly baptized, and buried (if that was the outcome), and it would be interesting to know more about why this data obviously are not used. Just a small detail, do the parish records include marriage events? You only mention birth, deaths and migration.*
+
+3.   **Implementation of IDS on POPUM:** *Your second paragraph ("The transformation of the data...") is not about the implementation of IDS but rather about the character of your data. Please consider this to be moved to the section where you describe your data. Since you are referring this paper to be part of an international initiative, it would be useful for the readers if you could elaborate a bit further on your experiences in the collaboration. For example, in the conclusion, you state that the general script fulfilled its purposes well, though emphasizing that IDS does not relieve the researcher from the duty to evaluate the sources, etc., and that definitions should be performed in a preparatory state. Do you mean by "preparatory state"  in the specific collaboration you were a part of, or do you mean that definitions should be handled in the IDS metadata? The reason why I am asking is that one of the aims behind IDS is the opening to share statistical programs (in fertility, mortality, etc.) across databases, which also implies an easier way for a researcher to use multiple databases, without actually having detailed knowledge about them. In that context, I understand your concerns about data quality check etc., and that you discuss this as part of the implementation of IDS. However, for readers of the journal it would be interesting to know more about your experiences on using the same script in relation to applying clear rules.*
+
+4.   **Data: **  *This chapter is divided into "the common approach" (including "variables") and "the simple-and-sound approach". You refer to a common script developed by Quaranta, but you give limited information about the content of this script, e.g. censoring rules. This, on the other hand, is satisfying described in the simple-and-sound approach.* 
+
+5.   **Results, common models:** *In Figures 4 & 5 we see that the effect of grandmother’s number of births is slightly larger compared to the size effect of grandmother’s infant mortality on mother’s lost, consistent in both models. This is intriguing, and it should be interesting if you elaborate a bit further on this, for example by relating it to the fertility in Skellefteå, earlier described (p. 3-4). In addition, do you have any comments to the decline observed for the 7+ group?
+Simple-and-sound results: The sentence: 'The main diagonal is "heavy positive", implying that mothers and grandmother share infant mortality experiences in a higher degree than expected, were there no association at all.' I do not understand the last part (in cursive by me). Please explain.* 
+
+6.   **Concluding remarks:** *In the second paragraph you refer to the contingency table and “had a women and/or her oldest daughter an infant death or not”. That you restrict to “oldest daughter” is not explained in the text.*  
+
+7.   *In the abstract and throughout the text you refer to your paper as being part of an international comparative initiative with different teams. For clarity, it would be interesting for the readers to know what kind of initiative this is, and who the participants are.*
+
+It is our understanding that the comparative project will be described in a separate article in the same issue of the journal. 
