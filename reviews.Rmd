@@ -3,9 +3,7 @@ title: "Reviewers' comments"
 author: "Göran Broström"
 date: "14 oktober 2017"
 output: 
-  bookdown::pdf_document2:
-    keep_tex: yes
-    number_sections: yes
+  bookdown::word_document2:
     toc: yes
     toc_depth: 2
   bookdown::html_document2:
@@ -13,7 +11,9 @@ output:
     toc: yes
     toc_depth: 2
     toc_float: yes
-  bookdown::word_document2:
+  bookdown::pdf_document2:
+    keep_tex: yes
+    number_sections: yes
     toc: yes
     toc_depth: 2
 ---
