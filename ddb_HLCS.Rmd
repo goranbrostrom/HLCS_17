@@ -3,12 +3,12 @@ title: "Intergenerational transfers of infant mortality in 19th century northern
 author: "Anonymous"
 date: '`r Sys.Date()`'
 output:
-  bookdown::word_document2:
-    toc: yes
-    toc_depth: 2
   bookdown::pdf_document2:
     keep_tex: yes
     number_sections: yes
+    toc: yes
+    toc_depth: 2
+  bookdown::word_document2:
     toc: yes
     toc_depth: 2
   bookdown::html_document2:
@@ -195,7 +195,7 @@ The above-mentioned data set was used as is, with the exception that mothers wer
 
 ```{r loaddata}
 if (!file.exists("ef.rda")){
-    con <- url("http://capa.ddb.umu.se/ef.rda")
+    con <- url("http://capa.ddb.umu.se/data/ef.rda")
     load(con)
     save(ef, file = "ef.rda")
     close(con)
