@@ -31,7 +31,7 @@ abstract: This study is part of an international comparative initiative where th
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, comment = NA, fig.height = 2.8, cache = TRUE)
+knitr::opts_chunk$set(echo = FALSE, comment = NA, fig.height = 2.8, cache = FALSE)
 options(show.signif.stars = FALSE)
 library(knitr)
 library(eha)
@@ -123,7 +123,7 @@ fluctuated between three and six per cent during the nineteenth century
 ## The parish records
 
 The data in this study are based on information found in the Swedish parish
-records, that is, birth, death, migration, and catechetical registers
+records, that is, birth, marriage, death, migration, and catechetical registers
 [@ndj93]. 
 
 
@@ -135,7 +135,7 @@ information, for example on occupation, was recorded.  The historical parish rec
 
 ## POPUM and POPLINK
 
-The POPUM and POPLINK databases differ in two respects: The time dimension and restrictions of data access. The data collection in POPUM as well as POPLINK of the Skellefteå data starts in 1699 with birth records. Catechetical registers are available from 1720. The end year of the Popum database is 1900. During recent years, the POPLINK database has been created with an extension of the time span to the 1950s for the Skellefteå and Umeå regions and a generational depth of up to 12 generations [@wee16]. The information in POPLINK is however anonymized due to legal requirements, while this is not the case for POPUM. The version of the IDS utilized in this study is based on the POPUM database, thus ending at 1900.
+The POPUM and POPLINK databases differ in two respects: The time dimension and restrictions of data access. The data collection in POPUM as well as POPLINK of the Skellefteå data starts in 1699 with birth records. Catechetical registers are available from 1720. The end year of the Popum database is 1900. Since the database does not include personal data referring to now living persons, it is not subject to any legal restrictions in regard to confidentiality (Personal Data Act 1998:294). During recent years, the POPLINK database has been created with an extension of the time span to the 1950s for the Skellefteå and Umeå regions and a generational depth of up to 12 generations [@wee16]. The information in POPLINK is subject to legal restrictions. So far, only POPUM has been converted into IDS, and hence also forms the basis of this study. Data in POPLINK will be available in IDS format in 2018. 
 
 ## Restrictions
 
