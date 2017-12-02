@@ -4,6 +4,7 @@ author: "Anonymous"
 date: '`r Sys.Date()`'
 output:
   bookdown::pdf_document2:
+    citation_package: natbib
     keep_tex: yes
     number_sections: yes
     toc: yes
@@ -16,13 +17,12 @@ output:
     toc: yes
     toc_depth: 2
     toc_float: yes
-biblio-style: apalike
+citation_package: "natbib"    
+biblio-style: "apalike"
 documentclass: article
 fontsize: 11pt
 geometry: a4paper
-bibliography:
-- cluster.bib
-- surv.bib
+bibliography: ["cluster.bib", "surv.bib"]
 abstract: This study is part of an international comparative initiative where the
   same scientific question is investigated on data sets from different regions, all
   available in IDS format. The main result is that the probability of an infant death
@@ -512,7 +512,6 @@ where $R_i$ is total risk time for mother No. $i$, $\mathbf{x}_i$ a vector of he
 Formally, $R_i$ is entered into the model as an \emph{offset} after taking logs. 
 
 
-
 ```{r poisson}
 options(digits = 8)
 fit.p <- glm(mDeaths ~ offset(log(Mexpon)) + gmDeaths + gmBirths + mBirthdate, data = ef1, family = poisson)
@@ -639,7 +638,7 @@ the Poisson regression. The reported *p*-values are cast in doubt, however.
 
 There are a couple circumstances that introduce dependence structures in the data: Infants being siblings share genetic and environmental (unmeasurable) properties, some mothers have sisters that themselves are present as mothers, thus sharing grandmother. Possible ways of handling the situation are *shared frailty models* [@aalen08] and the implementation of *robust variances* [@extcox00]. We have tried both, but neither do change the results in any noticeable way. For the shared frailty model we get a very strong frailty effect of the grouping of infants by mother (not shown, and not surprising).
 
-<!---
+
 ```{r shared, echo = FALSE}
 library(coxme)
 fit.c2 <- coxph(Surv(exit - enter, event) ~ gmIMR + Child_birthyear + 
@@ -656,7 +655,7 @@ The estimated fixed effects coefficients are found in
 ```{r foundcoxef}
 print(fit.c3, digits = 2)
 ```
---->
+
 Our main hypothesis, there is no intergenerational transfer, is still rejected.
 
 
