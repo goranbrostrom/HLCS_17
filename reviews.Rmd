@@ -1,8 +1,13 @@
 ---
 title: "Reviewers' comments"
 author: "Göran Broström"
-date: "14 oktober 2017"
+date: "4 December 2017"
 output: 
+  bookdown::pdf_document2:
+    keep_tex: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: 2
   bookdown::word_document2:
     toc: yes
     toc_depth: 2
@@ -11,11 +16,6 @@ output:
     toc: yes
     toc_depth: 2
     toc_float: yes
-  bookdown::pdf_document2:
-    keep_tex: yes
-    number_sections: yes
-    toc: yes
-    toc_depth: 2
 ---
 
 ```{r setup, include=FALSE}
@@ -39,15 +39,21 @@ in plain text.
 
 It is our understanding that the comparative project will be described in a separate article in the same issue of the journal. 
 
+We have however added a short introduction on page 2 that situates our contribution within the collaborative project. We have also made some modifications in the aims of the article, changing the order of the three aims. We now start with the two that are common for all contributions in the special issue, i.e. the third aim (the research question) will be the first, then follows the previous first aim which now is the second (the first methodological), and then we add our own methodological aim of evaluating and suggesting alternative methods to analyse intergenerational transfers.
+
 2.   *What are "simple and sound models"?*
 
 A simple model makes as few assumptions as possible about the data-generating process in the real-world problem. For instance, a non-parametric model makes fewer assumptions than a parametric one. A sound model focuses on the target in an unbiased (as much as possible, unbiasedness is not necessarily an important property) and efficient (for instance, small variance) way. A "simple and sound" model has both these properties. 
 
 In our study, the outcome target is *death before age one*, and a simple model focuses on that target, that is, a binary (logical) response variable equal to *TRUE* if the subject dies before her/his first birthdate and *FALSE* otherwise. The total number of deaths aggregated for a mother can then be approximated by a  Binomial or Poisson distribution. In contrast, a not-so-simple model, for instance Cox regression, aims only indirectly at the target: Instead, it compares hazard rates of mortality under the assumption of *proportional hazards*, which is unnecesssary under the simple model. On the other hand, Cox regression can deal with the problem of *right censoring*, that is, if follow-up of an infant's life trajectory during its first year of life is interrupted. If this is a common state of affairs, it is necessary to adopt methods allowing for right censoring and paying the price of stricter assumptions. At least in our parishes, moving out of the region with infant(s) was very rare. 
 
+We have added a description and a discussion of motives for “simple and sound models” in section 5.2.
+
 3.   *Why is the asymmetry between mother and grandmother a problem?  The asymmetry occurs because every grandmother must have at least one surviving daughter, but a mother may have no surviving children.  But all mothers have grandmothers, and all grandmothers have at least one surviving daughter.  What’s the problem?*
 
 The potential problem is that, given everything else is equal, a grandmother will on average have fewer births than her daughter, since we must subtract one from her number of births. However, we feel that you behind your question thinks that this is not a serious problem, and we can buy that.
+
+We have added comments on this in the discussion, section 10, where there is a new paragraph about the advantages and disadvantages of different approaches.
 
 4.   *Why does studying male infant mortality reduce the asymmetry problem?*
 
