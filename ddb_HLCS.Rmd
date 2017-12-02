@@ -236,11 +236,11 @@ Also included are a bunch of possible confounders, notably
 
 *  **mBirthdate** Mother's birth date expressed as years between 1 January 1 and her day of birth, minus one.
 
-*  **mAge** Mother's age at the birth of a child. Categorized into the intervals "17-19", "20-22", ..., "41-43", "44-49".
+*  **mAge** Mother's age at the birth of a child. Categorized into the intervals "15-24", "25-34", "35-49", "44-49".
 
 * **parity** The birth order of a mother's child.
 
-*  **childBirthdate** The birthrate of a mother's child.
+*  **childBirthdate** The birthdate of a mother's child.
 
 *  **sex** The sex of a mother's child.
 
@@ -251,7 +251,7 @@ present as confounders in the common analyses.
 ef$gmBirths <- cut(ef$G0_Births, c(1, 2.5, 3.5, 6.5, 25), labels = c("2", "3", "4-6", "7+"))
 ef$gmDeaths <- ef$G0_InfD_cat
 ef$gmIMR <- ef$G0_InfD / ef$G0_Births * 100
-ef$mAge <- ef$enter - 30
+ef$mAge <- ef$enter
 ef$parity <- cut(ef$Birth_order, c(0.5, 1.5, 2.5, 3.5, 6.5, 25), labels = c("1", "2", "3", "4-6", "7+"))
 ## ef$mBirthdate : See above!
 ```
@@ -259,7 +259,7 @@ ef$parity <- cut(ef$Birth_order, c(0.5, 1.5, 2.5, 3.5, 6.5, 25), labels = c("1",
 ## The simple-and-sound approach
 
 Our data extraction is not well suited for a strict analysis with a minimum of 
-dependency structures. What we need is *family trees* (or rather trees of *women*), 
+dependency structures. What would we need is *family trees* (or rather trees of *women*), 
 and for each node in the tree we want the number of male and female births and 
 male and female infant 
 deaths. We must first find the "atom mothers", that is, women without mothers 
@@ -565,7 +565,7 @@ analysis. The statistical significance of a Cox regression is shown in Table \@r
 ##ef$mAge <- ef$enter - 32
 ##ef$mAge2 <- (ef$mAge)^2
 ##ef$mAge3 <- (ef$mAge)^3
-ef$mAge <- cut(ef$enter, c(seq(16.99, 43.99, by = 3), 49.99), labels = c("17-19", "20-22", "23-25", "26-28", "29-31", "32-34", "35-37", "38-40", "41-43", "44-49"))
+ef$mAge <- cut(ef$enter, c(15, 25, 35, 50), labels = c("15-24", "25-34"," 35-49"))
 ef$childBirthdate <- ef$mBirthdate + ef$enter
 fit.c <- coxph(Surv(exit - enter, event) ~ gmDeaths + gmBirths + childBirthdate + 
                     strata(parity) + mAge, data = ef)
@@ -641,9 +641,9 @@ There are a couple circumstances that introduce dependence structures in the dat
 
 ```{r shared, echo = FALSE}
 library(coxme)
-fit.c2 <- coxph(Surv(exit - enter, event) ~ gmIMR + Child_birthyear + 
-                    parity + sex, data = ef)
-fit.c3 <- coxme(Surv(exit - enter, event) ~ gmIMR + Child_birthyear + parity + sex + (1 | MotherID), data = ef)
+fit.c2 <- coxph(Surv(exit - enter, event) ~ gmDeaths + gmBirths + Child_birthyear + 
+                    strata(parity) + sex, data = ef)
+fit.c3 <- coxme(Surv(exit - enter, event) ~ gmDeaths + gmBirths + Child_birthyear + strata(parity) + sex + (1 | MotherID), data = ef)
 ```
 
 ```{r sharedpres}

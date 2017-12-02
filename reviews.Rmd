@@ -1,6 +1,6 @@
 ---
 title: "Reviewers' comments"
-author: "Göran Broström"
+author: "Göran Broström, Sören Edvinsson, and Elisabeth Engberg"
 date: "4 December 2017"
 output: 
   bookdown::pdf_document2:
@@ -37,15 +37,14 @@ in plain text.
 
 1.   *The paper refers several times to the comparative project, but it does not describe that project.*  
 
-It is our understanding that the comparative project will be described in a separate article in the same issue of the journal. 
-
-We have however added a short introduction on page 2 that situates our contribution within the collaborative project. We have also made some modifications in the aims of the article, changing the order of the three aims. We now start with the two that are common for all contributions in the special issue, i.e. the third aim (the research question) will be the first, then follows the previous first aim which now is the second (the first methodological), and then we add our own methodological aim of evaluating and suggesting alternative methods to analyse intergenerational transfers.
+The comparative project will be described in a separate article in the same issue of the journal. 
+However, we have however added a short introduction on page 2 that situates our contribution within the collaborative project. We have also made some modifications in the aims of the article, changing the order of the three aims. We now start with the two that are common for all contributions in the special issue, i.e. the third aim (the research question) will be the first, then follows the previous first aim which now is the second (the first methodological), and then we add our own methodological aim of evaluating and suggesting alternative methods to analyse intergenerational transfers.
 
 2.   *What are "simple and sound models"?*
 
 A simple model makes as few assumptions as possible about the data-generating process in the real-world problem. For instance, a non-parametric model makes fewer assumptions than a parametric one. A sound model focuses on the target in an unbiased (as much as possible, unbiasedness is not necessarily an important property) and efficient (for instance, small variance) way. A "simple and sound" model has both these properties. 
 
-In our study, the outcome target is *death before age one*, and a simple model focuses on that target, that is, a binary (logical) response variable equal to *TRUE* if the subject dies before her/his first birthdate and *FALSE* otherwise. The total number of deaths aggregated for a mother can then be approximated by a  Binomial or Poisson distribution. In contrast, a not-so-simple model, for instance Cox regression, aims only indirectly at the target: Instead, it compares hazard rates of mortality under the assumption of *proportional hazards*, which is unnecesssary under the simple model. On the other hand, Cox regression can deal with the problem of *right censoring*, that is, if follow-up of an infant's life trajectory during its first year of life is interrupted. If this is a common state of affairs, it is necessary to adopt methods allowing for right censoring and paying the price of stricter assumptions. At least in our parishes, moving out of the region with infant(s) was very rare. 
+In our study, the outcome target is *death before age one*, and a simple model focuses on that target, that is, a binary (logical) response variable equal to *TRUE* if the subject dies before her/his first birthdate and *FALSE* otherwise. The total number of deaths aggregated for a mother can then be approximated by a  Binomial or Poisson distribution. In contrast, a not-so-simple model, for instance Cox regression, aims only indirectly at the target: Instead, it uses *age at death* as response variable, and it compares hazard rates of mortality under the assumption of *proportional hazards*, which is unnecesssary under the simple model. On the other hand, Cox regression can deal with the problem of *right censoring*, that is, if follow-up of an infant's life trajectory during its first year of life is interrupted. If this is a common state of affairs, it is necessary to adopt methods allowing for right censoring and paying the price of stricter assumptions. At least in our parishes, moving out of the region with infant(s) was very rare. 
 
 We have added a description and a discussion of motives for “simple and sound models” in section 5.2.
 
@@ -69,7 +68,7 @@ It is not worth doing, but maybe worth discussing.
 
 7.   *Why are the “atom mothers” important?* 
 
-That is the natural start for building family trees.
+They are the natural start in building family trees. This discussion is suggesting how our data *should* have been collected. However, we are forced to use the common stata script for data retrieval from the IDS data base for comparative reasons.
 
 8.   *Why should a grandmother-mother pair be different if it is gen0-gen1 rather than gen1--gen2?*
 
@@ -77,16 +76,18 @@ It should't.
 
 9.   *Explain more about taking advantage of similarity among sisters.*  
 
-We are not doing that, on the contrary we want to *avoid* sisters. That is, ideally we should have unique 
+It is not our intention to suggest that dependency between sisters is a good thing. 
+On the contrary we want to *avoid* sisters. That is, ideally we should have unique 
 grandmother--mother pairs, in the sense that each woman appears only once, either as a grandmother or a mother.
 
 10.   *How is censoring managed in the Cox regression?*
 
-See for instance the excellent monograph *"Event History Analysis with R"* by Göran Broström (2012, Chapman & Hall/CRC Press).
+We do not really understand the question. If it regards general statistical theory for Cox regression, we can refer to
+the excellent monograph *"Event History Analysis with R"* by Göran Broström (2012, Chapman & Hall/CRC Press). Otherwise, please clarify.
 
 7.   *More discussion and examples of results of the shared frailty and robust variances models would be useful.*
 
-We do not agree.
+OK, we include the results of a Weibull frailty PH regression model.
 
 ## Reviewer B
 
@@ -96,36 +97,45 @@ We do not agree.
 
 *One sentence could be added to the introduction to state which is the area and period that is being studied.* 
 
-OK.
+OK, that is done.
 
 ### Data sources
 
 1.   *Section 3.2 states that the POPUM database is not anonymized and therefore ends in 1900. It is not clear why the data has to be anonymized if it is used by local researchers.* 
 
+We have clarified the restricted access to IDS data from POPLINK in the new text in section 3.2.
+
 2.   *Section 3.3 discusses data restrictions. The fact that registers of death are missing before 1815 and during the years 1823-1830 is mentioned and the possibility that this could lead to under-estimations of the deaths in the grandmother’s generation is also stated. Whereas it is also said that comments on and analyses of this potential problem are included in the results section, such comments and analyses are not found in such section.* 
+
+We have rewritten this section and added a discussion of the potential problems with under-registration where we have clarified the problems with the missing information. Furthermore, we have moved some information from section 4. Implementation if IDS on POPUM in accordance with the suggestions of Reviewer C.
 
 3.   *The choice to restrict the sample only to mothers born between 1826 and 1854 should be motivated and discussed in the paper.* 
 
+We have added this clarification in section 3.3 (see also the previous paragraph).
 
 ### Implementation of IDS on POPUM
 
 *The last paragraph of section 4 discusses the difficulty in identifying households in the records of Skellefteå. Although the problem is clearly explained, it is unclear whether it also affects the data selected for the project and if so how. Are married servants with children recorded? If they are not, what are the implications for the results?*
 
+For the purposes of our study, this is not particularly relevant. We added a sentence declaring this at the end of the section. 
+This is a complicating circumstance that DDB has identified when implementing IDS, but it does not interfere or cause any problems with the present analysis.
+See also comment on paragraph 2, Data Sources above, on additions from Implementation.
+
 ### Statistical modelling
 
 1.   *The analysis is divided into common models and simple and sound models. The common models refer to a Cox and a Poisson model, in accordance to previous versions of the project. However, in the latest version of the common STATA programs for the project, a Cox model, a Weibull model with shared frailty on the mother, and a Weibull model with shared frailty on the grandmother are estimated.*
 
-You seem to know more than we do. However, all our analyses are made in **R**.
+We have misinterpreted an email from Luciana Quaranta on the 16th of June this year. But how do you, reviewer B, know anything about that letter? Unless you are one of the recipients, or the author, of course. But, as we state in the text, we have fitted the shared frailty models mentioned, but since the results regarding the main issue are not changed in any noticeable way we prefer to just mention this fact. This saves a page or two, but if you insist, we can of course includet the redundant results. 
 
 2.   *I suggest to either 1) change the section of Common models to include the Cox and the two Weibull models instead of the Poisson model or 2) keep the models as they are in the paper, without referring them as common models done across the different databases of the project. In case of choosing the second option I suggest to present the simple models before the Cox and Poisson models.* 
 
-We thought that the common part of the project consisted of Cox and Poisson regression. Again, you seem to know more than we do...
+We thought that the common part of the project consisted of Cox and Poisson regression. We were informed that the stata code for poisson regression was removed, but not that it implied a new plan for the project. We moved the Poisson regression stuff to the section about the sound models (where it belongs).
 
 ### Descriptive statistics 
 
-*Figure 1 is missing from the paper*
+*Figure 1 is missing from the paper*.
 
-Not in our copy. We will investigate ...
+Not in our copy. And not in the copy we sent to the journal.
 
 ### Results
 
@@ -135,9 +145,13 @@ OK.
 
 ### Conclusions
 
-*The last paragraph of the conclusions could be expanded. In particular, the meaning of “another question if this is of practical significance” could be better explained, stating also whether the results are or are not of practical significance and what do such results imply. The concluding paragraph could also mention the fact that, with respect to the contingency tables, stronger results are obtained when estimating survival models that include control variables, and that the strongest effects in such models are observed for infants whose maternal grandmothers experienced two or more infant deaths.* 
+*The last paragraph of the conclusions could be expanded. In particular, the meaning of “another question if this is of practical significance” could be better explained, stating also whether the results are or are not of practical significance and what do such results imply.* 
 
-We will consider that.
+We actually seriously think that it is up to the reader.
+
+*The concluding paragraph could also mention the fact that, with respect to the contingency tables, stronger results are obtained when estimating survival models that include control variables, and that the strongest effects in such models are observed for infants whose maternal grandmothers experienced two or more infant deaths.* 
+
+We do not agree with that description. Of course, it depends on the interpretation of "strong effect". Also note that in the common models, there are complicated dependency structures which blows up effect sizes and p-values. The frailty models constitutes a hope of dealing with all these dependencies, but whether it succeeds or not is impossible to verify. The sampling frame should really have been such that there are no dependencies in the data. We have tried to outline some ways to go in that direction. 
 
 ## Reviewer C
 
@@ -145,23 +159,30 @@ We will consider that.
 
 1.   **Introduction:** *Your demographic analysis targets the probability of an intergenerational transmission of infant mortality. Skellefteå region of Northern Sweden are the studied area, and the period is set to the 19th century. In the introduction, you present a brief literature on the topic, and I urge you to expand this section. First, time is essential. Your literature review give no sense of whether family dependency and intergenerational transmission is a continuous pattern found in societies today or if it relates to historical settings only. Next, you refer to regional differences and possible explanations. Though I have my suspicions, it is not clear to me why regional variations are relevant for your paper. My guess is that you want to evaluate to what extent IDS can serve as a platform to fill the research gap mentioned. If I am right, please contextualize.*
 
-OK.
+This is now better taken care of.
 
 2.   **Data sources:** *In 3.1: You say that POPUM consist of parish records (birth, deaths, migration)* and *catechetical registers (my cursive). Are the parish records and the catechetical register two independent sources? The catechetical registers are continuous records, and as I understand from your text, these registers constitute the basis of POPUM. On page 4, you say that all death registers are missing before 1815 and during 1823-1830 resulting in trust on the catechetical registers only. I am wondering, since most demographic events in the two sources complement each other, how is this operationalized in POPUM? Strictly speaking, parish records do not report births and deaths, but rather baptism and burials, and related to the IDS implementation and source criticism in general, it would be appreciated if this were further elaborated upon. Next, on page 5 you say that newborn children were not entered into the catechetical register immediately after birth, giving a possible underreporting of early infant deaths. Since catechetical registers in a way is annual censuses conducted upon the yearly visit by the clergy, why does the underreporting only concern “infants that died soon after birth” (soon is a vague term)? I assume that newborn were rather quickly baptized, and buried (if that was the outcome), and it would be interesting to know more about why this data obviously are not used. Just a small detail, do the parish records include marriage events? You only mention birth, deaths and migration.*
 
+This relates to points made by reviewer B, paragraph 2 concerning Data sources. See that discussion. We have also added information from section 4. Implementation of IDS on POPUM, see next point.
+In section 3.1 we have clarified that the catechetical and parish registers are not independent sources, but are part of the same church book system. Both were the responsibility of the clergy and were used as the official population registers. 
+The information from the parish registers ought to be included in the catechetical registers as well (for example deaths, marriages and migrations with dates on when it took place), but apparently births were not always immediately entered. This varied however between parishes, something that makes it necessary to check how it was done in different places. When it comes to the oldest registers, the reviewer is correct that it should report baptisms and burials and not births and deaths, but this should not be the case for the period we are analyzing in this article. It was used for the official national population statistics and the registers should therefore report all births and deaths.
+
 3.   **Implementation of IDS on POPUM:** *Your second paragraph ("The transformation of the data...") is not about the implementation of IDS but rather about the character of your data. Please consider this to be moved to the section where you describe your data. Since you are referring this paper to be part of an international initiative, it would be useful for the readers if you could elaborate a bit further on your experiences in the collaboration. For example, in the conclusion, you state that the general script fulfilled its purposes well, though emphasizing that IDS does not relieve the researcher from the duty to evaluate the sources, etc., and that definitions should be performed in a preparatory state. Do you mean by "preparatory state"  in the specific collaboration you were a part of, or do you mean that definitions should be handled in the IDS metadata? The reason why I am asking is that one of the aims behind IDS is the opening to share statistical programs (in fertility, mortality, etc.) across databases, which also implies an easier way for a researcher to use multiple databases, without actually having detailed knowledge about them. In that context, I understand your concerns about data quality check etc., and that you discuss this as part of the implementation of IDS. However, for readers of the journal it would be interesting to know more about your experiences on using the same script in relation to applying clear rules.*
+
+We have moved much of the information about data to section 3.3, see comments to Reviewer B paragraph 2 on Data sources.
 
 4.   **Data: **  *This chapter is divided into "the common approach" (including "variables") and "the simple-and-sound approach". You refer to a common script developed by Quaranta, but you give limited information about the content of this script, e.g. censoring rules. This, on the other hand, is satisfying described in the simple-and-sound approach.* 
 
 5.   **Results, common models:** *In Figures 4 & 5 we see that the effect of grandmother’s number of births is slightly larger compared to the size effect of grandmother’s infant mortality on mother’s lost, consistent in both models. This is intriguing, and it should be interesting if you elaborate a bit further on this, for example by relating it to the fertility in Skellefteå, earlier described (p. 3-4). In addition, do you have any comments to the decline observed for the 7+ group?
 Simple-and-sound results: The sentence: 'The main diagonal is "heavy positive", implying that mothers and grandmother share infant mortality experiences in a higher degree than expected,* were there no association at all*.' I do not understand the last part (in cursive by me). Please explain.* 
 
-Given independence between grandmother's and mother's numbers of births and deaths, the numbers in the main diagonal would be smaller than they are boserved to be.
+Given independence between grandmother's and mother's numbers of births and deaths, the numbers in the main diagonal would be smaller than they are boserved to be. Added to the text.
 
 6.   **Concluding remarks:** *In the second paragraph you refer to the contingency table and “had a women and/or her oldest daughter an infant death or not”. That you restrict to “oldest daughter” is not explained in the text.*  
 
-We will fix that.
+It is now done.
 
 7.   *In the abstract and throughout the text you refer to your paper as being part of an international comparative initiative with different teams. For clarity, it would be interesting for the readers to know what kind of initiative this is, and who the participants are.*
 
-It is our understanding that the comparative project will be described in a separate article in the same issue of the journal. 
+The comparative project will be described in a separate article in the same issue of the journal. 
+We have also added some text in that direction in the Introduction.
