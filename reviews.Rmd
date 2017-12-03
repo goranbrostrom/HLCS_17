@@ -1,7 +1,7 @@
 ---
 title: "Reviewers' comments"
-author: "Göran Broström, Sören Edvinsson, and Elisabeth Engberg"
-date: "4 December 2017"
+author: "X, Y, and Z"
+date: '`r Sys.Date()`'
 output: 
   bookdown::pdf_document2:
     keep_tex: yes
@@ -83,11 +83,11 @@ grandmother--mother pairs, in the sense that each woman appears only once, eithe
 10.   *How is censoring managed in the Cox regression?*
 
 We do not really understand the question. If it regards general statistical theory for Cox regression, we can refer to
-the excellent monograph *"Event History Analysis with R"* by Göran Broström (2012, Chapman & Hall/CRC Press). Otherwise, please clarify.
+the excellent monograph *"Event History Analysis with R"* by Göran Broström (2012, Chapman & Hall/CRC Press; the author is one of us). Otherwise, please clarify.
 
 7.   *More discussion and examples of results of the shared frailty and robust variances models would be useful.*
 
-OK, we include the results of a Weibull frailty PH regression model.
+We have run the suggested Weibull frailty models and found that, yes, there is a strong evidence of clustering within mothers, but this does not change the main result, inheritance is strong, at all. Therefore we decided to just mention this, but leave the duplicated figures out. 
 
 ## Reviewer B
 
@@ -125,23 +125,23 @@ See also comment on paragraph 2, Data Sources above, on additions from Implement
 
 1.   *The analysis is divided into common models and simple and sound models. The common models refer to a Cox and a Poisson model, in accordance to previous versions of the project. However, in the latest version of the common STATA programs for the project, a Cox model, a Weibull model with shared frailty on the mother, and a Weibull model with shared frailty on the grandmother are estimated.*
 
-We have misinterpreted an email from Luciana Quaranta on the 16th of June this year. But how do you, reviewer B, know anything about that letter? Unless you are one of the recipients, or the author, of course. But, as we state in the text, we have fitted the shared frailty models mentioned, but since the results regarding the main issue are not changed in any noticeable way we prefer to just mention this fact. This saves a page or two, but if you insist, we can of course includet the redundant results. 
+We have misinterpreted an email from Luciana Quaranta on the 16th of June this year. But how do you, reviewer B, know anything about that letter? Unless you are one of the recipients, or the author, of course. As we state in the text, we have fitted the shared frailty models mentioned, but since the results regarding the main issue are not changed in any noticeable way we prefer to just mention this fact. This saves a page or two, but if you insist, we can of course includet the redundant results. 
 
 2.   *I suggest to either 1) change the section of Common models to include the Cox and the two Weibull models instead of the Poisson model or 2) keep the models as they are in the paper, without referring them as common models done across the different databases of the project. In case of choosing the second option I suggest to present the simple models before the Cox and Poisson models.* 
 
-We thought that the common part of the project consisted of Cox and Poisson regression. We were informed that the stata code for poisson regression was removed, but not that it implied a new plan for the project. We moved the Poisson regression stuff to the section about the sound models (where it belongs).
+We thought that the common part of the project consisted of Cox and Poisson regression. We were informed that the stata code for Poisson regression was removed, but not that it implied a new plan for the project. We moved the Poisson regression stuff to the section about the sound models (where it belongs).
 
 ### Descriptive statistics 
 
 *Figure 1 is missing from the paper*.
 
-Not in our copy. And not in the copy we sent to the journal.
+Not in the copy we sent to the journal.
 
 ### Results
 
 *More detail could be added to the results section, particularly when referring to tables and figures.  Now much of the reading and understanding of tables and figures is left to be done by the reader. For example, the last sentence of section 8.1 states “The size of the effect of grandmother’s infant mortality on mother’s is not large, but, maybe surprisingly, the effect of her number of births is slightly larger.” This paragraph could be expanded with more detail about the magnitude of these effects. The same applies to the last paragraph of section 8.2.* 
 
-OK.
+OK. But the magnitudes are shown clearly in the figures ...
 
 ### Conclusions
 
@@ -151,7 +151,9 @@ We actually seriously think that it is up to the reader.
 
 *The concluding paragraph could also mention the fact that, with respect to the contingency tables, stronger results are obtained when estimating survival models that include control variables, and that the strongest effects in such models are observed for infants whose maternal grandmothers experienced two or more infant deaths.* 
 
-We do not agree with that description. Of course, it depends on the interpretation of "strong effect". Also note that in the common models, there are complicated dependency structures which blows up effect sizes and p-values. The frailty models constitutes a hope of dealing with all these dependencies, but whether it succeeds or not is impossible to verify. The sampling frame should really have been such that there are no dependencies in the data. We have tried to outline some ways to go in that direction. 
+We do not agree with that description, but of course, it depends on the interpretation of "strong effect". Also note that in the common models, there are complicated dependency structures and non-proportionalities blowing up effect sizes and p-values. The frailty models constitutes a hope of dealing with all these dependencies, but whether it succeeds or not is impossible to verify. The sampling frame should really have been such that there are no dependencies in the data. We have tried to outline some ways to go in that direction. 
+
+On the other hand, the proportional hazards analyses reveal several non-proportionalities, that may generate new hypotheses, for instance by studying mortality during the first two months of life. We mention that in the paper.
 
 ## Reviewer C
 
@@ -173,14 +175,17 @@ We have moved much of the information about data to section 3.3, see comments to
 
 4.   **Data: **  *This chapter is divided into "the common approach" (including "variables") and "the simple-and-sound approach". You refer to a common script developed by Quaranta, but you give limited information about the content of this script, e.g. censoring rules. This, on the other hand, is satisfying described in the simple-and-sound approach.* 
 
-5.   **Results, common models:** *In Figures 4 & 5 we see that the effect of grandmother’s number of births is slightly larger compared to the size effect of grandmother’s infant mortality on mother’s lost, consistent in both models. This is intriguing, and it should be interesting if you elaborate a bit further on this, for example by relating it to the fertility in Skellefteå, earlier described (p. 3-4). In addition, do you have any comments to the decline observed for the 7+ group?
-Simple-and-sound results: The sentence: 'The main diagonal is "heavy positive", implying that mothers and grandmother share infant mortality experiences in a higher degree than expected,* were there no association at all*.' I do not understand the last part (in cursive by me). Please explain.* 
+5.   **Results, common models:** *In Figures 4 & 5 we see that the effect of grandmother’s number of births is slightly larger compared to the size effect of grandmother’s infant mortality on mother’s lost, consistent in both models. This is intriguing, and it should be interesting if you elaborate a bit further on this, for example by relating it to the fertility in Skellefteå, earlier described (p. 3--4). In addition, do you have any comments to the decline observed for the 7+ group?*
+
+We can maybe think of a psycological explanation: If you (a future mother) are brought up in a family with many siblings, some of which have died, maybe these cicumstances become a natural part of what you consider childbearing and having children should be. Your more relaxed attitude towards the survival and health of your own children may be beneficial for them.
+
+*Simple-and-sound results: The sentence: 'The main diagonal is "heavy positive", implying that mothers and grandmother share infant mortality experiences in a higher degree than expected, were there no association at all.' I do not understand the last part (in cursive by me). Please explain.*
 
 Given independence between grandmother's and mother's numbers of births and deaths, the numbers in the main diagonal would be smaller than they are boserved to be. Added to the text.
 
 6.   **Concluding remarks:** *In the second paragraph you refer to the contingency table and “had a women and/or her oldest daughter an infant death or not”. That you restrict to “oldest daughter” is not explained in the text.*  
 
-It is now done.
+This was a mistake. Changed.
 
 7.   *In the abstract and throughout the text you refer to your paper as being part of an international comparative initiative with different teams. For clarity, it would be interesting for the readers to know what kind of initiative this is, and who the participants are.*
 
