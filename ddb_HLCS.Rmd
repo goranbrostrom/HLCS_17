@@ -128,7 +128,7 @@ In the catechetical registers the clergy kept
 continuous records of all demographic events for all individuals residing in
 a parish. These detailed records make it possible to follow individuals over time and also to
 identify their relatives and kin over time and throughout the life course. Furthermore, a rich variety of additional
-information, for example on occupation, was recorded.  The historical parish records have been digitized by the Demographic Data Base at Umeå University, and individual level data from more than one hundred parishes are at present available for research in the databases [POPUM and POPLINK](http://www.cedar.umu.se/). 
+information, for example on occupation, was recorded.  The historical parish records have been digitized by the Demographic Data Base (DDB) at Umeå University, and individual level data from more than one hundred parishes are at present available for research in the databases [POPUM and POPLINK](http://www.cedar.umu.se/). 
 
 ## POPUM and POPLINK
 
@@ -161,8 +161,7 @@ The implementation of the IDS format at the DDB has been performed on the relati
 
 The transformation of the data from POPUM to IDS has been quite straight-forward. This does not mean that the available information is without problems. The sources sometimes contain missing data, which can be a problem when it comes to analysis. For this study, the missing data due to death records not being preserved, as mentioned above, is of course problematic. 
 
-The context information on linking individuals to their households do also cause some problems. Families and households are presented together in the catechetical registers. We find the family on the same page in the registers with an empty line separating it from the next family. Households are however difficult to identify. Servants and others are usually presented at the bottom of the page, and if there are several families/households on the same page it is not always obvious to which family these individuals belong. Furthermore, the separation of families/households can also be difficult, particularly in urban environments
-where migrations were frequent making the registers more difficult to interpret. Making rules for defining households turned out to be very complicated. The information therefore primarily represent the nuclear families as households.
+The context information on linking individuals to their households do also cause some problems. Families and households are presented together in the catechetical registers. We find the family on the same page in the registers with an empty line separating it from the next family. Households are however difficult to identify. Servants and others are usually presented at the bottom of the page, and if there are several families/households on the same page it is not always obvious to which family these individuals belong. Furthermore, the separation of families/households can also be difficult, particularly in urban environments where migrations were frequent making the registers more difficult to interpret. The information therefore primarily represent the nuclear families as households.This is a complicating circumstance that DDB has identified when implementing IDS, but it does not interfere or cause any problems with the present analysis.
 
 
 # Statistical modeling
