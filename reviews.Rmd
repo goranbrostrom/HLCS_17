@@ -38,7 +38,7 @@ in plain text.
 1.   *The paper refers several times to the comparative project, but it does not describe that project.*  
 
 The comparative project will be described in a separate article in the same issue of the journal. 
-However, we have however added a short introduction on page 2 that situates our contribution within the collaborative project. We have also made some modifications in the aims of the article, changing the order of the three aims. We now start with the two that are common for all contributions in the special issue, i.e. the third aim (the research question) will be the first, then follows the previous first aim which now is the second (the first methodological), and then we add our own methodological aim of evaluating and suggesting alternative methods to analyse intergenerational transfers.
+However, we have however added a short introduction on page 2 that situates our contribution within the collaborative project (see also comments to reviewer C). We have also made some modifications in the aims of the article, changing the order of the three aims. We now start with the two that are common for all contributions in the special issue, i.e. the third aim (the research question) will be the first, then follows the previous first aim which now is the second (the first methodological), and then we add our own methodological aim of evaluating and suggesting alternative methods to analyse intergenerational transfers.
 
 2.   *What are "simple and sound models"?*
 
@@ -56,15 +56,15 @@ We have added comments on this in the discussion, section 10, where there is a n
 
 4.   *Why does studying male infant mortality reduce the asymmetry problem?*
 
-We do not have to subtract a birth from the total number of births to grandmother.
+We do not have to subtract a birth from the total number of births to grandmother, this is explained later in section 5.2.
 
 5.   *Doesn’t this introduce a new selection effect---all mothers and grandmothers must have at least one son?*
 
-No. But it changes focus from "infant mortality" to "male infant mortality".
+No. But it changes focus from "infant mortality" to "male infant mortality", see addition in the discussion section.
 
 6.   *If this is worth doing, why is it dismissed at the end?*
 
-It is not worth doing, but maybe worth discussing.
+It is not worth doing, but maybe worth discussing; see addition in the discussion section.
 
 7.   *Why are the “atom mothers” important?* 
 
@@ -72,13 +72,13 @@ They are the natural start in building family trees. This discussion is suggesti
 
 8.   *Why should a grandmother-mother pair be different if it is gen0-gen1 rather than gen1--gen2?*
 
-It should't.
+It shouldn't.
 
 9.   *Explain more about taking advantage of similarity among sisters.*  
 
 It is not our intention to suggest that dependency between sisters is a good thing. 
 On the contrary we want to *avoid* sisters. That is, ideally we should have unique 
-grandmother--mother pairs, in the sense that each woman appears only once, either as a grandmother or a mother.
+grandmother--mother pairs, in the sense that each woman appears only once, either as a grandmother or a mother. We have added a comment on this in section 5.1.
 
 10.   *How is censoring managed in the Cox regression?*
 
@@ -161,13 +161,13 @@ On the other hand, the proportional hazards analyses reveal several non-proporti
 
 1.   **Introduction:** *Your demographic analysis targets the probability of an intergenerational transmission of infant mortality. Skellefteå region of Northern Sweden are the studied area, and the period is set to the 19th century. In the introduction, you present a brief literature on the topic, and I urge you to expand this section. First, time is essential. Your literature review give no sense of whether family dependency and intergenerational transmission is a continuous pattern found in societies today or if it relates to historical settings only. Next, you refer to regional differences and possible explanations. Though I have my suspicions, it is not clear to me why regional variations are relevant for your paper. My guess is that you want to evaluate to what extent IDS can serve as a platform to fill the research gap mentioned. If I am right, please contextualize.*
 
-We have emphasized the role of the present study and how it relates to the understanding of transmission of infant mortality in different contexts. We have also added some comments on what is known about transmission of demographic behavior (references to Murphy 1999 and Kohler et al 1999).
+The introduction is substantially rewritten (see the comments to reviewer A and B), and in the new versions we have considered the comments from reviewer C. We have emphasized the role of the present study and how it relates to the understanding of transmission of infant mortality in different contexts. We have also added some comments on what is known about transmission of demographic behavior (references to Murphy 1999 and Kohler et al 1999).
 
 2.   **Data sources:** *In 3.1: You say that POPUM consist of parish records (birth, deaths, migration)* and *catechetical registers (my cursive). Are the parish records and the catechetical register two independent sources? The catechetical registers are continuous records, and as I understand from your text, these registers constitute the basis of POPUM. On page 4, you say that all death registers are missing before 1815 and during 1823-1830 resulting in trust on the catechetical registers only. I am wondering, since most demographic events in the two sources complement each other, how is this operationalized in POPUM? Strictly speaking, parish records do not report births and deaths, but rather baptism and burials, and related to the IDS implementation and source criticism in general, it would be appreciated if this were further elaborated upon. Next, on page 5 you say that newborn children were not entered into the catechetical register immediately after birth, giving a possible underreporting of early infant deaths. Since catechetical registers in a way is annual censuses conducted upon the yearly visit by the clergy, why does the underreporting only concern “infants that died soon after birth” (soon is a vague term)? I assume that newborn were rather quickly baptized, and buried (if that was the outcome), and it would be interesting to know more about why this data obviously are not used. Just a small detail, do the parish records include marriage events? You only mention birth, deaths and migration.*
 
 This relates to points made by reviewer B, paragraph 2 concerning Data sources. See that discussion. We have also added information from section 4. Implementation of IDS on POPUM, see next point.
 In section 3.1 we have clarified that the catechetical and parish registers are not independent sources, but are part of the same church book system. Both were the responsibility of the clergy and were used as the official population registers. 
-The information from the parish registers ought to be included in the catechetical registers as well (for example deaths, marriages and migrations with dates on when it took place), but apparently births were not always immediately entered. This varied however between parishes, something that makes it necessary to check how it was done in different places. When it comes to the oldest registers, the reviewer is correct that it should report baptisms and burials and not births and deaths, but this should not be the case for the period we are analyzing in this article. It was used for the official national population statistics and the registers should therefore report all births and deaths.
+The information from the parish registers ought to have been included in the catechetical registers as well (for example deaths, marriages and migrations with dates on when it took place), but apparently births were not always immediately entered. This varied however between parishes, something that makes it necessary to check how it was done in different places. When it comes to the oldest registers, the reviewer is correct that it should report baptisms and burials and not births and deaths, but this should not be the case for the period we are analyzing in this article. It was used for the official national population statistics and the registers should therefore report all births and deaths.
 
 3.   **Implementation of IDS on POPUM:** *Your second paragraph ("The transformation of the data...") is not about the implementation of IDS but rather about the character of your data. Please consider this to be moved to the section where you describe your data. Since you are referring this paper to be part of an international initiative, it would be useful for the readers if you could elaborate a bit further on your experiences in the collaboration. For example, in the conclusion, you state that the general script fulfilled its purposes well, though emphasizing that IDS does not relieve the researcher from the duty to evaluate the sources, etc., and that definitions should be performed in a preparatory state. Do you mean by "preparatory state"  in the specific collaboration you were a part of, or do you mean that definitions should be handled in the IDS metadata? The reason why I am asking is that one of the aims behind IDS is the opening to share statistical programs (in fertility, mortality, etc.) across databases, which also implies an easier way for a researcher to use multiple databases, without actually having detailed knowledge about them. In that context, I understand your concerns about data quality check etc., and that you discuss this as part of the implementation of IDS. However, for readers of the journal it would be interesting to know more about your experiences on using the same script in relation to applying clear rules.*
 
