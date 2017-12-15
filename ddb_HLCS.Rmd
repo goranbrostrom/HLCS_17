@@ -243,6 +243,8 @@ ef$gmIMR <- ef$G0_InfD / ef$G0_Births * 100
 ef$mAge <- ef$enter
 ef$parity <- cut(ef$Birth_order, c(0.5, 1.5, 2.5, 3.5, 6.5, 25), labels = c("1", "2", "3", "4-6", "7+"))
 ## ef$mBirthdate : See above!
+ef <- ef[order(ef$Grandmother_birthdate, ef$GrandmotherID, ef$Mother_birthdate, ef$enter), ]
+##ef <- ef[!duplicated(ef$GrandmotherID),]
 ```
 
 ## The simple-and-sound approach
@@ -494,7 +496,7 @@ package *knitr* [@knitr; @xie15].
 
 The **R** [@R] packages *eha* [@eha; @ehar12], *survival* [@survival], and *coxme* are used, and the
 explanatory and potentially confounder variables are the same as in the Poisson regression
-analysis. The statistical significance of a Cox regression is shown in Table \@ref(tab:surv): The first row is the full model, the second with the variable *gmDeaths* removed, and the third with both *gmDeaths* and *gmBirths* removed. The small *p*-values show that both variables are needed in the model. 
+analysis. The statistical significance of a Cox regression is shown in Table \@ref(tab:surv): The first row is the null model without *gmBirths* and *gmDeaths*, the second with the variable *gmBirths* added, and the third with *gmDeaths* added as well. The small *p*-values show that both variables are needed in the model, especially that *gmDeaths* is badly needed even after *gmBirths* is included. 
 
 ```{r surv}
 ##ef$G0InfD <- ef$G0_InfD_cat
@@ -502,23 +504,27 @@ analysis. The statistical significance of a Cox regression is shown in Table \@r
 ##ef$mAge <- ef$enter - 32
 ##ef$mAge2 <- (ef$mAge)^2
 ##ef$mAge3 <- (ef$mAge)^3
+
 ef$mAge <- cut(ef$enter, c(15, 25, 35, 50), labels = c("15-24", "25-34"," 35-49"))
 ef$childBirthdate <- ef$mBirthdate + ef$enter
+##ef$exit <- ef$exit - ef$enter
+##ef$enter <- 0
+##ef <- age.window(ef, c(2/12, 1))
 fit.c <- coxph(Surv(exit - enter, event) ~ gmDeaths + gmBirths + childBirthdate + 
                     strata(parity, mAge), data = ef)
 fit.c1 <- coxph(Surv(exit - enter, event) ~ gmBirths + childBirthdate + 
                     strata(parity, mAge), data = ef)
 fit.c2 <- coxph(Surv(exit - enter, event) ~ childBirthdate + 
                     strata(parity, mAge), data = ef)
-dr.c <- anova(fit.c, fit.c1, fit.c2)
+dr.c <- anova(fit.c2, fit.c1, fit.c)
 ##kable(summary(fit.c)$coef[, 1:3], caption =  "Cox regression, standard model.", booktabs = TRUE)
 ##ltx(fit.c, dr = dr.c, caption = "Cox regression, standard model.", 
   ##     label = Table: (\#label) tab:surv, digits = 4)
-knitr::kable(dr.c, row.names = TRUE, digits = 4, caption = "Analysis of deviance: (1) full model, (2) gmDeaths removed, and (3) gmDeaths and gmBirths removed. Cox regression.")
+knitr::kable(dr.c, row.names = TRUE, digits = 4, caption = "Analysis of deviance: (1) Null model, (2) gmBirths added, and (3) gmDeaths added. Cox regression.")
 ```
 
 
-Second, the sizes of the effects are shown in Figure \@ref(fig:effstcox). For the
+Second, the sizes of the effects are shown in Figure \@ref(fig:effstcox). For our prime target, the
 covariate *gmDeaths*, the real effect on
 her daughter's risk of experiencing infant deaths appears when the number
 of deaths are two or larger. The variable *gmBirths* is also
@@ -560,7 +566,7 @@ The estimated cumulative hazards functions for the strata of
 *gmDeaths* are shown in Figure \@ref(fig:relcumhaz).
 
 ```{r relcumhaz, fig.cap = "Cumulative hazards by the number of grandmother's infant deaths.", fig.height = 3.2}
-fit.str <- coxreg(Surv(exit - enter, event) ~ strata(gmDeaths) + gmBirths + mAge + childBirthdate, data = ef)
+fit.str <- coxreg(Surv(exit - enter, event) ~ gmBirths + strata(gmDeaths) + mAge + childBirthdate, data = ef)
 plot(fit.str, col = c("black", "blue", "red"), xlab = "Age (months)", axes = FALSE, 
      ylab = "Cumulative hazards", lty = c(1, 2, 4))
 axis(1, at = c(0, 2, 4, 6, 8, 10, 12) / 12, labels = c(0, 2, 4, 6, 8, 10, 12))
@@ -596,7 +602,7 @@ dr.c2 <- anova(fit.c2, fit.c3)
 knitr::kable(dr.c2, row.names = TRUE, digits = 4, caption = "Analysis of deviance: (1) fixed effects model, (2) random effects model. Cox regression.")
 ```
 
-The estimated fixed effects coefficients are found in
+The estimated fixed effects coefficients are shown in Figure \@ref(fig:effstcox).
 
 ```{r foundcoxef, eval = FALSE}
 print(fit.c3, digits = 2)
