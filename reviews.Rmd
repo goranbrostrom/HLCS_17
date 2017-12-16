@@ -68,7 +68,7 @@ It is not worth doing, but maybe worth discussing; see addition in the discussio
 
 7.   *Why are the “atom mothers” important?* 
 
-They are the natural start in building family trees. This discussion is suggesting how our data *should* have been collected. However, we are forced to use the common stata script for data retrieval from the IDS data base for comparative reasons.
+They are the natural start in building family trees. This discussion is suggesting how our data *should* have been collected. However, in this project we have to use the common stata script for data retrieval from the IDS data base for comparative reasons.
 
 8.   *Why should a grandmother-mother pair be different if it is gen0-gen1 rather than gen1--gen2?*
 
@@ -87,7 +87,7 @@ the excellent monograph *"Event History Analysis with R"* by Göran Broström (2
 
 7.   *More discussion and examples of results of the shared frailty and robust variances models would be useful.*
 
-We have run the suggested Weibull frailty models and found that, yes, there is a strong evidence of clustering within mothers, but this does not change the main result, inheritance is strong, at all. Therefore we decided to just mention this, but leave the duplicated figures out. 
+We have run the suggested Weibull frailty models and found that, yes, there is a strong evidence of clustering within mothers, but this does not change the main result, inheritance is strong, at all. Therefore we decided to just mention this, but leave the duplicated figures out, see section 8.1.2. 
 
 ## Reviewer B
 
@@ -125,7 +125,7 @@ See also comment on paragraph 2, Data Sources above, on additions from Implement
 
 1.   *The analysis is divided into common models and simple and sound models. The common models refer to a Cox and a Poisson model, in accordance to previous versions of the project. However, in the latest version of the common STATA programs for the project, a Cox model, a Weibull model with shared frailty on the mother, and a Weibull model with shared frailty on the grandmother are estimated.*
 
-We have misinterpreted an email from Luciana Quaranta on the 16th of June this year. But how do you, reviewer B, know anything about that letter? Unless you are one of the recipients, or the author, of course. As we state in the text, we have fitted the shared frailty models mentioned, but since the results regarding the main issue are not changed in any noticeable way we prefer to just mention this fact. This saves a page or two, but if you insist, we can of course includet the redundant results. 
+We have misinterpreted an email from Luciana Quaranta on the 16th of June this year. As we state in the text, we have fitted the shared frailty models mentioned, but since the results regarding the main issue are not changed in any noticeable way we prefer to just mention this fact. This saves a page or two, but if you insist, we can of course includet the redundant results. 
 
 2.   *I suggest to either 1) change the section of Common models to include the Cox and the two Weibull models instead of the Poisson model or 2) keep the models as they are in the paper, without referring them as common models done across the different databases of the project. In case of choosing the second option I suggest to present the simple models before the Cox and Poisson models.* 
 
@@ -141,7 +141,7 @@ Not in the copy we sent to the journal.
 
 *More detail could be added to the results section, particularly when referring to tables and figures.  Now much of the reading and understanding of tables and figures is left to be done by the reader. For example, the last sentence of section 8.1 states “The size of the effect of grandmother’s infant mortality on mother’s is not large, but, maybe surprisingly, the effect of her number of births is slightly larger.” This paragraph could be expanded with more detail about the magnitude of these effects. The same applies to the last paragraph of section 8.2.* 
 
-OK. But the magnitudes are shown clearly in the figures ...
+OK. But the magnitudes are shown clearly in the figures .... See also comments to reviewer C, question 5.
 
 ### Conclusions
 
