@@ -1,5 +1,5 @@
 ---
-title: "Inter-generational transfers of infant mortality in 19th century northern Sweden"
+title: "intergenerational transfers of infant mortality in 19th century northern Sweden"
 author: "Anonymous"
 date: '`r Sys.Date()`'
 output:
@@ -40,18 +40,18 @@ library(xtable)
 
 # Introduction
 
-This article has a threefold aim, including one demographic query and two methodological issues. The first and main purpose is to apply the IDS (Intermediate Data Structure) and the statistical modelling to a demographic study of the possible inter-generational transmission of death in infancy. More specifically, the hypothesis of no inter-generational transfer is tested. The second (and first methodological) aim is to assess the power of the IDS database on data from DDB (Demographic Data Base, Umeå University) for demographic analysis. An evaluation of the data in applied research will be useful for further development of the IDS structure and for its future use in comparative research. These two aims are common for all contributions in the present volume. The third (and second methodological) objective is however unique for our contribution. There are several considerations needed to be taken when analysing inter-generational transfers and it is therefore important to discuss alternative approaches in order to find the most fruitful one(s). We therefore evaluate and compare different models for statistical analysis of inter-generational transfers. In particular we argue in favour of using of what we call *simple and sound* models. 
+This article has a threefold aim, including one demographic query and two methodological issues. The first and main purpose is to apply the IDS (Intermediate Data Structure) and the statistical modelling to a demographic study of the possible intergenerational transmission of death in infancy. More specifically, the hypothesis of no intergenerational transfer is tested. The second (and first methodological) aim is to assess the power of the IDS database on data from DDB (Demographic Data Base, Umeå University) for demographic analysis. An evaluation of the data in applied research will be useful for further development of the IDS structure and for its future use in comparative research. These two aims are common for all contributions in the present volume. The third (and second methodological) objective is however unique for our contribution. There are several considerations needed to be taken when analysing intergenerational transfers and it is therefore important to discuss alternative approaches in order to find the most fruitful one(s). We therefore evaluate and compare different models for statistical analysis of intergenerational transfers. In particular we argue in favour of using of what we call *simple and sound* models. 
 
-Access to historical micro-data has increased our knowledge of the revolution in human life, described in the demographic transition theory. We know much more about the mortality and fertility decline. Infant mortality has been thoroughly investigated in a multitude of studies representing different historical and spatial contexts. The scholarly debate on the determinants continues however. One important aspect is the important role of family dependency determining survival of children, an observation that has led to an interest in following patterns over generations. Studies of inter-generational effects require individual data covering long periods, extending several generations, data that have not been available until the recent development of historical population databases. The study we present here is the contribution concerning northern Sweden to the comparative project described in Quaranta (in this volume), where inter-generational transfers of infant mortality on the maternal side is analysed in different contexts (Sweden, Norway, the Netherlands and Belgium) but with similar methods. While restricting the analysis to the female side, we still acknowledge the possible impact from the male side [@mukn02; @pem06]. In our case the analysis is based on a cohort of mothers born 1826--1854, for whom their experiences of infant mortality is compared to the one of the previous generation---the grandmothers. Thus, we analyse the family patterns of infant mortality in a certain region, and during a restricted period. Even though the present study alone cannot resolve the question about the generalizability of the transmission of infant mortality in families or about possible changes over time, the standardised approach used in the project substantially increases our understanding of these issues. 
+Access to historical micro-data has increased our knowledge of the revolution in human life, described in the demographic transition theory. We know much more about the mortality and fertility decline. Infant mortality has been thoroughly investigated in a multitude of studies representing different historical and spatial contexts. The scholarly debate on the determinants continues however. One important aspect is the important role of family dependency determining survival of children, an observation that has led to an interest in following patterns over generations. Studies of intergenerational effects require individual data covering long periods, extending several generations, data that have not been available until the recent development of historical population databases. The study we present here is the contribution concerning northern Sweden to the comparative project described in Quaranta (in this volume), where intergenerational transfers of infant mortality on the maternal side is analysed in different contexts (Sweden, Norway, the Netherlands and Belgium) but with similar methods. While restricting the analysis to the female side, we still acknowledge the possible impact from the male side [@mukn02; @pem06]. In our case the analysis is based on a cohort of mothers born 1826--1854, for whom their experiences of infant mortality is compared to the one of the previous generation---the grandmothers. Thus, we analyse the family patterns of infant mortality in a certain region, and during a restricted period. Even though the present study alone cannot resolve the question about the generalizability of the transmission of infant mortality in families or about possible changes over time, the standardised approach used in the project substantially increases our understanding of these issues. 
 
 
 Observed family dependencies has led to an increased
-attention to a possible inter-generational transmission of demographic 
+attention to a possible intergenerational transmission of demographic 
 patterns [@edja12], sometimes even considering epigenetic effects
 [@pem14]. It is however not obvious that the transmission has been equally strong across times and between different places -- this is still an open question. Concerning transmission of fertility behaviour, studies indicate that the association between generations was negligible in pre-transitional societies but became more substantial over time [@murphy99]. @Kohler99 suggest that the role of genetics for fertility outcomes increased in importance during later stages of the transition. In a study on the same region as in the present study, @kolk14 finds an association between fertility across generations and that this is only partly mediated by education or occupational class. They are instead connected to other circumstances, such as transmission of values and fertility intentions. 
 
 Studies about trans-generational effects on infant mortality are however rare. It is still an under-researched topic. There are results showing major regional differences in
-the strength of the inter-generational transmission of infant
+the strength of the intergenerational transmission of infant
 mortality [@vande12]. While in certain regions the mortality history of infants is
 strongly correlated with the survival of infants in the previous 
 generation, in other regions this effect is weak or completely absent
@@ -185,7 +185,7 @@ A compromise is the more direct approach of estimating the effect of the number 
 
 The negative effects of the dependent-data problem in the proportional hazards and Poisson regression approaches may be reduced by (1) building family trees (based on women), and (2) only study *male* infant mortality.
 
-In this approach, the first mission is to operationalize and interpret the concept of "inter-generational transfer". There are essentially two ways to think about it.
+In this approach, the first mission is to operationalize and interpret the concept of "intergenerational transfer". There are essentially two ways to think about it.
 
 1.    There is a causal link from the IMR of a woman to her daughter. That is, if a woman experience a fatality, the probability that her daughter will experience one increases (or decreases). For such a relation to be reasonable, the woman’s fatality must come before (in calendar time) her daughter experience one.
 
@@ -343,7 +343,7 @@ on the probability that her daughter will experience an infant death.
 # Descriptive statistics of the IDS extraction
 
 The yearly numbers of births and infant deaths for the *mothers in the data set* and, as a comparison, for the data in *Popum*,  are shown in Figure \@ref(fig:numbirth). The number of births in the data set is
-`r format(NROW(ef), big.mark=" ")`, and the number of infant deaths is `r sum(ef$event)`, constituting an overall infant mortality rate of `r round(sum(ef$event) / NROW(ef) * 100, 1)` per cent. 
+`r format(NROW(ef), big.mark="&#8239;")`, and the number of infant deaths is `r sum(ef$event)`, constituting an overall infant mortality rate of `r round(sum(ef$event) / NROW(ef) * 100, 1)` per cent. 
 
 
 ```{r numbirth, fig.cap="Number of births and infant deaths and infant mortality by year.", fig.height = 6}
@@ -462,7 +462,7 @@ obviously there are many sister groups among mothers in the data. This fact
 induces dependencies in the data set, which may either be a problem (using
 methods assuming independence), but it may also be possible to turn this
 fact into an advantage (using mixed effects models and think of
-inter-generational transfer as similarity between siblings). In the latter
+intergenerational transfer as similarity between siblings). In the latter
 case the explanatory variable *gmIMR* is replaced by
 clustering on grandmother.
 
@@ -608,7 +608,7 @@ The estimated fixed effects coefficients are shown in Figure \@ref(fig:effstcox)
 print(fit.c3, digits = 2)
 ```
 
-Our main hypothesis, there is no inter-generational transfer, is still rejected, and the estimated effect sizes are essentially the same.
+Our main hypothesis, there is no intergenerational transfer, is still rejected, and the estimated effect sizes are essentially the same.
 
 
 # Simple-and-sound results
@@ -765,7 +765,7 @@ The size of the effect of grandmother's infant mortality on mother's is not larg
 
 # Discussion
 
-In this article we have analysed possible inter-generational transfers of infant mortality. An important part of our work is to discuss how to best approach the question. We discuss some principal choices when modelling the analysis. To be strict, we ought to take care of the asymmetry between the mother and grand-mother generation. The potential problem motivating the strategy is that, given everything else is equal, a grandmother will on average have fewer births than her daughter, since we must subtract one from her number of births. This can be solved by restricting the analysis to male infant mortality (thereby not having to subtract a birth from the total number of births of grand-mothers). The disadvantage is that we have a much smaller population to investigate, requiring a substantial large population and number of births from the beginning. Our analysis showed however that the less accurate approach gives similar results as the “correct” one, thus we can feel confident when choosing the less optimal solution. We have also tried different models, all plausible, reaching similar results.  Therefore we feel comfortable when arguing for “simple and sound” models, based on as few assumptions as possible. 
+In this article we have analysed possible intergenerational transfers of infant mortality. An important part of our work is to discuss how to best approach the question. We discuss some principal choices when modelling the analysis. To be strict, we ought to take care of the asymmetry between the mother and grand-mother generation. The potential problem motivating the strategy is that, given everything else is equal, a grandmother will on average have fewer births than her daughter, since we must subtract one from her number of births. This can be solved by restricting the analysis to male infant mortality (thereby not having to subtract a birth from the total number of births of grand-mothers). The disadvantage is that we have a much smaller population to investigate, requiring a substantial large population and number of births from the beginning. Our analysis showed however that the less accurate approach gives similar results as the “correct” one, thus we can feel confident when choosing the less optimal solution. We have also tried different models, all plausible, reaching similar results.  Therefore we feel comfortable when arguing for “simple and sound” models, based on as few assumptions as possible. 
 
 The main result is that the null hypothesis of no association was rejected: The risk for a
 woman to experience infant deaths is increased if her mother also had
