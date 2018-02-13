@@ -1,9 +1,12 @@
 ---
 title: "Intergenerational transfers of infant mortality in 19th century northern Sweden"
 author: "Göran Broström, Sören Edvinsson, and Elisabeth Engberg"
-date: '`r Sys.Date()`'
+date: 'Centre for Demography and Ageing Research, Umeå University'
 output:
-  bookdown::word_document2:
+  bookdown::pdf_document2:
+    citation_package: natbib
+    keep_tex: yes
+    number_sections: yes
     toc: yes
     toc_depth: 2
   bookdown::html_document2:
@@ -11,10 +14,7 @@ output:
     toc: yes
     toc_depth: 2
     toc_float: yes
-  bookdown::pdf_document2:
-    citation_package: natbib
-    keep_tex: yes
-    number_sections: yes
+  bookdown::word_document2:
     toc: yes
     toc_depth: 2
 citation_package: "natbib"    
