@@ -1,14 +1,8 @@
 ---
-title: "intergenerational transfers of infant mortality in 19th century northern Sweden"
-author: "Anonymous"
+title: "Intergenerational transfers of infant mortality in 19th century northern Sweden"
+author: "Göran Broström, Sören Edvinsson, and Elisabeth Engberg"
 date: '`r Sys.Date()`'
 output:
-  bookdown::pdf_document2:
-    citation_package: natbib
-    keep_tex: yes
-    number_sections: yes
-    toc: yes
-    toc_depth: 2
   bookdown::word_document2:
     toc: yes
     toc_depth: 2
@@ -17,17 +11,37 @@ output:
     toc: yes
     toc_depth: 2
     toc_float: yes
+  bookdown::pdf_document2:
+    citation_package: natbib
+    keep_tex: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: 2
 citation_package: "natbib"    
 biblio-style: "apalike"
 documentclass: article
 fontsize: 11pt
 geometry: a4paper
 bibliography: ["cluster.bib", "surv.bib"]
-abstract: This study is part of an international comparative initiative where the
-  same scientific question is investigated on data sets from different regions, all
-  available in IDS format. The main result is that the probability of an infant death
-  for a woman is increased if her mother also had experienced an infant death, which
-  was the scientific question to investigate.
+abstract: This contribution is part of an international comparative initiative
+  with the aim to assess the analytical power of the Intermediate Data
+  Structure (IDS) in a study of possible intergenerational transmissions
+  of death in infancy. An evaluation of the data in applied research will
+  be useful for further development of the IDS structure and for its
+  future use in comparative research. An additional methodological aim for
+  this part of the study is to evaluate and compare different models for
+  statistical analysis of intergenerational transfers. The analysis is
+  based on a cohort of mothers born 1826--1854, whose experiences of infant
+  mortality are compared to the ones of the previous generation, that is,
+  the grandmothers. Data are collected from Swedish parish records,
+  available in the database POPUM at the Demographic Data Base in Umeå.
+  The analysis shows a clear association between infant mortality among
+  mothers and grandmothers. The probability of an infant death for a woman
+  is increased if her mother also had experienced an infant death. Testing
+  different approaches for analysis, simple models with few restrictive
+  assumptions gave similar results as more complicated models. Since it is
+  easy to feel confident in the models with the weakest assumptions, we
+  argue that such models are preferred for this type of analysis.
 ---
 
 ```{r setup, include=FALSE}
@@ -40,9 +54,10 @@ library(xtable)
 
 # Introduction
 
-This article has a threefold aim, including one demographic query and two methodological issues. The first and main purpose is to apply the IDS (Intermediate Data Structure) and the statistical modelling to a demographic study of the possible intergenerational transmission of death in infancy. More specifically, the hypothesis of no intergenerational transfer is tested. The second (and first methodological) aim is to assess the power of the IDS database on data from DDB (Demographic Data Base, Umeå University) for demographic analysis. An evaluation of the data in applied research will be useful for further development of the IDS structure and for its future use in comparative research. These two aims are common for all contributions in the present volume. The third (and second methodological) objective is however unique for our contribution. There are several considerations needed to be taken when analysing intergenerational transfers and it is therefore important to discuss alternative approaches in order to find the most fruitful one(s). We therefore evaluate and compare different models for statistical analysis of intergenerational transfers. In particular we argue in favour of using of what we call *simple and sound* models. 
 
-Access to historical micro-data has increased our knowledge of the revolution in human life, described in the demographic transition theory. We know much more about the mortality and fertility decline. Infant mortality has been thoroughly investigated in a multitude of studies representing different historical and spatial contexts. The scholarly debate on the determinants continues however. One important aspect is the important role of family dependency determining survival of children, an observation that has led to an interest in following patterns over generations. Studies of intergenerational effects require individual data covering long periods, extending several generations, data that have not been available until the recent development of historical population databases. The study we present here is the contribution concerning northern Sweden to the comparative project described in Quaranta (in this volume), where intergenerational transfers of infant mortality on the maternal side is analysed in different contexts (Sweden, Norway, the Netherlands and Belgium) but with similar methods. While restricting the analysis to the female side, we still acknowledge the possible impact from the male side [@mukn02; @pem06]. In our case the analysis is based on a cohort of mothers born 1826--1854, for whom their experiences of infant mortality is compared to the one of the previous generation---the grandmothers. Thus, we analyse the family patterns of infant mortality in a certain region, and during a restricted period. Even though the present study alone cannot resolve the question about the generalizability of the transmission of infant mortality in families or about possible changes over time, the standardised approach used in the project substantially increases our understanding of these issues. 
+This article has a threefold aim, including one demographic query and two methodological issues. The first and main purpose is to apply the Intermediate Data Structure [@altermand14] and the statistical modelling to a demographic study of the possible intergenerational transmission of death in infancy. More specifically, the hypothesis of no intergenerational transfer is tested. The second (and first methodological) aim is to assess the power of the IDS database on data from DDB (Demographic Data Base, Umeå University) for demographic analysis. An evaluation of the data in applied research will be useful for further development of the IDS structure and for its future use in comparative research. These two aims are common for all contributions in the present volume. The third (and second methodological) objective is however unique for our contribution. There are several considerations needed to be taken when analysing intergenerational transfers and it is therefore important to discuss alternative approaches in order to find the most fruitful one(s). We therefore evaluate and compare different models for statistical analysis of intergenerational transfers. In particular we argue in favour of using of what we call *simple and sound* models. 
+
+Access to historical micro-data has increased our knowledge of the revolution in human life, described in the demographic transition theory. We know much more about the mortality and fertility decline. Infant mortality has been thoroughly investigated in a multitude of studies representing different historical and spatial contexts. The scholarly debate on the determinants continues however. One important aspect is the important role of family dependency determining survival of children, an observation that has led to an interest in following patterns over generations. Studies of intergenerational effects require individual data covering long periods, extending several generations, data that have not been available until the recent development of historical population databases. The study we present here is the contribution concerning northern Sweden to the comparative project described by @quar18, where intergenerational transfers of infant mortality on the maternal side are analysed in different contexts [@dpm18; @quar18_2; @som18; @vdm18], but with similar methods. While restricting the analysis to the female side, we still acknowledge the possible impact from the male side [@mukn02; @pem06]. In our case the analysis is based on a cohort of mothers born 1826--1854, for whom their experiences of infant mortality is compared to the one of the previous generation---the grandmothers. Thus, we analyse the family patterns of infant mortality in a certain region, and during a restricted period. Even though the present study alone cannot resolve the question about the generalizability of the transmission of infant mortality in families or about possible changes over time, the standardised approach used in the project substantially increases our understanding of these issues. 
 
 
 Observed family dependencies has led to an increased
@@ -56,7 +71,7 @@ mortality [@vande12]. While in certain regions the mortality history of infants 
 strongly correlated with the survival of infants in the previous 
 generation, in other regions this effect is weak or completely absent
 [@belr08]. @vande12 suggests that this can be attributed to differences in local culture and family systems, but also proposes the hypothesis that the variations might be related to strong
-local variants in gene defects as well. Most studies of regional differences are however based on a limited number of rather small regions. Different studies studies are hard to compare due to differences in methodology, both in terms of database management and statistical analysis. Our study, together with the others in the same project, aims to contribute to an increased understanding of the familial transmission of infant mortality in different contexts. 
+local variants in gene defects as well. Most studies of regional differences are however based on a limited number of rather small regions. Different studies are hard to compare due to differences in methodology, both in terms of database management and statistical analysis. Our study, together with the others in the same project, aims to contribute to an increased understanding of the familial transmission of infant mortality in different contexts. 
 
 # The Skellefteå region
 
@@ -131,7 +146,7 @@ information, for example on occupation, was recorded.  The historical parish rec
 
 ## POPUM and POPLINK
 
-The POPUM and POPLINK databases differ in two respects: The time dimension and restrictions of data access. The data collection in POPUM as well as POPLINK of the Skellefteå data starts in 1699 with birth records. Catechetical registers are available from 1720. The end year of the Popum database is 1900. Since the database does not include personal data referring to now living persons, it is not subject to any legal restrictions in regard to confidentiality (Personal Data Act 1998:294). During recent years, the POPLINK database has been created with an extension of the time span to the 1950s for the Skellefteå and Umeå regions and a generational depth of up to 12 generations [@wee16]. The information in POPLINK is subject to legal restrictions. So far, only POPUM has been converted into IDS, and hence also forms the basis of this study. Data in POPLINK will be available in IDS format in 2018. 
+The POPUM and POPLINK databases differ in two respects: The time dimension and restrictions of data access. The data collection in POPUM as well as POPLINK of the Skellefteå data starts in 1699 with birth records. Catechetical registers are available from 1720. The end year of the POPUM database is 1900. Since the database does not include personal data referring to now living persons, it is not subject to any legal restrictions in regard to confidentiality (Personal Data Act 1998:294). During recent years, the POPLINK database has been created with an extension of the time span to the 1950s for the Skellefteå and Umeå regions and a generational depth of up to 12 generations [@wee16]. The information in POPLINK is subject to legal restrictions. So far, only POPUM has been converted into IDS, and hence also forms the basis of this study. Data in POPLINK will be available in IDS format in 2018. 
 
 ## Restrictions
 
@@ -148,7 +163,7 @@ For the 18th century, we conclude that it is problematic to use death informatio
 Hence the analyses in this paper are restricted to the 19th century, when less problems of this sort are expected. It includes the reproductive history of women born 1826–1854, the information on the reproductive history of their mothers, and the deaths of all infants involved. The start of the mother cohort is motivated by the ambition to avoid the under-registration caused by missing death registers as much as possible. There are no problems with information on children in this cohort. Furthermore, by setting the end year set to 1854 we can follow the full reproductive history of the mother cohort. 
 However, there is a possible under-estimation of infant deaths in the grandmother generation. The children of that generation can potentially have been born in periods with missing death registers, something we need to evaluate. 
 
-We have made some checks and found that there certainly are an under-registration of deaths before 1815 and the period 1823-1830.  For the period before 1815, this is no real problem since only a very small proportions of siblings in the mother cohort were born at that time. There are however more babies born during the second period. A check of ages with a concentration of under-registration shows that it took place primarily during the first three months, i.e. for a much more restricted age window compared to what we find for the 18th century. We have checked if the results would change if we instead consider all with only a birth record as having died during infancy, but that approach does not change the main conclusions in this study. The unrecorded infant deaths represent a fairly small part of all births, and they are not biased.
+We have made some checks and found that there certainly are an under-registration of deaths before 1815 and the period 1823-1830.  For the period before 1815, this is no real problem since only a very small proportions of siblings in the mother cohort were born at that time. There are however more babies born during the second period. A check of ages with a concentration of under-registration shows that it took place primarily during the first three months, that is, for a much more restricted age window compared to what we find for the 18th century. We have checked if the results would change if we instead consider all infants with only a birth record as having died during infancy, but that approach does not change the main conclusions. The unrecorded infant deaths represent a fairly small part of all births.
 
 The rather short time window used here have some methodological advantages: Restricting it to the chosen mother cohort, we situate our study to a fairly consistent context, and the risk of finding some women appearing as grand-mothers, mothers as well as children is small.
 
@@ -199,7 +214,7 @@ A second issue is to avoid dependencies in the data. Each woman, whether mother 
 
 # Data
 
-We use the data set that is created from the IDS database with a standard extraction script [@lq16]. The possible response variables are **Age at death** (proportional hazards regression modelling) and **Death before age one** (Poisson regression modelling). In both cases, the explanatory variables of interest are **gmBirths** (grandmother's number of births) and **gmDeaths** (grandmother's number of infant deaths). In all cases, the following confounders were included in the analysis:
+We use the data set that is created from the IDS database with a standard extraction script [@quar18]. The possible response variables are **Age at death** (proportional hazards regression modelling) and **Death before age one** (Poisson regression modelling). In both cases, the explanatory variables of interest are **gmBirths** (grandmother's number of births) and **gmDeaths** (grandmother's number of infant deaths). In all cases, the following confounders were included in the analysis:
 
 *  **mBirthdate** Mother's birth date expressed as years between 1 January 1 and her day of birth, minus one.
 
@@ -252,8 +267,10 @@ ef <- ef[order(ef$Grandmother_birthdate, ef$GrandmotherID, ef$Mother_birthdate, 
 Our data extraction is not well suited for a strict analysis with a minimum of 
 dependency structures. What would be needed are *family trees* (or rather trees of *women*), 
 and for each node in the tree we want the number of male and female births and 
-male and female infant 
-deaths. We must first find the "atom mothers", that is, women without mothers 
+male and female infant deaths. However, in order to simplify the tables below, 
+only the total numbers of births and deaths are presented.
+
+We must first find the "atom mothers", that is, women without mothers 
 (in our data set). Since each "MotherID" also has a "GrandmotherID", we find 
 the "atoms" as those grandmothers who are not present as mothers in the common data set.
 
@@ -281,9 +298,9 @@ gen0 <- data.frame(id = gnom,
                    m_id = NA,
                    generation = 0,
                    birthdate = gm$Grandmother_birthdate,
-                   m_births = gm$G0_M_Births,
+                   ##m_births = gm$G0_M_Births,
                    births = gm$G0_Births,
-                   m_deaths = gm$G0_M_InfD,
+                   ##m_deaths = gm$G0_M_InfD,
                    deaths = gm$G0_InfD)
 knitr::kable(head(gen0), caption = "Generation 0.")
 ```                   
@@ -301,16 +318,16 @@ tmp <- tmp[order(tmp$MotherID), ]
 gen1 <- data.frame(id = mo,
                    m_id = tmp$GrandmotherID,
                    generation = 1,
-                   birthdate = tmp$Mother_birthdate,
-                   m_births = 0,
-                   m_deaths = 0
+                   birthdate = tmp$Mother_birthdate
+                   ##m_births = 0,
+                   ##m_deaths = 0
                    )
 ## Count births and deaths...
 for (id in gen1$id){
     ## Boys:
     xx <- ef$event[ef$MotherID == id & ef$sex == "Male"]
-    gen1$m_births[gen1$id == id] <- length(xx)
-    gen1$m_deaths[gen1$id == id] <- sum(xx)
+    ##gen1$m_births[gen1$id == id] <- length(xx)
+    ##gen1$m_deaths[gen1$id == id] <- sum(xx)
     ## All infants:
     xx <- ef$event[ef$MotherID == id]
     gen1$births[gen1$id == id] <- length(xx)
@@ -329,11 +346,11 @@ for comparative reasons, the restriction is imposed later, see the results.
 
 ```{r putonmoth, echo = FALSE}
 indx <- match(gen1$m_id, gen0$id)
-gen1$Mm_births <- gen0$m_births[indx]
-gen1$M_births <- gen0$births[indx]
-gen1$Mm_deaths <- gen0$m_deaths[indx]
-gen1$M_deaths <- gen0$deaths[indx]
-knitr::kable(head(gen1[, -(1:4), ]), caption = "Mother/Grandmother pairs, final table. First six rows shown.")
+##gen1$Mm_births <- gen0$m_births[indx]
+gen1$m_births <- gen0$births[indx]
+##gen1$Mm_deaths <- gen0$m_deaths[indx]
+gen1$m_deaths <- gen0$deaths[indx]
+knitr::kable(head(gen1[, -(1:3), ]), caption = "Mother/Grandmother pairs, final table. First six rows shown.")
 ```
 
 We can now test the effect of mother's infant deaths
@@ -342,7 +359,7 @@ on the probability that her daughter will experience an infant death.
 
 # Descriptive statistics of the IDS extraction
 
-The yearly numbers of births and infant deaths for the *mothers in the data set* and, as a comparison, for the data in *Popum*,  are shown in Figure \@ref(fig:numbirth). The number of births in the data set is
+The yearly numbers of births and infant deaths for the *mothers in the data set* and, as a comparison, for the data in POPUM,  are shown in Figure \@ref(fig:numbirth). The number of births in the data set is
 `r format(NROW(ef), big.mark="&#8239;")`, and the number of infant deaths is `r sum(ef$event)`, constituting an overall infant mortality rate of `r round(sum(ef$event) / NROW(ef) * 100, 1)` per cent. 
 
 
@@ -428,10 +445,7 @@ ef1 <- ef[!duplicated(ef$MotherID), ]
 
 The average number of births to a mother in the data set is 
 `r round(NROW(ef) / length(unique(ef$MotherID)), 2)`. The corresponding number for a grandmother is `r round(mean(ef1$G0_Births), 2)`, but keep in mind that grandmothers are restricted to have at least two births, while mothers are restricted to have at least one birth. 
-
-## The covered time period
-
-Our study sample consists of all mothers born 1826--1954. The distribution of their birth years and their infant mortality (by year of child death) are shown in  Figure \@ref(fig:sample). The distribution of the grandmothers' birth dates is unknown, because it is not part of the IDS retrieval. The first births ought to have appeared in the early 1800s.  
+Our study sample consists of all mothers born 1826--1954. The distribution of their birth years and their infant mortality (by year of child death) are shown in  Figure \@ref(fig:sample).   
 
 
 
@@ -494,7 +508,7 @@ package *knitr* [@knitr; @xie15].
 
 ## Survival analysis
 
-The **R** [@R] packages *eha* [@eha; @ehar12], *survival* [@survival], and *coxme* are used, and the
+The **R** [@R] packages *eha* [@eha; @ehar12], *survival* [@survival; @extcox00], and *coxme* [@coxme] are used, and the
 explanatory and potentially confounder variables are the same as in the Poisson regression
 analysis. The statistical significance of a Cox regression is shown in Table \@ref(tab:surv): The first row is the null model without *gmBirths* and *gmDeaths*, the second with the variable *gmBirths* added, and the third with *gmDeaths* added as well. The small *p*-values show that both variables are needed in the model, especially that *gmDeaths* is badly needed even after *gmBirths* is included. 
 
@@ -587,7 +601,7 @@ Among confounders, both **parity** and **mother's age** show clear non-proportio
 
 ### Dependency structures
 
-There are a couple circumstances that introduce dependence structures in the data: Infants being siblings share genetic and environmental (unmeasurable) properties, some mothers have sisters that themselves are present as mothers, thus sharing grandmother. Possible ways of handling the situation are *shared frailty models* [@aalen08] and the implementation of *robust variances* [@extcox00]. We have tried both, but neither do change the results in any noticeable way. For the shared frailty model we get a very strong frailty effect of the grouping of infants by mother, see Table \@ref(tab:sharedpres).
+There are a couple circumstances that introduce dependence structures in the data: Infants being siblings share genetic and environmental (unmeasurable) properties, some mothers have sisters that themselves are present as mothers, thus sharing grandmother. Possible ways of handling the situation are *shared frailty models* [@aalen08] and the implementation of *robust variances* [@extcox00]. We have tried both, but neither do change the results in any noticeable way. For the shared frailty model with Gaussian random effects we get a very strong effect of the grouping of infants by mother, see Table \@ref(tab:sharedpres).
 
 
 ```{r shared, echo = FALSE}
@@ -599,7 +613,7 @@ fit.c3 <- coxme(Surv(exit - enter, event) ~ gmDeaths + gmBirths + Child_birthyea
 
 ```{r sharedpres}
 dr.c2 <- anova(fit.c2, fit.c3)
-knitr::kable(dr.c2, row.names = TRUE, digits = 4, caption = "Analysis of deviance: (1) fixed effects model, (2) random effects model. Cox regression.")
+knitr::kable(dr.c2, row.names = TRUE, digits = 12, caption = "Analysis of deviance: (1) fixed effects model, (2) random effects model. Cox regression.")
 ```
 
 The estimated fixed effects coefficients are shown in Figure \@ref(fig:effstcox).
@@ -622,7 +636,7 @@ The simple data can be summarised in a (collapsed) contingency table (Table \@re
 ```{r sos, include = FALSE}
 ##gen1 <- gen1[!duplicated(gen1$m_id), ] ## NOTE: Experimental!!
 ##gen1 <- gen1[gen1$birthdate > as.Date("1825-12-31") & gen1$birthdate < as.Date("1855-01-01"), ]
-x <- with(gen1, table(deaths, M_deaths))
+x <- with(gen1, table(deaths, m_deaths))
 #col_names <- paste("gmD =", 0:5)
 #rownames(x) <- paste("mD = ", 0:3)
 knitr::kable(x, caption = "Contingency table of mother's (mD) and grandmother's (gmD) infant deaths.",
@@ -632,7 +646,7 @@ knitr::kable(x, caption = "Contingency table of mother's (mD) and grandmother's 
 
 
 ```{r sos2}
-gen1$gmD <- cut(gen1$M_deaths, c(-1, 0, 1, 20), 
+gen1$gmD <- cut(gen1$m_deaths, c(-1, 0, 1, 20), 
                 labels = c("gmD = 0", "gmD = 1", "gmD = 2+"))
 gen1$mD <- cut(gen1$deaths, c(-1, 0, 1, 20), 
                labels = c("mD = 0", "mD = 1", "mD = 2+"))
@@ -676,7 +690,7 @@ calculate proportions from Table \@ref(tab:sos2c), shown in Table \@ref(tab:sos2
 
 ```{r sos3, include = FALSE}
 gen1 <- gen1[gen1$birthdate > as.Date("1825-12-31") & gen1$birthdate < as.Date("1855-01-01"), ]
-x <- with(gen1, table(deaths, M_deaths))
+x <- with(gen1, table(deaths, m_deaths))
 #col_names <- paste("gmD =", 0:5)
 #rownames(x) <- paste("mD = ", 0:3)
 knitr::kable(x, caption = "Contingency table of mother's (mD) and grandmother's (gmD) infant deaths.",
@@ -685,7 +699,7 @@ knitr::kable(x, caption = "Contingency table of mother's (mD) and grandmother's 
 ```
 
 ```{r sos2c}
-gen1$gmD <- cut(gen1$M_deaths, c(-1, 0, 20), 
+gen1$gmD <- cut(gen1$m_deaths, c(-1, 0, 20), 
                 labels = c("gmD = 0", "gmD = 1+"))
 gen1$mD <- cut(gen1$deaths, c(-1, 0, 20), 
                labels = c("mD = 0", "mD = 1+"))
@@ -818,7 +832,7 @@ Three main aims were set out. The first was about
 assessing the usefulness of the IDS data format for demographic analysis, in
 this case in relation to transnational comparative research.
 We can confirm that applying the IDS format, and the general script made by
-@lq16, has fulfilled its purposes well. The use of the script has
+@quar18 has fulfilled its purposes well. The use of the script has
 facilitated comparisons between countries. 
 However, it is important to remember that the IDS format do not relieve the
 researcher from the duty of carefully evaluating the sources and their usefulness for
