@@ -4,7 +4,7 @@ author: "Göran Broström, Sören Edvinsson, and Elisabeth Engberg"
 date: 'Centre for Demography and Ageing Research, Umeå University'
 output:
   bookdown::word_document2:
-    toc: yes
+    toc: no
     toc_depth: 2
   bookdown::pdf_document2:
     citation_package: natbib
