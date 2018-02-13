@@ -3,6 +3,9 @@ title: "Intergenerational transfers of infant mortality in 19th century northern
 author: "Göran Broström, Sören Edvinsson, and Elisabeth Engberg"
 date: 'Centre for Demography and Ageing Research, Umeå University'
 output:
+  bookdown::word_document2:
+    toc: yes
+    toc_depth: 2
   bookdown::pdf_document2:
     citation_package: natbib
     keep_tex: yes
@@ -14,9 +17,6 @@ output:
     toc: yes
     toc_depth: 2
     toc_float: yes
-  bookdown::word_document2:
-    toc: yes
-    toc_depth: 2
 citation_package: "natbib"    
 biblio-style: "apalike"
 documentclass: article
@@ -63,7 +63,7 @@ Access to historical micro-data has increased our knowledge of the revolution in
 Observed family dependencies has led to an increased
 attention to a possible intergenerational transmission of demographic 
 patterns [@edja12], sometimes even considering epigenetic effects
-[@pem14]. It is however not obvious that the transmission has been equally strong across times and between different places -- this is still an open question. Concerning transmission of fertility behaviour, studies indicate that the association between generations was negligible in pre-transitional societies but became more substantial over time [@murphy99]. @Kohler99 suggest that the role of genetics for fertility outcomes increased in importance during later stages of the transition. In a study on the same region as in the present study, @kolk14 finds an association between fertility across generations and that this is only partly mediated by education or occupational class. They are instead connected to other circumstances, such as transmission of values and fertility intentions. 
+[@pem14]. It is however not obvious that the transmission has been equally strong across times and between different places -- this is still an open question. Concerning transmission of fertility behaviour, studies indicate that the association between generations was negligible in pre-transitional societies but became more substantial over time [@murphy99]. @kohler99 suggest that the role of genetics for fertility outcomes increased in importance during later stages of the transition. In a study on the same region as in the present study, @kolk14 finds an association between fertility across generations and that this is only partly mediated by education or occupational class. They are instead connected to other circumstances, such as transmission of values and fertility intentions. 
 
 Studies about trans-generational effects on infant mortality are however rare. It is still an under-researched topic. There are results showing major regional differences in
 the strength of the intergenerational transmission of infant
