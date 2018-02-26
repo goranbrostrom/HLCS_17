@@ -23,7 +23,7 @@ documentclass: article
 fontsize: 11pt
 geometry: a4paper
 bibliography: ["cluster.bib", "surv.bib"]
-abstract: This contribution is part of an international comparative initiative
+abstract: "This contribution is part of an international comparative initiative
   with the aim to assess the analytical power of the Intermediate Data
   Structure (IDS) in a study of possible intergenerational transmissions
   of death in infancy. An evaluation of the data in applied research will
@@ -41,16 +41,19 @@ abstract: This contribution is part of an international comparative initiative
   different approaches for analysis, simple models with few restrictive
   assumptions gave similar results as more complicated models. Since it is
   easy to feel confident in the models with the weakest assumptions, we
-  argue that such models are preferred for this type of analysis.
+  argue that such models are preferred for this type of analysis."
+keywords: "Intermediate Data Structure"  
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, comment = NA, fig.height = 3.8, cache = FALSE, message = FALSE)
+knitr::opts_chunk$set(echo = FALSE, comment = NA, fig.height = 3, cache = FALSE, message = FALSE)
 options(show.signif.stars = FALSE, warn = -1)
 library(knitr)
 library(eha)
 library(xtable)
 ```
+
+**Keywords:** Fertility; Historical micro data; Intermediate data structure; Poisson regression; Survival analysis.
 
 # Introduction
 
