@@ -45,7 +45,7 @@ abstract: This contribution is part of an international comparative initiative
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, comment = NA, fig.height = 2.8, cache = FALSE, message = FALSE)
+knitr::opts_chunk$set(echo = FALSE, comment = NA, fig.height = 3.8, cache = FALSE, message = FALSE)
 options(show.signif.stars = FALSE, warn = -1)
 library(knitr)
 library(eha)
@@ -370,21 +370,29 @@ x <- table(byear)
 years <- names(x)
 x <- x[-length(x)]
 years <- years[-length(years)]
-plot(years, as.numeric(x), type = "l", xlab = "Birth/Death year", ylab = "Frequency", col = "blue", ylim = c(0, 1500), main = "Present data")
+#####
+pink <- rgb(241, 100, 182, maxColorValue = 255)
+orange <- rgb(245, 116, 33, maxColorValue = 255)
+grey <- rgb(209, 210, 212, maxColorValue = 255)
+par(family = "sans")
+#####
+plot(years, as.numeric(x), type = "l", xlab = "Year", ylab = "Frequency", col = pink, ylim = c(0, 1500), main = "Present data", lwd = 2)
 dyear <- with(ef[ef$event, ], floor(mBirthdate + exit)) + 1840
 y <- table(dyear)
 years <- names(y)
-lines(years, as.numeric(y), type = "l", col = "red")
+##
+lines(years, as.numeric(y), type = "l", col = orange, lwd = 2)
 abline(h = 0)
-text(1850, 130, "Deaths", col = "red")
-text(1825, 450, "Births", col = "blue")
+text(1850, 130, "Deaths", col = orange)
+text(1825, 450, "Births", col = pink)
 ss <- with(ef, cbind(0, exit - enter, event, mBirthdate + 1840 + enter))
 x <- perstat(ss, seq(1801,1901, by = 1), age = c(0, 1))
-plot(1801:1900, x$intensity, xlab = "year", ylab = "Infant mortality", main = "Present data", type = "l", 
-     ylim = c(0, 0.4), col = "blue")
+###
+plot(1801:1900, x$intensity, xlab = "Year", ylab = "Infant mortality", main = "Present data", type = "l", 
+     ylim = c(0, 0.4), col = orange, lwd = 2)
 abline(h = 0)
 aver <- perstat(ss, seq(1801, 1901, by = 100), age = c(0, 1))$intensity
-abline(h = aver, col = "blue", lty = 2)
+abline(h = aver, col = grey, lty = 2, lwd = 2)
 ## POPLINK:
 library(skum)
 per1 <- persons[persons$frsbobtyp == 2 & persons$region == "ske", c("foddat", "doddat")]
@@ -397,25 +405,27 @@ x <- table(byear)
 years <- as.numeric(names(x))
 x <- x[years < 1903]
 years <- years[years < 1903]
-plot(years, as.numeric(x), type = "l", col = "blue", xlim = c(1742, 1902), ylab = "",  xlab = "Birth/Death year", ylim = c(0, 1500), main = "POPUM")
+###
+plot(years, as.numeric(x), type = "l", col = pink, xlim = c(1742, 1902), ylab = "",  xlab = "Year", ylim = c(0, 1500), main = "POPUM", lwd = 2)
 dyear <- floor(per1$doddat[per1$event])
 y <- table(dyear)
 years <- as.numeric(names(y))
 y <- y[years < 1903]
 years <- years[years < 1903]
-
-lines(years, as.numeric(y), type = "l", col = "red")
+##
+lines(years, as.numeric(y), type = "l", col = orange, lwd = 2)
 abline(h = 0)
-text(1850, 200, "Deaths", col = "red")
-text(1825, 700, "Births", col = "blue")
+text(1850, 200, "Deaths", col = orange)
+text(1825, 700, "Births", col = pink)
 ss <- with(obs, cbind(enter, exit, sluttyp == 2, birthdate))
 x <- perstat(ss, seq(1801, 1901, by = 1), age = c(0, 1))
 aver <- perstat(ss, seq(1801, 1901, by = 100), age = c(0, 1))$intensity
+###
 plot(1801:1900, x$intensity, xlab = "year", ylab = "Infant mortality", main = "POPUM", type = "l", 
-     ylim = c(0, 0.4), col = "blue")
+     ylim = c(0, 0.4), col = orange, lwd = 2)
 abline(h = 0)
-abline(h = aver, lty = 2, col = "blue")
-##plot(years, as.numeric(x) / as.numeric(y), xlab = "year", ylab = "Infant mortality", main = "Present data, IMR", type = "l")
+abline(h = aver, lty = 2, col = grey, lwd = 2)
+##plot(years, as.numeric(x) / as.numeric(y), xlab = "Year", ylab = "Infant mortality", main = "Present data, IMR", type = "l")
 par(oldpar)
 ```
 
@@ -449,16 +459,17 @@ Our study sample consists of all mothers born 1826--1954. The distribution of th
 
 
 
-```{r sample, fig.cap = "Distribution of mother birth years and mothers' infant mortality rate by infant death year."}
-oldpar <- par(mfrow = c(1, 2))
+```{r sample, fig.cap = "Distribution of mother birth years and mothers' infant mortality rate by infant death year.", fig.height = 3}
+oldpar <- par(mfrow = c(1, 2), family = "sans")
 barplot(table(floor(ef1$mBirthdate + 1840)), xlab = "Year", main = "", 
-col = "lightblue",ylab = "Frequency")
+col = pink, ylab = "Frequency")
 ##abline(h = 0)
 
 ## IMR:
 years <- seq(1845, 1895, by = 1)
 x <- perstat(with(ef, cbind(0, exit - enter, event, mBirthdate + 1840 + enter)), years, c(0, 1))
-plot(years[-1], x$intensity, type = "b", xlab = "Year", ylab = "Infant mortality", col = "blue", ylim = c(0, 0.2))
+plot(years[-1], x$intensity, type = "l", xlab = "Year", ylab = "Infant mortality", col = orange, ylim = c(0, 0.2),lwd = 2)
+abline(h = 0)
 par(oldpar)
 ```
 
@@ -483,7 +494,7 @@ clustering on grandmother.
 The distribution of the sizes of sibling groups is shown in Figure \@ref(fig:sibmoth).
 
 ```{r sibmoth, fig.cap = "Distribution of sister group sizes."}
-barplot(x, xlab = "Size", ylab = "Frequency")
+barplot(x, xlab = "Size", ylab = "Frequency", col = pink)
 ```
 
 ```{r countgm}
@@ -579,10 +590,10 @@ par(oldpar)
 The estimated cumulative hazards functions for the strata of
 *gmDeaths* are shown in Figure \@ref(fig:relcumhaz).
 
-```{r relcumhaz, fig.cap = "Cumulative hazards by the number of grandmother's infant deaths.", fig.height = 3.2}
+```{r relcumhaz, fig.cap = "Cumulative hazards by the number of grandmother's infant deaths.", fig.height = 4}
 fit.str <- coxreg(Surv(exit - enter, event) ~ gmBirths + strata(gmDeaths) + mAge + childBirthdate, data = ef)
-plot(fit.str, col = c("black", "blue", "red"), xlab = "Age (months)", axes = FALSE, 
-     ylab = "Cumulative hazards", lty = c(1, 2, 4))
+plot(fit.str, col = c(grey, orange, pink), xlab = "Age (months)", axes = FALSE, 
+     ylab = "Cumulative hazards", lty = c(1, 2, 4), lwd = 1.5)
 axis(1, at = c(0, 2, 4, 6, 8, 10, 12) / 12, labels = c(0, 2, 4, 6, 8, 10, 12))
 axis(2)
 box()
@@ -759,7 +770,7 @@ oldpar <- par(mfrow = c(1, 2))
   ##      ylim = c(0, 50), ylab = "Relative IMR (per cent)")
 
 barplot(100 * c(cat0, cat1, cat2), names.arg = c("0", "1", "2+"), 
-        ylim = c(0, 9), ylab = "IMR (per cent)", xlab = "gmDeaths")
+        ylim = c(0, 9), ylab = "IMR (per cent)", xlab = "gmDeaths", col = pink)
 cat0 <- exp(fit.p$coef[1])
 cat1 <- exp(sum(fit.p$coef[c(1, 4)]))
 cat2 <- exp(sum(fit.p$coef[c(1, 5)]))
@@ -769,7 +780,7 @@ cat3 <- exp(sum(fit.p$coef[c(1, 6)]))
   ##      ylim = c(0, 50), ylab = "Relative IMR (per cent)")
 
 barplot(100 * c(cat0, cat1, cat2, cat3), names.arg = c("2", "3", "4-6", "7+"), 
-    ylab = "IMR (per cent)", xlab = "gmBirths")
+    ylab = "IMR (per cent)", xlab = "gmBirths", col = orange)
 
 ```
 

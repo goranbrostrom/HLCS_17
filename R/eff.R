@@ -1,20 +1,20 @@
-eff.cont <- function(yp, sdyp, from, to){
+eff.cont <- function(yp, sdyp, from, to, color = rgb(245, 116, 33, maxColorValue = 255)){
     ## 'fit' is a result from a glm.
 
     x <- seq(from, to, length = 1000)
     y <- yp * x
     y.upp <- y + 1.96 * sdyp * abs(x)
     y.low <- y - 1.96 * sdyp * abs(x)
-    plot(x, exp(y), type = "l", ylim = c(0, max(exp(y.upp))), col = "blue", lwd = 2)
-    lines(x, exp(y.upp), lty = 2, col = "blue")
-    lines(x, exp(y.low), lty = 2, col = "blue")
+    plot(x, exp(y), type = "l", ylim = c(0, max(exp(y.upp))), col = color, lwd = 2)
+    lines(x, exp(y.upp), lty = 2, col = color)
+    lines(x, exp(y.low), lty = 2, col = color)
     abline(h = 1)
     abline(v = 0)
     invisible(exp(y.low))
 }
 
 eff.fact <- function(yp, sdyp, labs, main = "", las = 1, xlab = "Levels",
-                     ci = FALSE){
+                     ci = FALSE, color = rgb(245, 116, 33, maxColorValue = 255)){
     ## 'yp' is a vector of level estimates, sdyp their se's.
     y <- exp(c(0, yp))
     n <- length(y)
@@ -26,7 +26,7 @@ eff.fact <- function(yp, sdyp, labs, main = "", las = 1, xlab = "Levels",
         ylims <- c(min(y), max(y))
     }
     ylims <- c(1, 1.7) ## A dirty hack!!
-    plot(1:n, y, type = "b", col = "blue", ylim = ylims, axes = FALSE,
+    plot(1:n, y, type = "b", col = color, ylim = ylims, axes = FALSE,
          xlab = xlab, ylab = "Rel. Risk", main = main)
     axis(1, at = 1:n, labels = labs, las = las)
     axis(2)
