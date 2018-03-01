@@ -3,6 +3,11 @@ title: "Intergenerational transfers of infant mortality in 19th century northern
 author: "Göran Broström, Sören Edvinsson, and Elisabeth Engberg"
 date: 'Centre for Demography and Ageing Research, Umeå University'
 output:
+  bookdown::html_document2:
+    number_sections: yes
+    toc: yes
+    toc_depth: 2
+    toc_float: yes
   bookdown::word_document2:
     toc: no
     toc_depth: 2
@@ -12,11 +17,6 @@ output:
     number_sections: yes
     toc: yes
     toc_depth: 2
-  bookdown::html_document2:
-    number_sections: yes
-    toc: yes
-    toc_depth: 2
-    toc_float: yes
 citation_package: "natbib"    
 biblio-style: "apalike"
 documentclass: article
@@ -424,7 +424,7 @@ ss <- with(obs, cbind(enter, exit, sluttyp == 2, birthdate))
 x <- perstat(ss, seq(1801, 1901, by = 1), age = c(0, 1))
 aver <- perstat(ss, seq(1801, 1901, by = 100), age = c(0, 1))$intensity
 ###
-plot(1801:1900, x$intensity, xlab = "year", ylab = "Infant mortality", main = "POPUM", type = "l", 
+plot(1801:1900, x$intensity, xlab = "Year", ylab = "Infant mortality", main = "POPUM", type = "l", 
      ylim = c(0, 0.4), col = orange, lwd = 2)
 abline(h = 0)
 abline(h = aver, lty = 2, col = grey, lwd = 2)
